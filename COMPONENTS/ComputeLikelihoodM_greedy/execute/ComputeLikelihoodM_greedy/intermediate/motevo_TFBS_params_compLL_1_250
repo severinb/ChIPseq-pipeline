@@ -1,0 +1,17 @@
+refspecies dm3
+TREE (dm3: 1)
+Mode TFBS
+EMprior 0
+priordiff 0.05
+markovorderBG 0
+bgprior 0.998597
+bg A 0.295
+bg T 0.295
+bg G 0.205
+bg C 0.205
+restrictparses 0
+sitefile /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/ComputeLikelihoodM_greedy/execute/ComputeLikelihoodM_greedy/intermediate/sites_compLL_1_250
+priorfile /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/ComputeLikelihoodM_greedy/execute/ComputeLikelihoodM_greedy/intermediate/priors_compLL_1_250
+printsiteals 0
+minposterior 0.000000
+loglikfile /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/ComputeLikelihoodM_greedy/execute/ComputeLikelihoodM_greedy/intermediate/loglik_compLL_1_250

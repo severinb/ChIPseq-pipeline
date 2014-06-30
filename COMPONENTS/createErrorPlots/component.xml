@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>createErrorPlots</name>
+    <version>1.0</version>
+    <doc>
+    Creates three error plots that show perfomnace of mapping (see output ports).
+    This script is from the FMI toolbox. 
+    </doc>
+    <!--<author email="piotr@unibas.ch">Piotr</author>-->
+    <launcher type="python">
+        <argument name="file" value="createErrorPlots_anduril.py" />
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <inputs>
+    </inputs>
+    <outputs>
+        <output name="out_dir" type="BinaryFolder">
+            <doc>Where to write the plots to.</doc>
+        </output>
+        <output name="error_profiles_plot" type="PDF">
+            <doc>Profile of mapping errors over read length: Fraction of reads having a mapping error at position x.</doc>
+        </output>
+        <output name="fraction_aligned_plot" type="PDF">
+            <doc>Fraction of reads that have y mapping errors up to read position x.</doc>
+        </output>
+        <output name="repeatedness_plot" type="PDF">
+            <doc>Number of reads that are unique, multi- or no mappers or mapped with 1 or 2 mismatches.</doc>
+        </output>
+        <output name="createErrorPlots_log" type="BinaryFile">
+            <doc>Log file for this component</doc>
+        </output>
+    </outputs>
+    <parameters>
+            <parameter name="annoType" type="string" default="">
+                <doc>something like "mm9-mmV02-aln2".</doc>
+            </parameter>
+            <parameter name="FMIid" type="string" default="">
+                <doc>FMI ID to find samples in repository.</doc>
+            </parameter>
+            <parameter name="FMIpath" type="string" default="">
+                <doc>FMI pipeline directory containing soft and samples directories.</doc>
+            </parameter>
+            <parameter name="perlPATH" type="string" default="perl">
+                <doc>Path to right perl to use for execution.</doc>
+            </parameter>
+    </parameters>
+</component>

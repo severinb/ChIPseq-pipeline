@@ -1,0 +1,1905 @@
+Warning: all outports are unconnected: WMQuality
+Executing input_WM1 (INPUT)
+Executing input_shuffledPeaks (INPUT)
+Component input_WM1 finished with success; READY queue: input_peaks input_WM10 input_WM11 input_WM2 input_WM3 input_WM4 input_WM5 input_WM6 input_WM7 input_WM8 input_WM9 input_WMdir 
+Executing input_peaks (INPUT)
+Executing input_WMdir (INPUT)
+Executing input_WM9 (INPUT)
+Component input_WMdir finished with success; READY queue: input_WM8 input_WM10 input_WM11 input_WM2 input_WM3 input_WM4 input_WM5 input_WM6 input_WM7 
+Component input_WM9 finished with success; READY queue: input_WM8 input_WM10 input_WM11 input_WM2 input_WM3 input_WM4 input_WM5 input_WM6 input_WM7 
+Executing input_WM8 (INPUT)
+Executing input_WM7 (INPUT)
+Executing input_WM6 (INPUT)
+Component input_WM7 finished with success; READY queue: input_WM5 input_WM10 input_WM11 input_WM2 input_WM3 input_WM4 
+Component input_WM8 finished with success; READY queue: input_WM5 input_WM10 input_WM11 input_WM2 input_WM3 input_WM4 
+Component input_shuffledPeaks finished with success; READY queue: input_WM5 input_WM10 input_WM11 input_WM2 input_WM3 input_WM4 
+Component input_WM6 finished with success; READY queue: input_WM5 input_WM10 input_WM11 input_WM2 input_WM3 input_WM4 
+Executing input_WM5 (INPUT)
+Executing input_WM4 (INPUT)
+Component input_WM5 finished with success; READY queue: input_WM3 input_WM10 input_WM11 input_WM2 
+Component input_peaks finished with success; READY queue: input_WM3 input_WM10 input_WM11 input_WM2 
+Executing input_WM3 (INPUT)
+Component input_WM4 finished with success; READY queue: input_WM2 input_WM10 input_WM11 
+Executing input_WM2 (INPUT)
+Executing input_WM11 (INPUT)
+Component input_WM2 finished with success; READY queue: input_WM10 
+Component input_WM3 finished with success; READY queue: input_WM10 
+Component input_WM11 finished with success; READY queue: input_WM10 
+Executing input_WM10 (INPUT)
+Component input_WM10 finished with success; READY queue: WMQuality 
+Executing WMQuality (WMQuality)
+Clearing directory /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLine140113/COMPONENTS/WMQuality/execute/WMQuality
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file fg_0
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo fg_0
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs1/Logo1
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00    151.30       0.00     167.19       0.00          G        0.96
+[STDOUT WMQuality] 01     50.82      39.49     125.94      79.11          N        0.10
+[STDOUT WMQuality] 02    114.91       0.97     166.66       1.22          G        0.92
+[STDOUT WMQuality] 03    131.88       0.00     147.06      19.04          R        0.68
+[STDOUT WMQuality] 04     11.73     200.27       4.18      81.75          C        0.79
+[STDOUT WMQuality] 05    148.16      14.81      64.88      62.36          A        0.29
+[STDOUT WMQuality] 06     91.27       0.97     191.00       2.88          G        0.95
+[STDOUT WMQuality] 07      0.00     197.49       2.92      96.27          C        0.98
+[STDOUT WMQuality] 08    210.28       1.94      84.54       6.85          A        0.91
+[STDOUT WMQuality] 09     45.05      78.61     113.60      88.42          N        0.03
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs1/Logo1 is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file bg_0
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo bg_0
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs1/Logo1
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00    151.30       0.00     167.19       0.00          G        0.96
+[STDOUT WMQuality] 01     50.82      39.49     125.94      79.11          N        0.10
+[STDOUT WMQuality] 02    114.91       0.97     166.66       1.22          G        0.92
+[STDOUT WMQuality] 03    131.88       0.00     147.06      19.04          R        0.68
+[STDOUT WMQuality] 04     11.73     200.27       4.18      81.75          C        0.79
+[STDOUT WMQuality] 05    148.16      14.81      64.88      62.36          A        0.29
+[STDOUT WMQuality] 06     91.27       0.97     191.00       2.88          G        0.95
+[STDOUT WMQuality] 07      0.00     197.49       2.92      96.27          C        0.98
+[STDOUT WMQuality] 08    210.28       1.94      84.54       6.85          A        0.91
+[STDOUT WMQuality] 09     45.05      78.61     113.60      88.42          N        0.03
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs1/Logo1 is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file fg_1
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo fg_1
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG1_1/Logo
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00     15.09       0.00      28.11       0.00          G        0.87
+[STDOUT WMQuality] 01      1.29       0.00      24.48      17.44          G        0.67
+[STDOUT WMQuality] 02      0.39       0.00      42.81       0.00          G        1.73
+[STDOUT WMQuality] 03      1.61       0.00      40.70       0.90          G        1.44
+[STDOUT WMQuality] 04      0.47      42.34       0.00       0.40          C        1.65
+[STDOUT WMQuality] 05     35.97       0.00       5.49       1.75          A        1.03
+[STDOUT WMQuality] 06      0.65       2.89      39.66       0.00          G        1.35
+[STDOUT WMQuality] 07      0.39      35.05       0.00       7.77          C        1.06
+[STDOUT WMQuality] 08     40.49       0.00       2.71       0.00          A        1.46
+[STDOUT WMQuality] 09      0.82       6.49      30.25       5.64          G        0.56
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG1_1/Logo is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file bg_1
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo bg_1
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG1_1/Logo
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00     15.09       0.00      28.11       0.00          G        0.87
+[STDOUT WMQuality] 01      1.29       0.00      24.48      17.44          G        0.67
+[STDOUT WMQuality] 02      0.39       0.00      42.81       0.00          G        1.73
+[STDOUT WMQuality] 03      1.61       0.00      40.70       0.90          G        1.44
+[STDOUT WMQuality] 04      0.47      42.34       0.00       0.40          C        1.65
+[STDOUT WMQuality] 05     35.97       0.00       5.49       1.75          A        1.03
+[STDOUT WMQuality] 06      0.65       2.89      39.66       0.00          G        1.35
+[STDOUT WMQuality] 07      0.39      35.05       0.00       7.77          C        1.06
+[STDOUT WMQuality] 08     40.49       0.00       2.71       0.00          A        1.46
+[STDOUT WMQuality] 09      0.82       6.49      30.25       5.64          G        0.56
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG1_1/Logo is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file fg_2
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo fg_2
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs1/Logo2
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00     12.13       8.02       0.00     168.04          T        1.35
+[STDOUT WMQuality] 01     45.97       0.00      10.60     131.70          T        0.85
+[STDOUT WMQuality] 02      0.00       1.05       0.00     184.93          T        1.89
+[STDOUT WMQuality] 03      9.98      20.59      16.58     141.87          T        0.75
+[STDOUT WMQuality] 04     10.53       0.00       5.49     172.45          T        1.44
+[STDOUT WMQuality] 05     53.14      18.75       0.00     120.50          T        0.68
+[STDOUT WMQuality] 06      1.00       0.00       6.00     178.82          T        1.69
+[STDOUT WMQuality] 07      0.00      25.47      27.53     139.65          T        0.82
+[STDOUT WMQuality] 08      0.00      38.97      11.97     141.73          T        0.90
+[STDOUT WMQuality] 09     41.63       4.05       0.00     140.96          T        1.03
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs1/Logo2 is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file bg_2
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo bg_2
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs1/Logo2
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00     12.13       8.02       0.00     168.04          T        1.35
+[STDOUT WMQuality] 01     45.97       0.00      10.60     131.70          T        0.85
+[STDOUT WMQuality] 02      0.00       1.05       0.00     184.93          T        1.89
+[STDOUT WMQuality] 03      9.98      20.59      16.58     141.87          T        0.75
+[STDOUT WMQuality] 04     10.53       0.00       5.49     172.45          T        1.44
+[STDOUT WMQuality] 05     53.14      18.75       0.00     120.50          T        0.68
+[STDOUT WMQuality] 06      1.00       0.00       6.00     178.82          T        1.69
+[STDOUT WMQuality] 07      0.00      25.47      27.53     139.65          T        0.82
+[STDOUT WMQuality] 08      0.00      38.97      11.97     141.73          T        0.90
+[STDOUT WMQuality] 09     41.63       4.05       0.00     140.96          T        1.03
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs1/Logo2 is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file fg_3
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo fg_3
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG1_2/Logo
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 01      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 02      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 03      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 04      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 05      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 06      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 07      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 08      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 09      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG1_2/Logo is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file bg_3
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo bg_3
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG1_2/Logo
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 01      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 02      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 03      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 04      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 05      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 06      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 07      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 08      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 09      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG1_2/Logo is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file fg_4
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo fg_4
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs2/Logo1
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00     27.20     179.10     123.23     218.43          B        0.22
+[STDOUT WMQuality] 01    203.48      74.11     229.65      73.47          N        0.16
+[STDOUT WMQuality] 02     25.55     176.27     247.54      46.75          S        0.40
+[STDOUT WMQuality] 03      6.82     271.33       0.01     240.23          C        0.89
+[STDOUT WMQuality] 04     56.29       6.46     390.61      48.33          G        0.93
+[STDOUT WMQuality] 05     34.05     395.65      12.67      45.17          C        1.01
+[STDOUT WMQuality] 06      3.98     419.32       0.01      11.79          C        1.72
+[STDOUT WMQuality] 07    158.00     278.31      21.24      16.52          C        0.62
+[STDOUT WMQuality] 08      0.96     288.52       1.00     227.29          C        0.95
+[STDOUT WMQuality] 09      0.97     423.33       0.97       6.53          C        1.81
+[STDOUT WMQuality] 10     13.69      38.12      15.08     406.65          T        1.19
+[STDOUT WMQuality] 11    144.80      47.93     286.69      68.80          G        0.30
+[STDOUT WMQuality] 12     15.45     151.20     296.41      11.47          G        0.73
+[STDOUT WMQuality] 13     29.42     133.06       0.97     364.64          T        0.86
+[STDOUT WMQuality] 14      9.76       0.01     420.23       0.01          G        1.81
+[STDOUT WMQuality] 15     33.43      20.79     381.23      32.19          G        1.00
+[STDOUT WMQuality] 16     61.36     287.26      35.60     169.82          C        0.36
+[STDOUT WMQuality] 17    121.70     287.28     105.71     112.37          N        0.13
+[STDOUT WMQuality] 18    272.03      87.23     210.02      69.52          R        0.19
+[STDOUT WMQuality] 19    128.41     212.43     144.38     163.94          N        0.01
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs2/Logo1 is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file bg_4
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo bg_4
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs2/Logo1
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00     27.20     179.10     123.23     218.43          B        0.22
+[STDOUT WMQuality] 01    203.48      74.11     229.65      73.47          N        0.16
+[STDOUT WMQuality] 02     25.55     176.27     247.54      46.75          S        0.40
+[STDOUT WMQuality] 03      6.82     271.33       0.01     240.23          C        0.89
+[STDOUT WMQuality] 04     56.29       6.46     390.61      48.33          G        0.93
+[STDOUT WMQuality] 05     34.05     395.65      12.67      45.17          C        1.01
+[STDOUT WMQuality] 06      3.98     419.32       0.01      11.79          C        1.72
+[STDOUT WMQuality] 07    158.00     278.31      21.24      16.52          C        0.62
+[STDOUT WMQuality] 08      0.96     288.52       1.00     227.29          C        0.95
+[STDOUT WMQuality] 09      0.97     423.33       0.97       6.53          C        1.81
+[STDOUT WMQuality] 10     13.69      38.12      15.08     406.65          T        1.19
+[STDOUT WMQuality] 11    144.80      47.93     286.69      68.80          G        0.30
+[STDOUT WMQuality] 12     15.45     151.20     296.41      11.47          G        0.73
+[STDOUT WMQuality] 13     29.42     133.06       0.97     364.64          T        0.86
+[STDOUT WMQuality] 14      9.76       0.01     420.23       0.01          G        1.81
+[STDOUT WMQuality] 15     33.43      20.79     381.23      32.19          G        1.00
+[STDOUT WMQuality] 16     61.36     287.26      35.60     169.82          C        0.36
+[STDOUT WMQuality] 17    121.70     287.28     105.71     112.37          N        0.13
+[STDOUT WMQuality] 18    272.03      87.23     210.02      69.52          R        0.19
+[STDOUT WMQuality] 19    128.41     212.43     144.38     163.94          N        0.01
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs2/Logo1 is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file fg_5
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo fg_5
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG2_1/Logo
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00     10.19     123.98     117.35     127.50          B        0.25
+[STDOUT WMQuality] 01    137.57      50.42     149.61      41.43          R        0.17
+[STDOUT WMQuality] 02     13.16     127.31     220.73      17.83          G        0.61
+[STDOUT WMQuality] 03      5.17     234.69       0.00     139.16          C        0.92
+[STDOUT WMQuality] 04     21.86       1.00     324.03      32.13          G        1.21
+[STDOUT WMQuality] 05     15.26     337.25       5.69      20.82          C        1.31
+[STDOUT WMQuality] 06      1.48     375.01       0.00       2.53          C        1.87
+[STDOUT WMQuality] 07    114.80     239.21      13.19      11.83          C        0.70
+[STDOUT WMQuality] 08      2.08     241.64       0.00     135.30          C        0.98
+[STDOUT WMQuality] 09      0.00     378.05       0.00       0.97          C        1.94
+[STDOUT WMQuality] 10      7.22      16.15      11.07     344.58          T        1.39
+[STDOUT WMQuality] 11     85.15      29.66     233.67      30.54          G        0.47
+[STDOUT WMQuality] 12      5.17     128.03     237.37       8.46          G        0.81
+[STDOUT WMQuality] 13     34.96      71.54       1.39     271.13          T        0.82
+[STDOUT WMQuality] 14      0.00       0.00     379.02       0.00          G        1.96
+[STDOUT WMQuality] 15      4.14      14.17     343.02      17.70          G        1.38
+[STDOUT WMQuality] 16     40.83     224.37      26.05      87.78          C        0.42
+[STDOUT WMQuality] 17     65.36     197.02      54.66      61.99          C        0.21
+[STDOUT WMQuality] 18    160.41      63.74     119.61      35.26          V        0.17
+[STDOUT WMQuality] 19     73.79     133.12      92.02      80.09          N        0.01
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG2_1/Logo is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file bg_5
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo bg_5
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG2_1/Logo
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00     10.19     123.98     117.35     127.50          B        0.25
+[STDOUT WMQuality] 01    137.57      50.42     149.61      41.43          R        0.17
+[STDOUT WMQuality] 02     13.16     127.31     220.73      17.83          G        0.61
+[STDOUT WMQuality] 03      5.17     234.69       0.00     139.16          C        0.92
+[STDOUT WMQuality] 04     21.86       1.00     324.03      32.13          G        1.21
+[STDOUT WMQuality] 05     15.26     337.25       5.69      20.82          C        1.31
+[STDOUT WMQuality] 06      1.48     375.01       0.00       2.53          C        1.87
+[STDOUT WMQuality] 07    114.80     239.21      13.19      11.83          C        0.70
+[STDOUT WMQuality] 08      2.08     241.64       0.00     135.30          C        0.98
+[STDOUT WMQuality] 09      0.00     378.05       0.00       0.97          C        1.94
+[STDOUT WMQuality] 10      7.22      16.15      11.07     344.58          T        1.39
+[STDOUT WMQuality] 11     85.15      29.66     233.67      30.54          G        0.47
+[STDOUT WMQuality] 12      5.17     128.03     237.37       8.46          G        0.81
+[STDOUT WMQuality] 13     34.96      71.54       1.39     271.13          T        0.82
+[STDOUT WMQuality] 14      0.00       0.00     379.02       0.00          G        1.96
+[STDOUT WMQuality] 15      4.14      14.17     343.02      17.70          G        1.38
+[STDOUT WMQuality] 16     40.83     224.37      26.05      87.78          C        0.42
+[STDOUT WMQuality] 17     65.36     197.02      54.66      61.99          C        0.21
+[STDOUT WMQuality] 18    160.41      63.74     119.61      35.26          V        0.17
+[STDOUT WMQuality] 19     73.79     133.12      92.02      80.09          N        0.01
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG2_1/Logo is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file fg_6
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo fg_6
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs2/Logo2
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00     17.00      10.00       0.00      24.00          W        0.33
+[STDOUT WMQuality] 01     19.00       2.00       4.00      26.00          W        0.35
+[STDOUT WMQuality] 02      2.00       1.00       0.00      48.00          T        1.46
+[STDOUT WMQuality] 03      0.00       0.00      12.00      39.00          T        1.04
+[STDOUT WMQuality] 04     12.00       4.00       6.00      29.00          T        0.24
+[STDOUT WMQuality] 05     14.00       8.00       0.00      29.00          T        0.44
+[STDOUT WMQuality] 06      0.00       2.00       7.00      42.00          T        1.03
+[STDOUT WMQuality] 07      6.00       1.00       0.00      44.00          T        1.18
+[STDOUT WMQuality] 08      4.00       0.00       0.00      47.00          T        1.43
+[STDOUT WMQuality] 09     13.00       4.00       2.00      32.00          T        0.45
+[STDOUT WMQuality] 10      1.00       0.00       1.00      49.00          T        1.56
+[STDOUT WMQuality] 11     11.00       4.00       3.00      33.00          T        0.43
+[STDOUT WMQuality] 12      2.00       0.00       2.00      47.00          T        1.36
+[STDOUT WMQuality] 13      7.00       1.00       0.00      43.00          T        1.12
+[STDOUT WMQuality] 14      0.00       0.00       1.00      50.00          T        1.69
+[STDOUT WMQuality] 15      1.00       1.00       0.00      49.00          T        1.56
+[STDOUT WMQuality] 16      2.00       2.00       0.00      47.00          T        1.36
+[STDOUT WMQuality] 17     21.00       0.00       0.00      30.00          T        0.85
+[STDOUT WMQuality] 18     10.00       3.00       0.00      38.00          T        0.82
+[STDOUT WMQuality] 19     11.00       2.00       1.00      37.00          T        0.74
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs2/Logo2 is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file bg_6
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo bg_6
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs2/Logo2
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00     17.00      10.00       0.00      24.00          W        0.33
+[STDOUT WMQuality] 01     19.00       2.00       4.00      26.00          W        0.35
+[STDOUT WMQuality] 02      2.00       1.00       0.00      48.00          T        1.46
+[STDOUT WMQuality] 03      0.00       0.00      12.00      39.00          T        1.04
+[STDOUT WMQuality] 04     12.00       4.00       6.00      29.00          T        0.24
+[STDOUT WMQuality] 05     14.00       8.00       0.00      29.00          T        0.44
+[STDOUT WMQuality] 06      0.00       2.00       7.00      42.00          T        1.03
+[STDOUT WMQuality] 07      6.00       1.00       0.00      44.00          T        1.18
+[STDOUT WMQuality] 08      4.00       0.00       0.00      47.00          T        1.43
+[STDOUT WMQuality] 09     13.00       4.00       2.00      32.00          T        0.45
+[STDOUT WMQuality] 10      1.00       0.00       1.00      49.00          T        1.56
+[STDOUT WMQuality] 11     11.00       4.00       3.00      33.00          T        0.43
+[STDOUT WMQuality] 12      2.00       0.00       2.00      47.00          T        1.36
+[STDOUT WMQuality] 13      7.00       1.00       0.00      43.00          T        1.12
+[STDOUT WMQuality] 14      0.00       0.00       1.00      50.00          T        1.69
+[STDOUT WMQuality] 15      1.00       1.00       0.00      49.00          T        1.56
+[STDOUT WMQuality] 16      2.00       2.00       0.00      47.00          T        1.36
+[STDOUT WMQuality] 17     21.00       0.00       0.00      30.00          T        0.85
+[STDOUT WMQuality] 18     10.00       3.00       0.00      38.00          T        0.82
+[STDOUT WMQuality] 19     11.00       2.00       1.00      37.00          T        0.74
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs2/Logo2 is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file fg_7
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo fg_7
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG2_2/Logo
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00      0.51       0.00       0.66      15.43          T        1.19
+[STDOUT WMQuality] 01      0.00       8.64       0.00       7.96          C        0.61
+[STDOUT WMQuality] 02      2.41       0.74       0.00      13.44          T        0.78
+[STDOUT WMQuality] 03      0.99       3.67       2.86       9.08          T        0.03
+[STDOUT WMQuality] 04      2.30       7.89       4.79       1.60          S       -0.08
+[STDOUT WMQuality] 05      0.00      15.65       0.00       0.94          C        1.29
+[STDOUT WMQuality] 06      0.98       1.30       0.95      13.37          T        0.64
+[STDOUT WMQuality] 07      0.00       4.21       1.60      10.78          T        0.40
+[STDOUT WMQuality] 08      0.00       0.00       0.95      15.64          T        1.29
+[STDOUT WMQuality] 09      1.53       3.73       0.00      11.34          T        0.46
+[STDOUT WMQuality] 10      0.00      10.10       0.00       6.49          C        0.64
+[STDOUT WMQuality] 11      0.00       5.46       0.92      10.21          T        0.44
+[STDOUT WMQuality] 12      0.00      11.45       2.29       2.85          C        0.44
+[STDOUT WMQuality] 13      0.00      11.45       0.66       4.49          C        0.57
+[STDOUT WMQuality] 14      0.87       9.48       0.00       6.24          C        0.42
+[STDOUT WMQuality] 15      0.00       0.95       0.00      15.64          T        1.29
+[STDOUT WMQuality] 16      1.98       9.42       0.00       5.19          C        0.28
+[STDOUT WMQuality] 17      1.61       8.96       0.00       6.02          C        0.30
+[STDOUT WMQuality] 18      0.00       4.93       0.00      11.66          T        0.73
+[STDOUT WMQuality] 19      4.58       9.07       1.20       1.74          C        0.06
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG2_2/Logo is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file bg_7
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo bg_7
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG2_2/Logo
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00      0.51       0.00       0.66      15.43          T        1.19
+[STDOUT WMQuality] 01      0.00       8.64       0.00       7.96          C        0.61
+[STDOUT WMQuality] 02      2.41       0.74       0.00      13.44          T        0.78
+[STDOUT WMQuality] 03      0.99       3.67       2.86       9.08          T        0.03
+[STDOUT WMQuality] 04      2.30       7.89       4.79       1.60          S       -0.08
+[STDOUT WMQuality] 05      0.00      15.65       0.00       0.94          C        1.29
+[STDOUT WMQuality] 06      0.98       1.30       0.95      13.37          T        0.64
+[STDOUT WMQuality] 07      0.00       4.21       1.60      10.78          T        0.40
+[STDOUT WMQuality] 08      0.00       0.00       0.95      15.64          T        1.29
+[STDOUT WMQuality] 09      1.53       3.73       0.00      11.34          T        0.46
+[STDOUT WMQuality] 10      0.00      10.10       0.00       6.49          C        0.64
+[STDOUT WMQuality] 11      0.00       5.46       0.92      10.21          T        0.44
+[STDOUT WMQuality] 12      0.00      11.45       2.29       2.85          C        0.44
+[STDOUT WMQuality] 13      0.00      11.45       0.66       4.49          C        0.57
+[STDOUT WMQuality] 14      0.87       9.48       0.00       6.24          C        0.42
+[STDOUT WMQuality] 15      0.00       0.95       0.00      15.64          T        1.29
+[STDOUT WMQuality] 16      1.98       9.42       0.00       5.19          C        0.28
+[STDOUT WMQuality] 17      1.61       8.96       0.00       6.02          C        0.30
+[STDOUT WMQuality] 18      0.00       4.93       0.00      11.66          T        0.73
+[STDOUT WMQuality] 19      4.58       9.07       1.20       1.74          C        0.06
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG2_2/Logo is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file fg_8
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo fg_8
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs3/Logo1
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00     33.00       1.00      20.00      47.00          W        0.34
+[STDOUT WMQuality] 01     27.00       0.00       0.00      74.00          T        1.06
+[STDOUT WMQuality] 02     25.00       0.00       0.00      76.00          T        1.09
+[STDOUT WMQuality] 03     30.00      20.00       5.00      46.00          W        0.19
+[STDOUT WMQuality] 04      0.00       7.00       8.00      86.00          T        1.15
+[STDOUT WMQuality] 05     11.00      37.00      40.00      13.00          S        0.12
+[STDOUT WMQuality] 06     21.00       0.00       0.00      80.00          T        1.16
+[STDOUT WMQuality] 07     51.00       0.00       0.00      50.00          W        0.90
+[STDOUT WMQuality] 08      0.00       0.00      19.00      82.00          T        1.20
+[STDOUT WMQuality] 09     12.00       0.00      13.00      76.00          T        0.85
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs3/Logo1 is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file bg_8
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo bg_8
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs3/Logo1
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00     33.00       1.00      20.00      47.00          W        0.34
+[STDOUT WMQuality] 01     27.00       0.00       0.00      74.00          T        1.06
+[STDOUT WMQuality] 02     25.00       0.00       0.00      76.00          T        1.09
+[STDOUT WMQuality] 03     30.00      20.00       5.00      46.00          W        0.19
+[STDOUT WMQuality] 04      0.00       7.00       8.00      86.00          T        1.15
+[STDOUT WMQuality] 05     11.00      37.00      40.00      13.00          S        0.12
+[STDOUT WMQuality] 06     21.00       0.00       0.00      80.00          T        1.16
+[STDOUT WMQuality] 07     51.00       0.00       0.00      50.00          W        0.90
+[STDOUT WMQuality] 08      0.00       0.00      19.00      82.00          T        1.20
+[STDOUT WMQuality] 09     12.00       0.00      13.00      76.00          T        0.85
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs3/Logo1 is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file fg_9
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo fg_9
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG3_1/Logo
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00      0.00     126.34      81.31      46.58          S        0.48
+[STDOUT WMQuality] 01     72.21       0.00       0.00     182.01          T        1.09
+[STDOUT WMQuality] 02      0.00       0.00       0.00     254.22          T        1.95
+[STDOUT WMQuality] 03      0.00     124.45      47.72      82.06          Y        0.47
+[STDOUT WMQuality] 04      0.00     111.71       0.00     142.51          T        0.96
+[STDOUT WMQuality] 05      0.00     180.32      73.90       0.00          C        1.08
+[STDOUT WMQuality] 06      0.00     169.58       0.00      84.64          C        1.03
+[STDOUT WMQuality] 07     56.15      73.33       0.00     124.74          Y        0.45
+[STDOUT WMQuality] 08      0.00       0.00     132.32     121.90          G        0.95
+[STDOUT WMQuality] 09      0.00     103.84      96.93      53.45          S        0.42
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG3_1/Logo is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file bg_9
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo bg_9
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG3_1/Logo
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00      0.00     126.34      81.31      46.58          S        0.48
+[STDOUT WMQuality] 01     72.21       0.00       0.00     182.01          T        1.09
+[STDOUT WMQuality] 02      0.00       0.00       0.00     254.22          T        1.95
+[STDOUT WMQuality] 03      0.00     124.45      47.72      82.06          Y        0.47
+[STDOUT WMQuality] 04      0.00     111.71       0.00     142.51          T        0.96
+[STDOUT WMQuality] 05      0.00     180.32      73.90       0.00          C        1.08
+[STDOUT WMQuality] 06      0.00     169.58       0.00      84.64          C        1.03
+[STDOUT WMQuality] 07     56.15      73.33       0.00     124.74          Y        0.45
+[STDOUT WMQuality] 08      0.00       0.00     132.32     121.90          G        0.95
+[STDOUT WMQuality] 09      0.00     103.84      96.93      53.45          S        0.42
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG3_1/Logo is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file fg_10
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo fg_10
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs3/Logo2
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00    100.00      27.00      92.00      16.00          R        0.28
+[STDOUT WMQuality] 01     11.00       0.00     215.00       9.00          G        1.45
+[STDOUT WMQuality] 02      0.00     210.00       0.00      25.00          C        1.46
+[STDOUT WMQuality] 03      0.00       0.00     235.00       0.00          G        1.95
+[STDOUT WMQuality] 04     11.00     211.00       0.00      13.00          C        1.37
+[STDOUT WMQuality] 05      0.00     229.00       6.00       0.00          C        1.78
+[STDOUT WMQuality] 06     78.00     146.00      11.00       0.00          C        0.79
+[STDOUT WMQuality] 07      0.00     164.00       0.00      71.00          C        1.06
+[STDOUT WMQuality] 08      0.00     235.00       0.00       0.00          C        1.95
+[STDOUT WMQuality] 09      0.00       0.00      12.00     223.00          T        1.66
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs3/Logo2 is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file bg_10
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo bg_10
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs3/Logo2
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00    100.00      27.00      92.00      16.00          R        0.28
+[STDOUT WMQuality] 01     11.00       0.00     215.00       9.00          G        1.45
+[STDOUT WMQuality] 02      0.00     210.00       0.00      25.00          C        1.46
+[STDOUT WMQuality] 03      0.00       0.00     235.00       0.00          G        1.95
+[STDOUT WMQuality] 04     11.00     211.00       0.00      13.00          C        1.37
+[STDOUT WMQuality] 05      0.00     229.00       6.00       0.00          C        1.78
+[STDOUT WMQuality] 06     78.00     146.00      11.00       0.00          C        0.79
+[STDOUT WMQuality] 07      0.00     164.00       0.00      71.00          C        1.06
+[STDOUT WMQuality] 08      0.00     235.00       0.00       0.00          C        1.95
+[STDOUT WMQuality] 09      0.00       0.00      12.00     223.00          T        1.66
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs3/Logo2 is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file fg_11
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo fg_11
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs1/Logo1
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00    151.30       0.00     167.19       0.00          G        0.96
+[STDOUT WMQuality] 01     50.82      39.49     125.94      79.11          N        0.10
+[STDOUT WMQuality] 02    114.91       0.97     166.66       1.22          G        0.92
+[STDOUT WMQuality] 03    131.88       0.00     147.06      19.04          R        0.68
+[STDOUT WMQuality] 04     11.73     200.27       4.18      81.75          C        0.79
+[STDOUT WMQuality] 05    148.16      14.81      64.88      62.36          A        0.29
+[STDOUT WMQuality] 06     91.27       0.97     191.00       2.88          G        0.95
+[STDOUT WMQuality] 07      0.00     197.49       2.92      96.27          C        0.98
+[STDOUT WMQuality] 08    210.28       1.94      84.54       6.85          A        0.91
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs1/Logo1 is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file bg_11
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo bg_11
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs1/Logo1
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00    151.30       0.00     167.19       0.00          G        0.96
+[STDOUT WMQuality] 01     50.82      39.49     125.94      79.11          N        0.10
+[STDOUT WMQuality] 02    114.91       0.97     166.66       1.22          G        0.92
+[STDOUT WMQuality] 03    131.88       0.00     147.06      19.04          R        0.68
+[STDOUT WMQuality] 04     11.73     200.27       4.18      81.75          C        0.79
+[STDOUT WMQuality] 05    148.16      14.81      64.88      62.36          A        0.29
+[STDOUT WMQuality] 06     91.27       0.97     191.00       2.88          G        0.95
+[STDOUT WMQuality] 07      0.00     197.49       2.92      96.27          C        0.98
+[STDOUT WMQuality] 08    210.28       1.94      84.54       6.85          A        0.91
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs1/Logo1 is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file fg_12
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo fg_12
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG1_2/Logo
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 01      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 02      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 03      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 04      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 05      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 06      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 07      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 08      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG1_2/Logo is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file bg_12
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo bg_12
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG1_2/Logo
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 01      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 02      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 03      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 04      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 05      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 06      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 07      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] 08      1.00       1.00       1.00       1.00          N       -0.73
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG1_2/Logo is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file fg_13
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo fg_13
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs2/Logo1
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00     25.55     176.27     247.54      46.75          S        0.40
+[STDOUT WMQuality] 01      6.82     271.33       0.01     240.23          C        0.89
+[STDOUT WMQuality] 02     56.29       6.46     390.61      48.33          G        0.93
+[STDOUT WMQuality] 03     34.05     395.65      12.67      45.17          C        1.01
+[STDOUT WMQuality] 04      3.98     419.32       0.01      11.79          C        1.72
+[STDOUT WMQuality] 05    158.00     278.31      21.24      16.52          C        0.62
+[STDOUT WMQuality] 06      0.96     288.52       1.00     227.29          C        0.95
+[STDOUT WMQuality] 07      0.97     423.33       0.97       6.53          C        1.81
+[STDOUT WMQuality] 08     13.69      38.12      15.08     406.65          T        1.19
+[STDOUT WMQuality] 09    144.80      47.93     286.69      68.80          G        0.30
+[STDOUT WMQuality] 10     15.45     151.20     296.41      11.47          G        0.73
+[STDOUT WMQuality] 11     29.42     133.06       0.97     364.64          T        0.86
+[STDOUT WMQuality] 12      9.76       0.01     420.23       0.01          G        1.81
+[STDOUT WMQuality] 13     33.43      20.79     381.23      32.19          G        1.00
+[STDOUT WMQuality] 14     61.36     287.26      35.60     169.82          C        0.36
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs2/Logo1 is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file bg_13
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo bg_13
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs2/Logo1
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00     25.55     176.27     247.54      46.75          S        0.40
+[STDOUT WMQuality] 01      6.82     271.33       0.01     240.23          C        0.89
+[STDOUT WMQuality] 02     56.29       6.46     390.61      48.33          G        0.93
+[STDOUT WMQuality] 03     34.05     395.65      12.67      45.17          C        1.01
+[STDOUT WMQuality] 04      3.98     419.32       0.01      11.79          C        1.72
+[STDOUT WMQuality] 05    158.00     278.31      21.24      16.52          C        0.62
+[STDOUT WMQuality] 06      0.96     288.52       1.00     227.29          C        0.95
+[STDOUT WMQuality] 07      0.97     423.33       0.97       6.53          C        1.81
+[STDOUT WMQuality] 08     13.69      38.12      15.08     406.65          T        1.19
+[STDOUT WMQuality] 09    144.80      47.93     286.69      68.80          G        0.30
+[STDOUT WMQuality] 10     15.45     151.20     296.41      11.47          G        0.73
+[STDOUT WMQuality] 11     29.42     133.06       0.97     364.64          T        0.86
+[STDOUT WMQuality] 12      9.76       0.01     420.23       0.01          G        1.81
+[STDOUT WMQuality] 13     33.43      20.79     381.23      32.19          G        1.00
+[STDOUT WMQuality] 14     61.36     287.26      35.60     169.82          C        0.36
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs2/Logo1 is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file fg_14
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo fg_14
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG2_1/Logo
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00     10.19     123.98     117.35     127.50          B        0.25
+[STDOUT WMQuality] 01    137.57      50.42     149.61      41.43          R        0.17
+[STDOUT WMQuality] 02     13.16     127.31     220.73      17.83          G        0.61
+[STDOUT WMQuality] 03      5.17     234.69       0.00     139.16          C        0.92
+[STDOUT WMQuality] 04     21.86       1.00     324.03      32.13          G        1.21
+[STDOUT WMQuality] 05     15.26     337.25       5.69      20.82          C        1.31
+[STDOUT WMQuality] 06      1.48     375.01       0.00       2.53          C        1.87
+[STDOUT WMQuality] 07    114.80     239.21      13.19      11.83          C        0.70
+[STDOUT WMQuality] 08      2.08     241.64       0.00     135.30          C        0.98
+[STDOUT WMQuality] 09      0.00     378.05       0.00       0.97          C        1.94
+[STDOUT WMQuality] 10      7.22      16.15      11.07     344.58          T        1.39
+[STDOUT WMQuality] 11     85.15      29.66     233.67      30.54          G        0.47
+[STDOUT WMQuality] 12      5.17     128.03     237.37       8.46          G        0.81
+[STDOUT WMQuality] 13     34.96      71.54       1.39     271.13          T        0.82
+[STDOUT WMQuality] 14      0.00       0.00     379.02       0.00          G        1.96
+[STDOUT WMQuality] 15      4.14      14.17     343.02      17.70          G        1.38
+[STDOUT WMQuality] 16     40.83     224.37      26.05      87.78          C        0.42
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG2_1/Logo is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file bg_14
+[STDOUT WMQuality] aligned True
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo bg_14
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.967565 parent hg19_rheMac2_
+[STDOUT WMQuality] node 1 name rheMac2 qval 0.943938 parent hg19_rheMac2_
+[STDOUT WMQuality] node 2 name mm9 qval 0.702855 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 3 name bosTau6 qval 0.829682 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 4 name equCab2 qval 0.897874 parent equCab2_canFam2_
+[STDOUT WMQuality] node 5 name canFam2 qval 0.860386 parent equCab2_canFam2_
+[STDOUT WMQuality] node 6 name monDom5 qval 0.653182 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 7 name hg19_rheMac2_ qval 0.906459 parent mm9_hg19_rheMac2__
+[STDOUT WMQuality] node 8 name equCab2_canFam2_ qval 0.989623 parent bosTau6_equCab2_canFam2__
+[STDOUT WMQuality] node 9 name mm9_hg19_rheMac2__ qval 0.979546 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 10 name bosTau6_equCab2_canFam2__ qval 0.967767 parent mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___
+[STDOUT WMQuality] node 11 name mm9_hg19_rheMac2___bosTau6_equCab2_canFam2___ qval 0.855539 parent monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____
+[STDOUT WMQuality] node 12 name monDom5_mm9_hg19_rheMac2___bosTau6_equCab2_canFam2____ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG2_1/Logo
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00     10.19     123.98     117.35     127.50          B        0.25
+[STDOUT WMQuality] 01    137.57      50.42     149.61      41.43          R        0.17
+[STDOUT WMQuality] 02     13.16     127.31     220.73      17.83          G        0.61
+[STDOUT WMQuality] 03      5.17     234.69       0.00     139.16          C        0.92
+[STDOUT WMQuality] 04     21.86       1.00     324.03      32.13          G        1.21
+[STDOUT WMQuality] 05     15.26     337.25       5.69      20.82          C        1.31
+[STDOUT WMQuality] 06      1.48     375.01       0.00       2.53          C        1.87
+[STDOUT WMQuality] 07    114.80     239.21      13.19      11.83          C        0.70
+[STDOUT WMQuality] 08      2.08     241.64       0.00     135.30          C        0.98
+[STDOUT WMQuality] 09      0.00     378.05       0.00       0.97          C        1.94
+[STDOUT WMQuality] 10      7.22      16.15      11.07     344.58          T        1.39
+[STDOUT WMQuality] 11     85.15      29.66     233.67      30.54          G        0.47
+[STDOUT WMQuality] 12      5.17     128.03     237.37       8.46          G        0.81
+[STDOUT WMQuality] 13     34.96      71.54       1.39     271.13          T        0.82
+[STDOUT WMQuality] 14      0.00       0.00     379.02       0.00          G        1.96
+[STDOUT WMQuality] 15      4.14      14.17     343.02      17.70          G        1.38
+[STDOUT WMQuality] 16     40.83     224.37      26.05      87.78          C        0.42
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG2_1/Logo is 0.000050 0.000050
+[STDOUT WMQuality] UFE wm prior 0.009950 0.009950
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is ((((hg19:0.032973,rheMac2:0.057695):0.09821,mm9:0.352605):0.020666,(bosTau6:0.186713,(equCab2:0.107726,canFam2:0.150374):0.010431):0.032764):0.156024,monDom5:0.425899);
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] create ROC plot
+Component WMQuality finished with success; READY queue is empty.
+Done. No errors occurred.
+Log closed on 2013-01-14 12:54:08; user bergerse00

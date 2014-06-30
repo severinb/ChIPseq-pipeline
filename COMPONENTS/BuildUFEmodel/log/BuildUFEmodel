@@ -1,0 +1,10 @@
+Executing BuildUFEmodel (BuildUFEmodel)
+Clearing directory /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLine140113/COMPONENTS/BuildUFEmodel/execute/BuildUFEmodel
+[STDOUT BuildUFEmodel] Base frequencies:  {'A': 0.20069065502946939, 'C': 0.29971368414917565, 'T': 0.20492346697168168, 'G': 0.29467219384967325, 'N': 0.0}
+[STDOUT BuildUFEmodel] 
+[STDOUT BuildUFEmodel] Initialize EvoModel ... done.
+[STDOUT BuildUFEmodel] 0
+[STDOUT BuildUFEmodel] EvoModel has just been freed.
+[STDOUT BuildUFEmodel] 
+Component BuildUFEmodel finished with success; READY queue is empty.
+Log closed on 2013-01-25 00:36:17; user bergerse00

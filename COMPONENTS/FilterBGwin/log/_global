@@ -1,0 +1,15 @@
+Warning: all outports are unconnected: FilterBGwin
+Executing input_infile (INPUT)
+Component input_infile finished with success; READY queue: FilterBGwin 
+Executing FilterBGwin (FilterBGwin)
+[STDOUT FilterBGwin] BGnum:  1
+[STDOUT FilterBGwin] 2013-06-13 20:55:56.903644 starting estimation
+[STDOUT FilterBGwin] 2
+[STDOUT FilterBGwin] 
+[STDOUT FilterBGwin] ./newfilter.py:158: RuntimeWarning: divide by zero encountered in log
+[STDOUT FilterBGwin]   co = get_zco(log(x), y, interm)
+[STDOUT FilterBGwin] 
+[STDOUT FilterBGwin] 870.0
+Component FilterBGwin finished with success; READY queue is empty.
+Done. No errors occurred.
+Log closed on 2013-06-13 20:56:17; user bergerse00

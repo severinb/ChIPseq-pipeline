@@ -1,0 +1,10 @@
+this component runs motevo for all WMs in a given directory (e.g. our WM library) to predict sites on given sequences (peaks).
+Then I try to find out which WMs show enrichment in the peaks:
+     - some MARA thing where a linear combination of TFs tries to explain peaks (Z-scores)
+       - site count matrix (summed peak posteriors of each WM)
+       - Z-score-vector = site-count-matrix * activity_vector (maybe also make this one binary)
+       - linear fit (least squares)...
+     - Each WM that that has at least in one peak a posterior of 0.2 or so.
+
+
+-- I think it's easier to just run motevo (with ComputeLikelihoodM_greedy) to see which WMs in the library contribute. Fit the ones that contribute I can the normally run GetWMStats composite component.

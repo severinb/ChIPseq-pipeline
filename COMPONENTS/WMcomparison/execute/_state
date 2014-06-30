@@ -1,0 +1,3 @@
+input_WM	YES	YES	INPUT OUT in P path=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLine140113/COMPONENTS/WMcomparison/../../../../../../../ENCODE.ChIPseq/GM12878_snyder_stanford/IggmusBG_E2F4-MXI1/OUTPUT/IRF3_FgBg-wmqual/BestWM TS in=1357732914000 
+WMcomparison	YES	YES	WMcomparison IN WM=input_WM:in IN WM_dir=input_WM_dir:in OUT out_file OUT intermediate OUT log_file P gap_penalty=0 P mylogo_path=/import/bc2/home/nimwegen/GROUP/Scripts/weblogo/mylogo P numWMs=5 
+input_WM_dir	YES	YES	INPUT OUT in P path=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLine140113/COMPONENTS/WMcomparison/../../../../../../../WMs/Mammals/CurrentWMs TS in=1355845233000 

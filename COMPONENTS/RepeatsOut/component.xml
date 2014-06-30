@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>RepeatsOut</name>
+    <!--<version>1.0</version>-->
+    <doc>
+    This component takes regions as input and filters out repeat regions.
+    For this it first looks for region intersecting repeat regions by running intersectBed of bedtools.
+    Repeat rgions are the cut out off the regions. 
+    The resulting region fragments are then returned as new regions if they are longer than 50 bp. 
+    </doc>
+    <launcher type="python">
+        <argument name="file" value="RepeatsOutNew.py" />
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <inputs>
+        <input name="peaks" type="BinaryFile">
+            <doc>Output of RefinePeaks (refined_peaks).</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="out_file" type="BinaryFile">
+            <doc>Refined peaks (same file as from RefinePeaks component) but without repeats.</doc>
+        </output>
+        <output name="log_file" type="BinaryFile">
+            <doc></doc>
+        </output>
+        <output name="intermediate" type="BinaryFolder">
+            <doc>Directory for intermediate files.</doc>
+        </output>
+    </outputs>
+    <parameters>
+        <parameter name="repeatPath" type="string" default="">
+            <doc>Path to the directory containing repeat files.</doc>
+        </parameter>
+        <parameter name="BedToolsPath" type="string" default="">
+            <doc>Path to the directory containing the bedtools executable.</doc>
+        </parameter>
+    </parameters>
+ </component>

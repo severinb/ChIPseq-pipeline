@@ -1,0 +1,5 @@
+Also take peakstats from selectpeaks as input. Then normalize heights and plot a scatter of height before versus after normalization. Maybe this gives a good picture of whats happening.
+
+Now I'm normalizing height, sort by this new height and proceed with top height peaks. But I then give selectpeaksMM peakstats to gettrueregions, which somehow doesn't make sense.
+
+Test whether normalize is helping at all. how? maybe run everything once with normed and once with non normed peaks and see what happens. Look which height correlates better with peak posterior. Maybe I can get rid of NormalizeHeight completely...

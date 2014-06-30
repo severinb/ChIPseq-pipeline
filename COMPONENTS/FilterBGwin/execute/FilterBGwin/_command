@@ -1,0 +1,12 @@
+metadata.instanceName=FilterBGwin
+metadata.Anduril=Engine 1.2.5
+input.infile=/import/bc2/home/nimwegen/kelley/chips3/Dref1/OUTPUT/Ara_FgBg-binreads/out_file
+output._errors=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/FilterBGwin/execute/FilterBGwin/_errors
+output._log=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/FilterBGwin/execute/FilterBGwin/_log
+output._tempdir=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/FilterBGwin/execute/FilterBGwin/_tempdir
+output.intermediate=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/FilterBGwin/execute/FilterBGwin/intermediate
+output.log_file=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/FilterBGwin/execute/FilterBGwin/log_file
+output.outfile=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/FilterBGwin/execute/FilterBGwin/outfile
+output.plotfile=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/FilterBGwin/execute/FilterBGwin/plotfile.pdf
+parameter.bg_cutoff=-99
+parameter.perlPATH=/import/bc2/soft/app/perl/5.10.1/Linux/bin/perl

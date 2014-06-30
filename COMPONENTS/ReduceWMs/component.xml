@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>ReduceWMs</name>
+    <!--<version>1.0</version>-->
+    <doc>
+      This component tries to narrow down the candidate WM set (from phylogibbs, from motevo refinement, given WMs).
+      It sorts WMs by a given score (AUC if you give log_file of WMQuality component or likelihood of sequences if you given log_file of ComputeLikelihood component).
+      Then it goes down the list, keeping just WMs that do not look very similar.
+      Similarity of two WMs is defined by the convolution at their optimal relative position. Similarity score is computed to a distance.
+      From WMs that have smaller distance to each other than given distance_cutoff just the one WM with highest AUC or likelihood score resp. is given out. 
+      The purpose of this is to have less candidate WMs to do the downstream analysis.
+    </doc>
+    <launcher type="python">
+        <argument name="file" value="ReduceWMs.py" />
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <inputs>
+        <input name="infile" type="BinaryFile">
+            <doc>File containing scores for all candidate WMs. It's either the log_file of WMQuality or ComputeLikelihood</doc>
+        </input>
+        <input name="keepWM" type="BinaryFile" optional="true">
+            <doc>One WM that should be included in the out port WMdir in any case. This WM should also be in infile, though. Otherwise problems will arise later.</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="WMdir" type="BinaryFolder">
+            <doc>Directory containing the final candidate WMs.</doc>
+        </output>
+        <output name="log_file" type="BinaryFile">
+            <doc>Contains the final candidate WMs (original path and new name).</doc>
+        </output>
+    </outputs>
+    <parameters>
+        <parameter name="distance_cutoff" type="float" default="0.1">
+            <doc>Distance is defined as d = 1 - (2*S_ij)/(S_ii+S_jj), where S_ij is similarity score between WM_i and WM_j, S_ii and S_jj are similarity scores from a WM to itself.</doc>
+        </parameter>
+        <parameter name="score_cutoff" type="float" default="0.0">
+            <doc>WMs with lower score (usually log-likelihood, or AUC) than this are not given out.</doc>
+        </parameter>
+    </parameters>
+</component>

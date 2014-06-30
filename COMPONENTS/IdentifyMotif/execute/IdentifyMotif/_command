@@ -1,0 +1,9 @@
+metadata.instanceName=IdentifyMotif
+metadata.Anduril=Engine 1.2.5
+input.WM=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/IdentifyMotif/../../../../../../../WMs/Mammals/CurrentWMs/SREBF1,2.p2
+input.WMlibrary=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/IdentifyMotif/../../../../../../../WMs/Mammals/CurrentWMs
+output._errors=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/IdentifyMotif/execute/IdentifyMotif/_errors
+output._log=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/IdentifyMotif/execute/IdentifyMotif/_log
+output._tempdir=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/IdentifyMotif/execute/IdentifyMotif/_tempdir
+output.top_motifs=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/IdentifyMotif/execute/IdentifyMotif/top_motifs
+parameter.ntop=10

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>transform</name>
+    <version>1.0</version>
+    <doc>
+    Belongs to FMI toolbox. It calls filterAdaptors.pl from the /soft/ directory
+    This component removes adaptor sequence from input .fasta reads.
+    It also produces a list of top tags before adaptor removal (one can see there whether the reads contain an adaptor or not).
+    </doc>
+    <!--<author email="piotr@unibas.ch">Piotr</author>-->
+    <launcher type="python">
+        <argument name="file" value="transform_anduril.py" />
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <inputs>
+        <input name="in_file" type = "BinaryFile">
+            <doc>Input fasta file.</doc>
+        </input>
+        <input name="adaptor3automatic" type = "BinaryFile" optional="true">
+            <doc>File from adaptorDecision component. Contains the adaptor.</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="out_file" type="BinaryFile">
+            <doc>Fasta file with adaptor removed unique reads.</doc>
+        </output>
+        <output name="transform_log" type="BinaryFile">
+        </output>
+    </outputs>
+    <parameters>
+            <parameter name="adaptor3" type="string" default="">
+                <doc>adaptor3 for adaptor removal.</doc>
+            </parameter>
+            <parameter name="FMIpath" type="string" default="">
+                <doc>Path to FMI pipeline directory to find FMI tools.</doc>
+            </parameter>
+            <parameter name="perlPATH" type="string" default="perl">
+                <doc>Path to right perl for execution.</doc>
+            </parameter>
+            <parameter name="sortTMPDIR" type="string" default="">
+                <doc>Tmp directory for sorting.</doc>
+            </parameter>
+    </parameters>
+</component>

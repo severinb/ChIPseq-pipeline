@@ -1,0 +1,13 @@
+metadata.instanceName=CreateLogo
+metadata.Anduril=Engine 1.2.5
+input.WM=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/../../../../../../../ENCODE.ChIPseq/GM12878_myers_hudsonAlpha/BG_1_2_second/OUTPUT/EBF_FgBg-reducewms/WMdir/WM_0
+input.auclog=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/../../../../../../../ENCODE.ChIPseq/GM12878_myers_hudsonAlpha/BG_1_2_second/OUTPUT/EBF_FgBg-wmqual/log_file
+input.llog=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/../../../../../../../ENCODE.ChIPseq/GM12878_myers_hudsonAlpha/BG_1_2_second/OUTPUT/EBF_FgBg-complikeli/log_file
+input.wmlog=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/../../../../../../../ENCODE.ChIPseq/GM12878_myers_hudsonAlpha/BG_1_2_second/OUTPUT/EBF_FgBg-reducewms/log_file
+output.Logo=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo.pdf
+output._errors=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/_errors
+output._log=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/_log
+output._tempdir=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/_tempdir
+output.log_file=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/log_file
+output.sens_spec=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/sens_spec.pdf
+parameter.mylogo_path=/import/bc2/home/nimwegen/GROUP/Scripts/weblogo/mylogo

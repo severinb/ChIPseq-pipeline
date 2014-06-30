@@ -1,0 +1,2 @@
+BuildUFEmodel	YES	YES	BuildUFEmodel IN Sequences=input_Sequences:in OUT UFEmodel OUT BaseFrequencies P genome=hg19 P motevoUFE_path=../../../MotEvo_v1.0/source/runUFE 
+input_Sequences	YES	YES	INPUT OUT in P path=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLine140113/COMPONENTS/BuildUFEmodel/../../TESTRUN/CTCF/OUTPUT/CTCF_FgBg-getseqs/Sequences TS in=1358273021000 

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>WMcomparison</name>
+    <!--<version>1.0</version>-->
+    <doc>
+    This component compares a WM with another set WM.
+    It uses a smith waterman like algorithm and sum of squared distances of WM columns as similarity measurement.
+    It also compares to the complement of WMs.
+    </doc>
+    <launcher type="python">
+        <argument name="file" value="WMcomparison.py" />
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <inputs>
+        <input name="WM" type="BinaryFile">
+            <doc>WM that should be compared to WM_dir WMs.</doc>
+        </input>
+        <input name="WM_dir" type="BinaryFolder">
+            <doc>Directory of WMs to compare with.</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="out_file" type="BinaryFile">
+            <doc>File that contains alignments of all WMs from WM_dir to WM with alignment score.</doc>
+        </output>
+        <output name="intermediate" type="BinaryFolder">
+            <doc>Directory for intermediate files. Might be empty after running this component.</doc>
+        </output>
+        <output name="log_file" type="BinaryFile">
+            <doc>Log file.</doc>
+        </output>
+    </outputs>
+    <parameters>
+        <parameter name="mylogo_path" type="string" default="">
+            <doc>Path to mylogo logo creation script.</doc>
+        </parameter>
+        <parameter name="numWMs" type="int" default="5">
+            <doc>Number of top aligned matrices that should be given out. A logo is created for them.</doc>
+        </parameter>
+        <parameter name="gap_penalty" type="float" default="0.4">
+            <doc>A non affine gap penalisation is used. This value can be between 0 (high penalty) and 2 (low penalty).</doc>
+        </parameter>
+    </parameters>
+ </component>

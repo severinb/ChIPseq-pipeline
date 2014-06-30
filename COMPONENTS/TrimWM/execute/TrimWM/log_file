@@ -1,0 +1,6 @@
+Weight matrix trimming done with column information content cut-off of 0.26:
+Trimmed WMs are stored here: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLine140113/COMPONENTS/TrimWM/execute/TrimWM/outdir
+	/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs1/WeightMatrix1 was trimmed to WM_0 0 columns from left and 1 columns from right
+	/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG1_2/refWM was trimmed to WM_3 0 columns from left and 1 columns from right
+	/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs2/WeightMatrix1 was trimmed to WM_4 2 columns from left and 3 columns from right
+	/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-runmotevoPG2_1/refWM was trimmed to WM_5 0 columns from left and 3 columns from right

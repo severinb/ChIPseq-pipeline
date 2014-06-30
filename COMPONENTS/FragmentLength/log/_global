@@ -1,0 +1,18 @@
+Warning: all outports are unconnected: FragmentLength
+Executing input_in_dir (INPUT)
+Component input_in_dir finished with success; READY queue: FragmentLength 
+Executing FragmentLength (FragmentLength)
+Clearing directory /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/FragmentLength/execute/FragmentLength
+[STDOUT FragmentLength] Use given fragment length 100.000000
+[STDOUT FragmentLength] 
+[STDOUT FragmentLength] Sort File
+[STDOUT FragmentLength] 
+[STDOUT FragmentLength] 
+[STDOUT FragmentLength] Reading has taken 1 seconds
+[STDOUT FragmentLength] We have 1000000 regions. Sorting...
+[STDOUT FragmentLength] Sorting chr1
+[STDOUT FragmentLength] Sorting has taken 14 seconds
+[STDOUT FragmentLength] 
+Component FragmentLength finished with success; READY queue is empty.
+Done. No errors occurred.
+Log closed on 2013-05-24 16:54:17; user bergerse00

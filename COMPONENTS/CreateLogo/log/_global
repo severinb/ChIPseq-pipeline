@@ -1,0 +1,65 @@
+Warning: all outports are unconnected: CreateLogo
+Executing input_WM (INPUT)
+Executing input_wmlog (INPUT)
+Component input_WM finished with success; READY queue: input_llog input_auclog 
+Component input_wmlog finished with success; READY queue: input_llog input_auclog 
+Executing input_llog (INPUT)
+Executing input_auclog (INPUT)
+Component input_llog finished with success; READY queue is empty.
+Component input_auclog finished with success; READY queue: CreateLogo 
+Executing CreateLogo (CreateLogo)
+Clearing directory /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo
+[STDOUT CreateLogo] 
+[STDOUT CreateLogo] Name "main::desc_r" used only once: possible typo at /import/bc2/home/nimwegen/GROUP/Scripts/weblogo/mylogo line 244.
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo 0.0130483616098015	0.0416558422192112	0.0240197594295606	0.030089539357165
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo -1.89117821799257	0.108813502615738
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo 0.0054129591042768	0.00770719522588704	0.00477684358230189	0.00577421548485167
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo -1.97632050724267	0.0236712133973174
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo 0.00604701115636064	0.0104169647766445	0.00681654897465467	0.00849506535019741
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo -1.96821613035045	0.0317755902578572
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo 0.00413029679824728	0.00312808100596893	0.00380911636583141	0.0029333693862505
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo -1.98599085705201	0.0140008635562981
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo 0.0327122083758774	0.0116865601659438	0.0374448432716561	0.025237578556497
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo -1.89291053023834	0.107081190369974
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo 0.0141889800799265	0.107261046266148	0.183848380966304	0.0619333033867949
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo -1.63276000990914	0.367231710699174
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo 0.0262538483418477	0.093609410041042	0.0186317633393758	1.28047770740245
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo -0.581018991483597	1.41897272912471
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo 0	1.99999172060831	0	0
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo 0	1.99999172060831
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo 0	1.435902209281	0	0.137126009943659
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo -0.426963501351977	1.57302821922466
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo 0	1.82413293878976	0	0.0365186791493812
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo -0.139340102669168	1.86065161793914
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo 0.0752065870724514	0.380883292410247	0.0187172582580532	0.117332878201536
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo -1.40785170466602	0.592140015942288
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo 0.300898779326259	0.0105797264123094	0.0418409476904098	0.250195983104543
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo -1.39647628410647	0.603515436533521
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo 0.0240984706981606	0.00482679236369638	1.82310786866438	0.00327228129362358
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo -0.144686307556774	1.85530541301986
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo 0.241263802387857	0.00717220490845152	0.872521653944259	0.00971145960161259
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo -0.869322599766132	1.13066912084218
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo 0.0195598847635858	0.0033701398181596	1.87551186173528	0
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo -0.101549834291282	1.89844188631703
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo 0.516594661998946	0.0209976146912617	0.21883128483365	0.0268351133952118
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo -1.21673304568924	0.783258674919069
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo 0.0274560149360959	0.0689257987996364	0.060780923241123	0.0189963973928224
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo -1.82383258623863	0.176159134369678
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo 0.0228486102945669	0.0494923479959978	0.0188171042380164	0.057361029584597
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo -1.85147262849513	0.148519092113178
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo 0.00304726439119938	0.00334940078212762	0.00331445397804413	0.00436328887779465
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo -1.98591731257915	0.0140744080291658
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo 0.0152422878588704	0.0351815780799518	0.030881851279857	0.0159215249154474
+[STDERR CreateLogo] cp: cannot stat `/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/../../../../../../../ENCODE.ChIPseq/GM12878_myers_hudsonAlpha/BG_1_2_second/OUTPUT/EBF_FgBg-wmqual/intermediate/WM_18.pdf': No such file or directory
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo -1.90276447847419	0.0972272421341266
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo 0.00639725446627556	0.0108758197367036	0.00998131795967846	0.0071585157666523
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo -1.96557881264733	0.03441290792931
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo 0.00798719675057616	0.0135597912461713	0.0102420185492985	0.0159400635288362
+[STDOUT CreateLogo] parse_tracked_out: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo -1.95226265053343	0.0477290700748821
+[STDOUT CreateLogo] Starting work on /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute/CreateLogo/Logo
+[STDOUT CreateLogo] GPL Ghostscript 9.01: Set UseCIEColor for UseDeviceIndependentColor to work properly.
+[STDOUT CreateLogo] 
+[ERROR] Component CreateLogo: Output file is missing for port sens_spec and execDir /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/CreateLogo/execute
+Component CreateLogo finished with failure; READY queue is empty.
+Done. The following components had errors: CreateLogo 
+Log closed on 2013-04-05 11:29:15; user bergerse00

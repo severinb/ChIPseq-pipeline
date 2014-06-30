@@ -1,0 +1,16 @@
+Warning: all outports are unconnected: MotifCorrelation
+Executing MotifCorrelation (MotifCorrelation)
+Clearing directory /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/MotifCorrelation/execute/MotifCorrelation
+[STDERR MotifCorrelation] /import/bc2/home/nimwegen/GROUP/local/lib/python2.7/site-packages/matplotlib/axes.py:4442: UserWarning: No labeled objects found. Use label='...' kwarg on individual plots.
+[STDERR MotifCorrelation]   warnings.warn("No labeled objects found. "
+[STDOUT MotifCorrelation] [[  2.60173143e-01   5.77405188e-02   4.51476763e-04   1.58997938e-01]
+[STDOUT MotifCorrelation]  [  5.77405188e-02   8.23774209e-01   1.10629846e-03   7.92172561e-02]
+[STDOUT MotifCorrelation]  [  4.51476763e-04   1.10629846e-03   1.01257343e-03   9.98791302e-05]
+[STDOUT MotifCorrelation]  [  1.58997938e-01   7.92172561e-02   9.98791302e-05   1.68094414e-01]]
+[STDOUT MotifCorrelation] [[ 1.          0.12472266  0.02781576  0.7602976 ]
+[STDOUT MotifCorrelation]  [ 0.12472266  1.          0.03830495  0.21288206]
+[STDOUT MotifCorrelation]  [ 0.02781576  0.03830495  1.          0.0076557 ]
+[STDOUT MotifCorrelation]  [ 0.7602976   0.21288206  0.0076557   1.        ]]
+Component MotifCorrelation finished with success; READY queue is empty.
+Done. No errors occurred.
+Log closed on 2013-04-29 14:24:03; user bergerse00

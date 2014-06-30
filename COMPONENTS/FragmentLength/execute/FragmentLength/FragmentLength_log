@@ -1,0 +1,5 @@
+
+Running time for fragment length finder:
+	-Finding Shift and Shifting: 0:00:11.189441
+	-Sorting and gzipping bedweight: 0:00:15.086148
+	-Overall: 0:00:26.285874

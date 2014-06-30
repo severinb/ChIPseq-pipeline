@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>ExtractRegions</name>
+    <version>1.0</version>
+    <doc>
+    This component takes the peakstats file of GetTrueRegion and a posterior cut-off. All peaks below this cut-off get written to outfile.
+    </doc>
+    <launcher type="python">
+        <argument name="file" value="extractRegions.py"/>
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <inputs>
+        <input name="regions" type = "BinaryFile">
+            <doc>Aligned or single sequences in fasta format. Headers contain peak ID.</doc>
+        </input>
+        <input name="peakstats" type = "BinaryFile">
+            <doc>Output of GetTrueRegions. Contains summed peak posteriors.</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="outfile" type="BinaryFile">
+            <doc>Alignments or single sequences that made posterior cut-off</doc>
+        </output>
+    </outputs>
+    <parameters>
+            <parameter name="posterior_cutoff" type="float" default="1">
+                <doc>All regions below this cut-off are given out.</doc>
+            </parameter>
+    </parameters>
+</component>

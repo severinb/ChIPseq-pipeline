@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>GetSequences</name>
+    <!--<version>1.0</version>-->
+    <doc>
+    Takes a bed file with read positions and returns sequences.
+    </doc>
+    <launcher type="python">
+        <argument name="file" value="GetSequences.py" />
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <inputs>
+        <input name="in_file" type="BinaryFile">
+            <doc>File with top peaks.</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="Sequences" type="BinaryFile">
+            <doc>File containing all 500 or so extracted reference sequences.</doc>
+        </output>
+        <!--<output name="log_file" type="BinaryFile">
+           <doc></doc>
+        </output>-->
+    </outputs>
+    <parameters>
+        <parameter name="genome" type="string" default="">
+            <doc>Genome type: hg18, hg19 ...</doc>
+        </parameter>
+        <parameter name="genome_path" type="string" default="">
+            <doc>Path to the directory containing the genome. Directory mist contain chromsomes in this format genome_path/chrN.fa</doc>
+        </parameter>
+    </parameters>
+</component>

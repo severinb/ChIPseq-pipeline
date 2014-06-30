@@ -1,0 +1,10 @@
+metadata.instanceName=BuildUFEmodel
+metadata.Anduril=Engine 1.2.5
+input.Sequences=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLine140113/COMPONENTS/BuildUFEmodel/../../TESTRUN/CTCF/OUTPUT/CTCF_FgBg-getseqs/Sequences
+output.BaseFrequencies=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLine140113/COMPONENTS/BuildUFEmodel/execute/BuildUFEmodel/BaseFrequencies
+output.UFEmodel=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLine140113/COMPONENTS/BuildUFEmodel/execute/BuildUFEmodel/UFEmodel
+output._errors=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLine140113/COMPONENTS/BuildUFEmodel/execute/BuildUFEmodel/_errors
+output._log=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLine140113/COMPONENTS/BuildUFEmodel/execute/BuildUFEmodel/_log
+output._tempdir=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLine140113/COMPONENTS/BuildUFEmodel/execute/BuildUFEmodel/_tempdir
+parameter.genome=hg19
+parameter.motevoUFE_path=../../../MotEvo_v1.0/source/runUFE

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>extractBedweight</name>
+    <version>1.0</version>
+    <doc>
+    This component extracts bedweight format from the mappings in the FMI repository (.ral format).
+    Call sequencce: extractBed_anduril.py calls /GROUP/DeepSeqPipeline.Piotr/soft/extractData.pl and pipes to /GROUP/DeepSeqPipeline.Piotr/soft.bc2/frag2bedweight.pl .
+    The resulting bedweight file is a bed file with weighted reads (number of identical reads/number of mappings). 
+    </doc>
+    <!--<author email="piotr@unibas.ch">Piotr</author>-->
+    <launcher type="python">
+        <argument name="file" value="extractBedweight_anduril.py" />
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <inputs>
+    </inputs>
+    <outputs>
+        <output name="out_dir" type="BinaryFolder">
+            <doc>Where to write the output to.</doc>
+        </output>
+        <output name="extractBedweight_log" type="BinaryFile">
+            <doc></doc>
+        </output>
+    </outputs>
+    <parameters>
+            <parameter name="FMIid" type="string" default="">
+                <doc>ID for FMI repository. This is the name of the input file without fastq and gz extensions.</doc>
+            </parameter>
+            <parameter name="annoType" type="string" default="">
+                <doc>something like "mm9-mmV02-aln2".</doc>
+            </parameter>
+            <parameter name="mismatches" type="int" default="100">
+                <doc>maximum number of hits</doc>
+            </parameter>
+            <parameter name="FMIpath" type="string" default="">
+                <doc>Path to the FMI pipeline directory. Contains soft and samples directory.</doc>
+            </parameter>
+            <parameter name="perlPATH" type="string" default="perl">
+                <doc>Path to perl that should be used for execution.</doc>
+            </parameter>
+    </parameters>
+</component>

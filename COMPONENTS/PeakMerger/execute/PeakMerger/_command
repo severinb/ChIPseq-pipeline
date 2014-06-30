@@ -1,0 +1,14 @@
+metadata.instanceName=PeakMerger
+metadata.Anduril=Engine 1.2.5
+input.in_dir=/import/bc2/home/zavolan/bilebi00/_CLIP/Analysis/Project_EWSR1/ChIP/53BP1_shEWSR1/OUTPUT/FG1_FgBg-peakcall_newnoise/out_dir
+output.IDfile=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/PeakMerger/execute/PeakMerger/IDfile
+output.PeakMerger_log=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/PeakMerger/execute/PeakMerger/PeakMerger_log
+output.Z_cutoff_file=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/PeakMerger/execute/PeakMerger/Z_cutoff_file
+output._errors=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/PeakMerger/execute/PeakMerger/_errors
+output._log=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/PeakMerger/execute/PeakMerger/_log
+output._tempdir=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/PeakMerger/execute/PeakMerger/_tempdir
+output.allpeaks=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/PeakMerger/execute/PeakMerger/allpeaks
+output.out_file=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/PeakMerger/execute/PeakMerger/out_file
+output.revcum=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/PeakMerger/execute/PeakMerger/revcum.pdf
+parameter.topPeaks=300
+parameter.z_cutoff=-1.0

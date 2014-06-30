@@ -1,0 +1,2 @@
+input_in_dir	YES	YES	INPUT OUT in P path=/import/bc2/home/zavolan/bilebi00/_CLIP/Analysis/Project_EWSR1/ChIP/53BP1_shEWSR1/OUTPUT/FG1_FgBg-peakcall_newnoise/out_dir TS in=1369726871000 
+PeakMerger	YES	YES	PeakMerger IN in_dir=input_in_dir:in OUT out_file OUT allpeaks OUT revcum OUT PeakMerger_log OUT IDfile OUT Z_cutoff_file P topPeaks=300 P z_cutoff=-1.0 
