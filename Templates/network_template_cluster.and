@@ -1,0 +1,1375 @@
+/*----------Composite Components-----------*/
+
+/*----------Foreground Function------------*/
+function IPfunction(BinaryFile IN, string repFMIid, string iter, string DESC, string TFname, string formatFlag) -> (BinaryFolder IPout, Latex IPlog)
+{
+
+    if formatFlag == "bed" {
+
+       //Tries to estimate a fragment length. It also shifts the reads by half fragment length upstream (+) or downstream (-)
+       fraglen = FragmentLength(in_file = IN, repeatPath="REPEAT_PATH", perlPATH="PERL_PATH", pythonPATH="PYTHON_PATH", FMIpath="FMI_PATH", @host="long_hm"FRAGLEN_iter)
+
+       latexfrag = LatexFragmentizer(plot1=fraglen.FragmentLength_plot, 
+                                     capt_plot1="Shift Correlation plot",
+                                     sectionTitle=TFname+": Log for foreground replicate processing starting from non shifted bed or bedweight file.", @host="noQueue"LATEXFRAG_iter)
+
+       pdfreport = CombineLatex(latex1=latexfrag.fragment, @host="noQueue"PDFREPORT_iter)
+       OUTPUT(pdfreport.pdfreport)
+
+       return record(IPout=fraglen.out_dir, IPlog=latexfrag.fragment)
+
+    }
+
+
+    else {
+
+       ////quality filtering, transform and importSample //////
+       if formatFlag == "fastq" {
+          //Quality Filter: Filters out reads that are too short and have too many Ns.
+          qualityfilter = SilviaQF(in_file = IN, pythonPATH="PYTHON_PATH", @host="long"QUALITYFILTER_iter)
+
+          //Searches a subset of the input fasta file for matches with several adaptors and subwords thereof. The one adaptor with the most matches is given out.
+          adaptor = adaptorDecision(in_file = qualityfilter.out_file, reads_number=250000, perlPATH="PERL_PATH", FMIpath="FMI_PATH", @host="long_hm"ADAPTOR_iter)
+
+          //Removes the adaptor. If one is given in the parameter yaml file, this one is taken. Otherwise the one found by adaptorDecision is used.
+          trans = transform(in_file = qualityfilter.out_file, adaptor3automatic = adaptor.finalAdaptor, adaptor3="ADAPTOR_3", FMIpath="FMI_PATH", perlPATH="PERL_PATH", sortTMPDIR="SORT_TMPDIR", @host="long_hm"TRANS_iter)
+
+          latexfrag1 = LatexFragmentizer(plot1=qualityfilter.plot_before,
+                                         plot2=qualityfilter.plot_after,
+                                         capt_plot1="Quality filter: Read length distribution before filtering",
+                                         capt_plot2="Quality filter: Read length distribution after filtering",
+                                         sectionTitle=TFname+": Log for Foreground Replicate Quality Filtering:", @host="noQueue"LATEXFRAG_iter)
+
+
+          latexfrag2 = LatexFragmentizer(log1=adaptor.log_file,
+                                         capt_log1="",
+                                         plot1=adaptor.plot,
+                                         capt_plot1="Plot for Adaptor Finding: Length of Adaptor versus Full Matches",
+                                         sectionTitle="Log for Adaptor Finding:", @host="noQueue"LATEXFRAG_iter)
+
+
+          latexfrag3 = LatexFragmentizer(log1=trans.transform_log,
+                                         capt_log1="",
+                                         sectionTitle="Log for Adaptor Removal:", @host="noQueue"LATEXFRAG_iter)
+
+
+
+       }
+
+       if formatFlag == "fasta" {
+
+          //Searches a subset of the input fasta file for matches with several adaptors and subwords thereof. The one adaptor with the most matches is given out.
+          adaptor = adaptorDecision(in_file = IN, reads_number=250000, perlPATH="PERL_PATH", FMIpath="FMI_PATH", @host="long_hm"ADAPTOR_iter)
+
+          //Removes the adaptor. If one is given in the parameter yaml file, this one is taken. Otherwise the one found by adaptorDecision is used.
+          trans = transform(in_file = IN, adaptor3automatic = adaptor.finalAdaptor, adaptor3="ADAPTOR_3", FMIpath="FMI_PATH", perlPATH="PERL_PATH", sortTMPDIR="SORT_TMPDIR", @host="long_hm"TRANS_iter)
+
+
+          latexfrag2 = LatexFragmentizer(log1=adaptor.log_file,
+                                         capt_log1="",
+                                         plot1=adaptor.plot,
+                                         capt_plot1="Plot for Adaptor Finding: Length of Adaptor versus Full Matches",
+                                         sectionTitle=TFname+": Log for Adaptor Finding:", @host="noQueue"LATEXFRAG_iter)
+
+
+          latexfrag3 = LatexFragmentizer(log1=trans.transform_log,
+                                         capt_log1="",
+                                         sectionTitle="Log for Adaptor Removal:", @host="noQueue"LATEXFRAG_iter)
+
+
+       }
+
+
+       //Imports the sample into FMI repository (copies the fasta file there and creates some directories).
+       import = importSample(in_file = trans.out_file, desc=DESC, FMIpath="FMI_PATH", FMIid = repFMIid, perlPATH="PERL_PATH", @host="long_hm"IMPORT_iter) 
+
+
+       ////work from the samples repository: annotateSample, extract wig and bed and count mappable reads //////////////
+
+       //Runs bowtie to map to genome and transcriptome  
+       annotate = annotateSample(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", @bind=import, @host="verylong_hm"ANNOTATE_iter)
+  
+       //Extracts mappings in bedweight format (weight is number of identical reads/number of mapping positions)
+       bedweight = extractBedweight(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", mismatches=100, @bind=annotate, @host="sjpn_long_hm"BEDWEIGHT_iter)
+
+       //extracting bed format file. It's location is the same as bedweight.
+       bed = extractBed(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", maxhits=100, @bind=annotate, @host="sjpn_long_hm"BED_iter)
+
+       //Extracts mappings in wig format
+       wig = extractWig(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", mismatches=100, width=100, @bind=annotate, @host="sjpn_long_hm"WIG_iter)
+
+       //Counts how many reads were mapped
+       mappable = numberMappableReads(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", @bind=annotate, @host="sjpn_long_hm"MAPPABLE_iter)
+
+       //Creates three plots with mapping statistics
+       errorPlots = createErrorPlots(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", @bind=annotate, @host="sjpn_long_hm"ERRORPLOTS_iter)
+
+
+       ////Shift bed file, output from bed_i
+
+       //Tries to estimate a fragment length. It also shifts the reads by half fragment length upstream (+) or downstream (-)
+       fraglen = FragmentLength(in_dir = bedweight.out_dir, repeatPath="REPEAT_PATH", perlPATH="PERL_PATH", pythonPATH="PYTHON_PATH", FMIpath="FMI_PATH", @host="long_hm"FRAGLEN_iter)
+
+       latexfrag4 = LatexFragmentizer(log1=mappable.numberMappableReads_log, 
+                                      plot1=errorPlots.error_profiles_plot,
+                                      plot2=errorPlots.fraction_aligned_plot,
+                                      plot3=errorPlots.repeatedness_plot,
+                                      capt_log1="Number of mapped reads", 
+                                      capt_plot1="Fraction of all reads that had an error at read position",
+                                      capt_plot2="Fraction of all reads that have a certain mapping error up to read position",
+                                      capt_plot3="Number of reads that have a certain number of hits",
+                                      sectionTitle="Log for Mappging:", @host="noQueue"LATEXFRAG_iter)
+
+       latexfrag5 = LatexFragmentizer(plot1=fraglen.FragmentLength_plot, 
+                                      capt_plot1="Fragment Length Correlation Plot",
+                                      sectionTitle="Log for Fragment Length Finding:", @host="noQueue"LATEXFRAG_iter)
+
+
+       if formatFlag == "fastq" {
+
+       pdfreport = CombineLatex(latex1=latexfrag1.fragment, latex2=latexfrag2.fragment, latex3=latexfrag3.fragment, latex4=latexfrag4.fragment, latex5=latexfrag5.fragment, @host="noQueue"PDFREPORT_iter)
+       OUTPUT(pdfreport.pdfreport)
+
+       }
+
+       if formatFlag == "fasta" {
+
+       pdfreport = CombineLatex(latex1=latexfrag2.fragment, latex2=latexfrag3.fragment, latex3=latexfrag4.fragment, latex4=latexfrag5.fragment, @host="noQueue"PDFREPORT_iter)
+       OUTPUT(pdfreport.pdfreport)
+
+       }
+
+
+       return record(IPout=fraglen.out_dir, IPlog=latexfrag2.fragment)
+
+    }
+
+}
+
+
+/*----------Background Function------------*/
+function BGfunction(BinaryFile bgIN, string repFMIid, string iter, string DESC, string TFname, string formatFlag) -> (BinaryFolder BGout, Latex BGlog)
+{
+
+    if formatFlag == "bed" {
+
+       //Tries to estimate a fragment length. It also shifts the reads by half fragment length upstream (+) or downstream (-)
+       fraglen = FragmentLength(in_file = bgIN, repeatPath="REPEAT_PATH", perlPATH="PERL_PATH", pythonPATH="PYTHON_PATH", FMIpath="FMI_PATH", @host="long_hm"FRAGLEN_iter)
+
+       latexfrag = LatexFragmentizer(plot1=fraglen.FragmentLength_plot, 
+                                     capt_plot1="Shift Correlation plot",
+                                     sectionTitle=TFname+": Log for background replicate processing starting from non shifted bed or bedweight file.", @host="noQueue"LATEXFRAG_iter)
+
+       pdfreport = CombineLatex(latex1=latexfrag.fragment, @host="noQueue"PDFREPORT_iter)
+       OUTPUT(pdfreport.pdfreport)
+
+       return record(BGout=fraglen.out_dir, BGlog=latexfrag.fragment)
+
+    }
+
+
+    else {
+
+       ////quality filtering, transform and importSample //////
+       if formatFlag == "fastq" {
+          //Quality Filter: Filters out reads that are too short and have too many Ns.
+          qualityfilter = SilviaQF(in_file = bgIN, pythonPATH="PYTHON_PATH", @host="long"QUALITYFILTER_iter)
+
+          //Searches a subset of the input fasta file for matches with several adaptors and subwords thereof. The one adaptor with the most matches is given out.
+          adaptor = adaptorDecision(in_file = qualityfilter.out_file, reads_number=250000, perlPATH="PERL_PATH", FMIpath="FMI_PATH", @host="long_hm"ADAPTOR_iter)
+
+          //Removes the adaptor. If one is given in the parameter yaml file, this one is taken. Otherwise the one found by adaptorDecision is used.
+          trans = transform(in_file = qualityfilter.out_file, adaptor3automatic = adaptor.finalAdaptor, adaptor3="ADAPTOR_3", FMIpath="FMI_PATH", perlPATH="PERL_PATH", sortTMPDIR="SORT_TMPDIR", @host="long_hm"TRANS_iter)
+
+          latexfrag1 = LatexFragmentizer(plot1=qualityfilter.plot_before,
+                                         plot2=qualityfilter.plot_after,
+                                         capt_plot1="Quality filter: Read length distribution before filtering",
+                                         capt_plot2="Quality filter: Read length distribution after filtering",
+                                         sectionTitle=TFname+": Log for Background Replicate Quality Filtering:", @host="noQueue"LATEXFRAG_iter)
+
+
+          latexfrag2 = LatexFragmentizer(log1=adaptor.log_file,
+                                         capt_log1="",
+                                         plot1=adaptor.plot,
+                                         capt_plot1="Plot for Adaptor Finding: Length of Adaptor versus Full Matches",
+                                         sectionTitle="Log for Adaptor Finding:", @host="noQueue"LATEXFRAG_iter)
+
+
+          latexfrag3 = LatexFragmentizer(log1=trans.transform_log,
+                                         capt_log1="",
+                                         sectionTitle="Log for Adaptor Removal:", @host="noQueue"LATEXFRAG_iter)
+
+
+
+       }
+
+       if formatFlag == "fasta" {
+
+          //Searches a subset of the input fasta file for matches with several adaptors and subwords thereof. The one adaptor with the most matches is given out.
+          adaptor = adaptorDecision(in_file = bgIN, reads_number=250000, perlPATH="PERL_PATH", FMIpath="FMI_PATH", @host="long_hm"ADAPTOR_iter)
+
+          //Removes the adaptor. If one is given in the parameter yaml file, this one is taken. Otherwise the one found by adaptorDecision is used.
+          trans = transform(in_file = bgIN, adaptor3automatic = adaptor.finalAdaptor, adaptor3="ADAPTOR_3", FMIpath="FMI_PATH", perlPATH="PERL_PATH", sortTMPDIR="SORT_TMPDIR", @host="long_hm"TRANS_iter)
+
+
+          latexfrag2 = LatexFragmentizer(log1=adaptor.log_file,
+                                         capt_log1="",
+                                         plot1=adaptor.plot,
+                                         capt_plot1="Plot for Adaptor Finding: Length of Adaptor versus Full Matches",
+                                         sectionTitle=TFname+": Log for Adaptor Finding:", @host="noQueue"LATEXFRAG_iter)
+
+
+          latexfrag3 = LatexFragmentizer(log1=trans.transform_log,
+                                         capt_log1="",
+                                         sectionTitle="Log for Adaptor Removal:", @host="noQueue"LATEXFRAG_iter)
+
+
+       }
+
+
+       //Imports the sample into FMI repository (copies the fasta file there and creates some directories).
+       import = importSample(in_file = trans.out_file, desc=DESC, FMIpath="FMI_PATH", FMIid = repFMIid, perlPATH="PERL_PATH", @host="long_hm"IMPORT_iter) 
+
+
+       ////work from the samples repository: annotateSample, extract wig and bed and count mappable reads //////////////
+
+       //Runs bowtie to map to genome and transcriptome  
+       annotate = annotateSample(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", @bind=import, @host="verylong_hm"ANNOTATE_iter)
+  
+       //Extracts mappings in bedweight format (weight is number of identical reads/number of mapping positions)
+       bedweight = extractBedweight(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", mismatches=100, @bind=annotate, @host="sjpn_long_hm"BEDWEIGHT_iter)
+
+       //extracting bed format file. It's location is the same as bedweight.
+       bed = extractBed(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", maxhits=100, @bind=annotate, @host="sjpn_long_hm"BED_iter)
+
+       //Extracts mappings in wig format
+       wig = extractWig(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", mismatches=100, width=100, @bind=annotate, @host="sjpn_long_hm"WIG_iter)
+
+       //Counts how many reads were mapped
+       mappable = numberMappableReads(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", @bind=annotate, @host="sjpn_long_hm"MAPPABLE_iter)
+
+       //Creates three plots with mapping statistics
+       errorPlots = createErrorPlots(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", @bind=annotate, @host="sjpn_long_hm"ERRORPLOTS_iter)
+
+
+       ////Shift bed file, output from bed_i
+
+       //Tries to estimate a fragment length. It also shifts the reads by half fragment length upstream (+) or downstream (-)
+       fraglen = FragmentLength(in_dir = bedweight.out_dir, repeatPath="REPEAT_PATH", perlPATH="PERL_PATH", pythonPATH="PYTHON_PATH", FMIpath="FMI_PATH", @host="long_hm"FRAGLEN_iter)
+
+
+       latexfrag4 = LatexFragmentizer(log1=mappable.numberMappableReads_log, 
+                                      plot1=errorPlots.error_profiles_plot,
+                                      plot2=errorPlots.fraction_aligned_plot,
+                                      plot3=errorPlots.repeatedness_plot,
+                                      capt_log1="Number of mapped reads", 
+                                      capt_plot1="Fraction of all reads that had an error at read position",
+                                      capt_plot2="Fraction of all reads that have a certain mapping error up to read position",
+                                      capt_plot3="Number of reads that have a certain number of hits",
+                                      sectionTitle="Log for Mappging:", @host="noQueue"LATEXFRAG_iter)
+
+       latexfrag5 = LatexFragmentizer(plot1=fraglen.FragmentLength_plot, 
+                                      capt_plot1="Fragment Length Correlation Plot",
+                                      sectionTitle="Log for Fragment Length Finding:", @host="noQueue"LATEXFRAG_iter)
+
+
+       if formatFlag == "fastq" {
+
+       pdfreport = CombineLatex(latex1=latexfrag1.fragment, latex2=latexfrag2.fragment, latex3=latexfrag3.fragment, latex4=latexfrag4.fragment, latex5=latexfrag5.fragment, @host="noQueue"PDFREPORT_iter)
+       OUTPUT(pdfreport.pdfreport)
+
+       }
+
+       if formatFlag == "fasta" {
+
+       pdfreport = CombineLatex(latex1=latexfrag2.fragment, latex2=latexfrag3.fragment, latex3=latexfrag4.fragment, latex4=latexfrag5.fragment, @host="noQueue"PDFREPORT_iter)
+       OUTPUT(pdfreport.pdfreport)
+
+       }
+
+
+       return record(BGout=fraglen.out_dir, BGlog=latexfrag2.fragment)
+
+
+    }
+
+}
+
+/*-----------------------------------------------------------------------------------------------------------------*/
+/*------------------------------Composite Component for processing on TF-Background pair---------------------------*/
+/*-----------------------------------------------------------------------------------------------------------------*/
+
+function FGBGprocessing(string IPstring, string BGstring, string WM, string TFname) -> (BinaryFile Sequences, BinaryFolder RegionCoverageDir, BinaryFile PeakStats, BinaryFolder PeakCallDir, BinaryFolder WMDir, BinaryFile LLog, BinaryFile AUCLog, BinaryFile Peaks, BinaryFile ShuffledTestSet, BinaryFile TestSet, BinaryFile TrainingSet, BinaryFile UFEmodel, BinaryFile BaseFrequencies){
+
+         //check whether a WM exists for this TF
+	 if WM != "None" {
+		wm_defined=1
+                old_WM = INPUT(path=WM)
+		}
+         else{
+                wm_defined=0
+                }
+
+
+
+         ////Doing all the read counting and BG cut-off filtering with Piotr's binReads.pl
+         binreads = BinReads(FGfiles_string = IPstring, BGfiles_string = BGstring, chrominfo="CHROMINFOFILE_PATH", perlPATH="PERL_PATH", FGwinsize=FG_WINSIZE, BGwinsize=BG_WINSIZE, stepsize=STEPSIZE, FMIpath="FMI_PATH", @host="long_hm")
+
+         if BGstring != "" {
+
+            bg_filter = FilterBGwin(infile = binreads.out_file, bg_cutoff=-99, perlPATH="PERL_PATH", @host="long_hm")
+
+            peakcall_newnoise = PeakCall_newNoiseModel(in_file = bg_filter.outfile, perlPATH="PERL_PATH", R_LIBS_USER="R_LIBS_USER_PATH", @host="long_hm")
+
+         }
+         else {
+            peakcall_newnoise = PeakCall_newNoiseModel(in_file = binreads.out_file, perlPATH="PERL_PATH", R_LIBS_USER="R_LIBS_USER_PATH", noBG="true", @host="long_hm")
+         }
+
+
+         //Merges all overlapping widnows above a Z-value cut-off 
+         peakmerge = PeakMerger(in_dir = peakcall_newnoise.out_dir, z_cutoff=-1, topPeaks=PEAK_NUMBER, @host="long")
+
+         //Computes basepair coverage for each region (how many foreground reads voer each bp).
+         regioncoverage = RegionCoverage(regions = peakmerge.allpeaks, read_files = IPstring, BedToolsPath="BEDTOOLS_PATH", regionlength=-1, toFraglength="true", @host="long_hm")
+
+         //This thing will submit array jobs itself
+         selectpeaks = SelectPeaksMM(in_dir = regioncoverage.out_dir, FGfiles_string=IPstring, FragmentLength=-1, files_per_job=50, order=4, widthFactor=1, project_leader="PROJECTLEADER", RMSD_cutoff=100, topPeaks=1000)
+
+         //regioncoveragedev = RegionCoverage(regions = peakmerge.out_file, read_files = IPstring, BedToolsPath="BEDTOOLS_PATH", regionlength=-1, toFraglength="true", @host="long_hm")
+         //selectpeaksdev = SelectPeaksMMdev(in_dir = regioncoveragedev.out_dir, FGfiles_string=IPstring, FragmentLength=-1, files_per_job=2, order=4, project_leader="PROJECTLEADER")
+
+
+         //Recompute Z-scores for refined peaks
+         if BGstring != "" {
+
+            recompz = RecomputeZscores(peakfile = selectpeaks.allpeaks, peakstats = selectpeaks.peakstats, binned_reads = bg_filter.outfile, fit_log = peakcall_newnoise.log_file, Z_cutoff_file = peakmerge.Z_cutoff_file, read_files=IPstring, FGwinsize=FG_WINSIZE, Z_cutoff=-1, topPeaks=1000, @host="long_hm")
+
+         }
+         else {
+
+            recompz = RecomputeZscores(peakfile = selectpeaks.allpeaks, peakstats = selectpeaks.peakstats, binned_reads = binreads.outfile, fit_log = peakcall_newnoise.log_file, Z_cutoff_file = peakmerge.Z_cutoff_file, read_files=IPstring, FGwinsize=FG_WINSIZE, Z_cutoff=-1, topPeaks=1000, @host="long_hm")
+
+         }
+
+
+         repeatsout = RepeatsOut(peaks = recompz.outfile, repeatPath="REPEAT_PATH", BedToolsPath="BEDTOOLS_PATH", @host="long_hm")
+
+         //annotate peaks to genes etc, do GO analysis etc... using HOMER
+         //annotregions = AnnotateRegions(regions = recompz.allpeaks, genome="GENOME", homerPATH="HOMER_PATH", @host="long")
+         
+         //annotate peaks to promoters and thus to genes...
+         annotpeaks = AnnotatePeaks(peaks = recompz.allpeaks, genome="GENOME", annotationFile="ANNOTATION_FILE", @host="long")
+
+         pstats = recompz.peakstats
+
+         //Aligns regions to some related species
+         alignpeaks = AlignPeaks(in_file = repeatsout.out_file, genome="GENOME", AlignPipePath="ALIGN_PIPE_PATH")
+
+         //Extracts sequences from region coordinates
+         getseqs = GetSequences(in_file = repeatsout.out_file, genome="GENOME", genome_path="GENDIR_PATH", @host="long")
+
+         //Splits alignments/sequences in two halfs. Both halfs have equally high Z-value scoring regions.
+         splitalignments = SplitTestTrain(infile = alignpeaks.AlignedPeaks, @host="long")
+         splitseqs = SplitTestTrain(infile = getseqs.Sequences, @host="long")
+
+         //Shuffles Alignments/Sequences to produce a background.
+         shuffledAlns = ShuffleAlignments(infile = splitalignments.odd_file, mode="phil", iterations=10, perlPATH="PERL_PATH", pythonPATH="PYTHON_PATH", @host="long")
+         shuffledSeqs = ShuffleAlignments(infile = splitseqs.odd_file, mode="phil", iterations=10, perlPATH="PERL_PATH", pythonPATH="PYTHON_PATH", @host="long")
+
+         if "GENOME" == "dm3"{
+            shuffled_forreturn = shuffledSeqs.outfile
+            test_forreturn = splitseqs.odd_file
+            training_forreturn = splitseqs.even_file
+         }
+
+         else {
+            shuffled_forreturn = shuffledAlns.outfile
+            test_forreturn = splitalignments.odd_file
+            training_forreturn = splitalignments.even_file
+         }
+
+         buildufe = BuildUFEmodel(Sequences = getseqs.Sequences, genome="GENOME", motevoUFE_path="MOTEVOUFE_PATH", @host="long")
+
+         getseqs2 = GetSequences(in_file = peakmerge.allpeaks, genome="GENOME", genome_path="GENDIR_PATH", @host="long")
+
+
+         //Fork here if no de novo motif finding is requested. If a WM is given it will be refined. Given WM and refined WM will be processed for WM statistics (GetWMStats) and also for a given WM library enrichment is checked and statistics for enriched WMs will be calculated.
+
+         pipeFlag = "PIPEFLAG"
+
+         if pipeFlag == "JUSTPEAKS" {
+             
+                  latexfrag1 = LatexFragmentizer(log1=bg_filter.log_file,
+                                                 plot1=bg_filter.plotfile,
+                                                 capt_log1="",
+                                                 capt_log2="Reverse Cumulative Distribution of Background Window Counts.",
+                                                 sectionTitle=TFname+": Log for Background Window Filtering:")
+
+                  latexfrag2 = LatexFragmentizer(log1=peakcall_newnoise.log_file,
+                                                 plot1=peakcall_newnoise.Z_hist,
+                                                 capt_log1="",
+                                                 capt_plot1="Distribution of Window Z-values with Fitted Gaussian.",
+                                                 sectionTitle="Log for Background Noise Distribution Fit:")
+
+                  latexfrag3 = LatexFragmentizer(log1=peakmerge.PeakMerger_log,
+                                                 plot1=peakmerge.revcum,
+                                                 capt_log1="Bin Reads Log",
+                                                 capt_plot1="Reverse Cumulative Distribution of Window Z-values.",
+                                                 sectionTitle="Log for Mergeing Windows and Determining Z-value Cut-off:")
+
+                  latexfrag4 = LatexFragmentizer(log1=selectpeaks.log_file,
+                                                 plot1=selectpeaks.height_sigma_scatter,
+                                                 plot2=selectpeaks.height_rmsd_scatter,
+                                                 plot3=selectpeaks.sigma_rmsd_scatter,
+                                                 plot4=selectpeaks.height_revcum,
+                                                 plot5=selectpeaks.rmsd_hist,
+                                                 plot6=selectpeaks.sigma_hist,
+                                                 capt_log1="",
+                                                 capt_plot1="Scatter plot of peak height versus peak width",
+                                                 capt_plot2="Scatter plot of peak height versus peak quality",
+                                                 capt_plot3="Scatter plot of peak width versus peak quality",
+                                                 capt_plot4="Reverse cumulative distribution of peak heights",
+                                                 capt_plot5="Histogram of peak qualities",
+                                                 capt_plot6="Histogram of peak widths (sigmas)",
+                                                 sectionTitle="Log for Refining Peaks (Fitting Gaussians Inside Megred Windows):")
+
+                  latexfrag5 = LatexFragmentizer(log1=recompz.log_file,
+                                                 plot1=recompz.height_z_scatter,
+                                                 plot2=recompz.z_hist,
+                                                 plot3=recompz.z_revcum,
+                                                 capt_log1="",
+                                                 capt_plot1="Scatter plot of peak height versus peak Z-score",
+                                                 capt_plot2="Histogram of peak Z-scores",
+                                                 capt_plot3="Reverse cumulative of peak Z-scores",
+                                                 sectionTitle="Log for Computing Z-scores of Refined Peaks:")
+
+                  latexfrag6 = LatexFragmentizer(log1=annotpeaks.log_file,
+                                                 capt_log1="",
+                                                 sectionTitle="Log for Refined Peak Annotation:")
+
+
+                  if wm_defined == 1 {
+
+                     //Run motevo for refinement of existing weight matrix
+                     runmotevo = RunMotevo(odd_file = splitalignments.odd_file, even_file = splitalignments.even_file, WM = old_WM.in, shuffledPeaks = shuffledAlns.outfile, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="true", @host="long")
+
+
+                     latexfragRef = LatexFragmentizer(plot1=runmotevo.sens_ppv,
+                                                      plot2=runmotevo.Logo,
+                                                      capt_plot1="Sensitivity - positive predictive value plot for WM refinement, with alignments.",
+                                                      capt_plot2="Refined weight matrix logo.",
+                                                      sectionTitle="Log for Motif Refinement:")
+
+
+
+                     wmqual = WMQuality(peaks = splitalignments.odd_file,
+                                        shuffledPeaks = shuffledAlns.outfile,
+                                        WM1 = old_WM.in,
+                                        WM2 = runmotevo.refWM,
+                                        UFEmodel = buildufe.UFEmodel,
+                                        BaseFrequencies = buildufe.BaseFrequencies,
+                                        aligned="true", genome="GENOME",
+                                        motevo_path="MOTEVO_PATH",
+                                        @host="long")
+
+                     complikeli_slim = ComputeLikelihoodM_greedy(train_set = splitalignments.even_file,
+                                                                 test_set = splitalignments.odd_file,
+                                                                 BaseFrequencies = buildufe.BaseFrequencies,
+                                                                 WM1 = old_WM.in,
+                                                                 WM2 = runmotevo.refWM,
+                                                                 UFEmodel = buildufe.UFEmodel,
+                                                                 genome="GENOME",
+                                                                 motevo_path="MOTEVO_PATH",
+                                                                 aligned="true",
+                                                                 slim="true",
+                                                                 loglik_cutoff=20,
+                                                                 @host="long")
+
+
+                     stetsOld = GetWMStats(Sequences = getseqs2.Sequences, RegionCoverage = regioncoverage.out_dir, PeakStats = pstats, CandWM = old_WM.in, PeakCallDir = peakcall_newnoise.out_dir,  LLog = complikeli_slim.loglik_all_motifs, AUCLog = wmqual.log_file, IP_string=IPstring)
+
+                     stetsRef = GetWMStats(Sequences = getseqs2.Sequences, RegionCoverage = regioncoverage.out_dir, PeakStats = pstats, CandWM = runmotevo.refWM, PeakCallDir = peakcall_newnoise.out_dir,  LLog = complikeli_slim.loglik_all_motifs, AUCLog = wmqual.log_file, IP_string=IPstring)
+
+
+                     //Assign predicted sites for given and refined WM to peak annotations
+                     //First make ports to simple parameters
+
+                     for f: std.iterdir(stetsOld.Peakstats){
+                             given_peak_stats_string = f.path + "/" + f.name
+                     }
+
+                     for f: std.iterdir(stetsOld.TFBSstats){
+                             given_TFBSs_string = f.path + "/" + f.name
+                     }
+
+                     for f: std.iterdir(stetsRef.Peakstats){
+                             refined_peak_stats_string = f.path + "/" + f.name
+                     }
+
+                     for f: std.iterdir(stetsRef.TFBSstats){
+                             refined_TFBSs_string = f.path + "/" + f.name
+                     }
+
+
+                     combinepeakstfbs = CombinePeaksTFBSs(peaks = annotpeaks.peakAnnotations, denovoTFBSs_string=refined_TFBSs_string, knownTFBSs_string=given_TFBSs_string, denovo_peakposts_string=refined_peak_stats_string, known_peakposts_string=given_peak_stats_string, minposterior=0.2, FGfiles_string=IPstring, @host="long")
+
+                     OUTPUT(combinepeakstfbs.peaks_with_sites)
+
+                     combine2 = CombineLatex(latex1=latexfrag1.fragment, latex2=latexfrag2.fragment, latex3=latexfrag3.fragment, latex4=latexfrag4.fragment, latex5=latexfrag5.fragment, latex6=latexfrag6.fragment, latex7=latexfragRef.fragment)
+
+                     OUTPUT(combine2.pdfreport)
+
+                     //this stuff is used for checking for enrichment of motifs from given library.
+                     //WMDir is dummy output because it's not used later. LLog and AUCLog ports are used for TFBSstats of given and refined WM respectively.
+                     return record(Sequences = getseqs2.Sequences, RegionCoverageDir = regioncoverage.out_dir, PeakStats = pstats, PeakCallDir = peakcall_newnoise.out_dir, WMDir = peakcall_newnoise.out_dir, LLog = stetsOld.TFBSstats, AUCLog = stetsRef.TFBSstats, Peaks = annotpeaks.peakAnnotations, ShuffledTestSet = shuffled_forreturn, TestSet = test_forreturn, TrainingSet = training_forreturn, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies)
+
+                     }
+
+
+                  else {
+
+                        combine2 = CombineLatex(latex1=latexfrag1.fragment, latex2=latexfrag2.fragment, latex3=latexfrag3.fragment, latex4=latexfrag4.fragment, latex5=latexfrag5.fragment, latex6=latexfrag6.fragment)      
+                        OUTPUT(combine2.pdfreport)
+                        OUTPUT(annotpeaks.peakAnnotations)
+
+                        //WMDir, LLog, AUCLog are dummy outputs because they're not used later. Below only WM library statisics are calculated which does not need any WM information from here.
+                        return record(Sequences = getseqs2.Sequences, RegionCoverageDir = regioncoverage.out_dir, PeakStats = pstats, PeakCallDir = peakcall_newnoise.out_dir, WMDir = peakcall_newnoise.out_dir, LLog = pstats, AUCLog = pstats, Peaks = annotpeaks.peakAnnotations, ShuffledTestSet = shuffled_forreturn, TestSet = test_forreturn, TrainingSet = training_forreturn, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies)
+
+                      }
+           }
+
+
+         //Runs PhyloGibbs
+         phylogibbs1 =  RunPhyloGibbs(infile = splitalignments.even_file, PhyloGibbsPATH="PHYLOGIBBS_PATH", mylogo_path="MYLOGO_PATH", markovorder=1, WindowLength=10, numberWindows=-1, numberColours=2, AlignmentOrder=1, genome="GENOME", @host="long")
+
+         phylogibbs2 =  RunPhyloGibbs(infile = splitalignments.even_file, PhyloGibbsPATH="PHYLOGIBBS_PATH", mylogo_path="MYLOGO_PATH", markovorder=1, WindowLength=20, numberWindows=-1, numberColours=2, AlignmentOrder=1, genome="GENOME", @host="long")
+
+/*phylogibbs without taking alignments into account*/
+
+         phylogibbs3 =  RunPhyloGibbs(infile = splitseqs.even_file, PhyloGibbsPATH="PHYLOGIBBS_PATH", mylogo_path="MYLOGO_PATH", markovorder=1, WindowLength=10, numberWindows=-1, numberColours=2, AlignmentOrder=0, genome="GENOME", @host="long")
+
+         phylogibbs4 =  RunPhyloGibbs(infile = splitseqs.even_file, PhyloGibbsPATH="PHYLOGIBBS_PATH", mylogo_path="MYLOGO_PATH", markovorder=1, WindowLength=20, numberWindows=-1, numberColours=2, AlignmentOrder=0, genome="GENOME", @host="long")
+
+         
+         //Runs motevo for weight matrix refinement. Also produces sensitivity-positive predicitve value plots for the weight matrix 
+         runmotevoPG1_1 = RunMotevo(odd_file = splitalignments.odd_file, even_file = splitalignments.even_file, WM = phylogibbs1.WeightMatrix1, shuffledPeaks = shuffledAlns.outfile, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="true", @host="long")
+
+         runmotevoPG1_2 = RunMotevo(odd_file = splitalignments.odd_file, even_file = splitalignments.even_file, WM = phylogibbs1.WeightMatrix2, shuffledPeaks = shuffledAlns.outfile, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="true", @host="long")
+
+
+         runmotevoPG2_1 = RunMotevo(odd_file = splitalignments.odd_file, even_file = splitalignments.even_file, WM = phylogibbs2.WeightMatrix1, shuffledPeaks = shuffledAlns.outfile, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="true", @host="long")
+
+         runmotevoPG2_2 = RunMotevo(odd_file = splitalignments.odd_file, even_file = splitalignments.even_file, WM = phylogibbs2.WeightMatrix2, shuffledPeaks = shuffledAlns.outfile, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="true", @host="long")
+
+
+         //Refine all WMs on alignments
+         runmotevoPG3_1 = RunMotevo(odd_file = splitalignments.odd_file, even_file = splitalignments.even_file, WM = phylogibbs3.WeightMatrix1, shuffledPeaks = shuffledAlns.outfile, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="true", @host="long")
+
+         runmotevoPG3_2 = RunMotevo(odd_file = splitalignments.odd_file, even_file = splitalignments.even_file, WM = phylogibbs3.WeightMatrix2, shuffledPeaks = shuffledAlns.outfile, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="true", @host="long")
+
+
+         runmotevoPG4_1 = RunMotevo(odd_file = splitalignments.odd_file, even_file = splitalignments.even_file, WM = phylogibbs4.WeightMatrix1, shuffledPeaks = shuffledAlns.outfile, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="true", @host="long")
+
+         runmotevoPG4_2 = RunMotevo(odd_file = splitalignments.odd_file, even_file = splitalignments.even_file, WM = phylogibbs4.WeightMatrix2, shuffledPeaks = shuffledAlns.outfile, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="true", @host="long")
+
+
+
+         //Report generation
+
+         if BGstring != "" {
+
+                  latexfrag1 = LatexFragmentizer(log1=bg_filter.log_file,
+                                                 plot1=bg_filter.plotfile,
+                                                 capt_log1="",
+                                                 capt_log2="Reverse Cumulative Distribution of Background Window Counts.",
+                                                 sectionTitle=TFname+": Log for Background Window Filtering:")
+
+                  latexfrag2 = LatexFragmentizer(log1=peakcall_newnoise.log_file,
+                                                 plot1=peakcall_newnoise.Z_hist,
+                                                 capt_log1="",
+                                                 capt_plot1="Distribution of Window Z-values with Fitted Gaussian.",
+                                                 sectionTitle=TFname+": Log for Background Noise Distribution Fit:")
+
+                  latexfrag3 = LatexFragmentizer(log1=peakmerge.PeakMerger_log,
+                                                 plot1=peakmerge.revcum,
+                                                 capt_log1="Bin Reads Log",
+                                                 capt_plot1="Reverse Cumulative Distribution of Window Z-values.",
+                                                 sectionTitle=TFname+": Log for Mergeing Windows and Determining Z-value Cut-off:")
+
+                  latexfrag4 = LatexFragmentizer(log1=selectpeaks.log_file,
+                                                 plot1=selectpeaks.height_sigma_scatter,
+                                                 plot2=selectpeaks.height_rmsd_scatter,
+                                                 plot3=selectpeaks.sigma_rmsd_scatter,
+                                                 plot4=selectpeaks.height_revcum,
+                                                 plot5=selectpeaks.rmsd_hist,
+                                                 plot6=selectpeaks.sigma_hist,
+                                                 capt_log1="",
+                                                 capt_plot1="Scatter plot of peak height versus peak width",
+                                                 capt_plot2="Scatter plot of peak height versus peak quality",
+                                                 capt_plot3="Scatter plot of peak width versus peak quality",
+                                                 capt_plot4="Reverse cumulative distribution of peak heights",
+                                                 capt_plot5="Histogram of peak qualities",
+                                                 capt_plot6="Histogram of peak widths (sigmas)",
+                                                 sectionTitle=TFname+": Log for Refining Peaks (Fitting Gaussians Inside Megred Windows):")
+
+                  latexfrag5 = LatexFragmentizer(log1=recompz.log_file,
+                                                 plot1=recompz.height_z_scatter,
+                                                 plot2=recompz.z_hist,
+                                                 plot3=recompz.z_revcum,
+                                                 capt_log1="",
+                                                 capt_plot1="Scatter plot of peak height versus peak Z-score",
+                                                 capt_plot2="Histogram of peak Z-scores",
+                                                 capt_plot3="Reverse cumulative of peak Z-scores",
+                                                 sectionTitle=TFname+": Log for Computing Z-scores of Refined Peaks:")
+
+                  latexfrag6 = LatexFragmentizer(log1=annotpeaks.log_file,
+                                                 capt_log1="",
+                                                 sectionTitle=TFname+": Log for Refined Peak Annotation:")
+
+
+         }
+
+         else {
+
+
+                  latexfrag2 = LatexFragmentizer(log1=peakcall_newnoise.log_file,
+                                                 plot1=peakcall_newnoise.Z_hist,
+                                                 capt_log1="",
+                                                 capt_plot1="Distribution of Window Z-values with Fitted Gaussian.",
+                                                 sectionTitle=TFname+": Log for Background Noise Distribution Fit:")
+
+                  latexfrag3 = LatexFragmentizer(log1=peakmerge.PeakMerger_log,
+                                                 plot1=peakmerge.revcum,
+                                                 capt_log1="Bin Reads Log",
+                                                 capt_plot1="Reverse Cumulative Distribution of Window Z-values.",
+                                                 sectionTitle=TFname+": Log for Mergeing Windows and Determining Z-value Cut-off:")
+
+                  latexfrag4 = LatexFragmentizer(log1=selectpeaks.log_file,
+                                                 plot1=selectpeaks.height_sigma_scatter,
+                                                 plot2=selectpeaks.height_rmsd_scatter,
+                                                 plot3=selectpeaks.sigma_rmsd_scatter,
+                                                 plot4=selectpeaks.height_revcum,
+                                                 plot5=selectpeaks.rmsd_hist,
+                                                 plot6=selectpeaks.sigma_hist,
+                                                 capt_log1="",
+                                                 capt_plot1="Scatter plot of peak height versus peak width",
+                                                 capt_plot2="Scatter plot of peak height versus peak quality",
+                                                 capt_plot3="Scatter plot of peak width versus peak quality",
+                                                 capt_plot4="Reverse cumulative distribution of peak heights",
+                                                 capt_plot5="Histogram of peak qualities",
+                                                 capt_plot6="Histogram of peak widths (sigmas)",
+                                                 sectionTitle=TFname+": Log for Refining Peaks (Fitting Gaussians Inside Megred Windows):")
+
+                  latexfrag5 = LatexFragmentizer(log1=recompz.log_file,
+                                                 plot1=recompz.height_z_scatter,
+                                                 plot2=recompz.z_hist,
+                                                 plot3=recompz.z_revcum,
+                                                 capt_log1="",
+                                                 capt_plot1="Scatter plot of peak height versus peak Z-score",
+                                                 capt_plot2="Histogram of peak Z-scores",
+                                                 capt_plot3="Reverse cumulative of peak Z-scores",
+                                                 sectionTitle=TFname+": Log for Computing Z-scores of Refined Peaks:")
+
+                  latexfrag6 = LatexFragmentizer(log1=annotpeaks.log_file,
+                                                 capt_log1="",
+                                                 sectionTitle=TFname+": Log for Refined Peak Annotation:")
+
+         }
+
+
+         latexfragPG = LatexFragmentizer(plot1=phylogibbs1.Logo1,
+                                         plot2=phylogibbs1.Logo2,
+                                         plot3=phylogibbs2.Logo1,
+                                         plot4=phylogibbs2.Logo2,
+                                         plot5=phylogibbs3.Logo1,
+                                         plot6=phylogibbs3.Logo2,
+                                         plot7=phylogibbs4.Logo1,
+                                         plot8=phylogibbs4.Logo2,
+                                         capt_plot1="Phylogibbs motif 1. Window length = 10",
+                                         capt_plot2="Phylogibbs motif 2. Window length = 10",
+                                         capt_plot3="Phylogibbs motif 3. Window length = 20",
+                                         capt_plot4="Phylogibbs motif 4. Window length = 20",
+                                         capt_plot5="Phylogibbs motif 5. Window length = 10, no alignments",
+                                         capt_plot6="Phylogibbs motif 6. Window length = 10, no alignments",
+                                         capt_plot7="Phylogibbs motif 7. Window length = 20, no alignments",
+                                         capt_plot8="Phylogibbs motif 8. Window length = 20, no alignments",
+                                         sectionTitle="Logos of All Eight de novo Motifs:") 
+
+                               
+         latexfragMot = LatexFragmentizer(plot1=runmotevoPG1_1.sens_ppv,
+                                          plot2=runmotevoPG1_2.sens_ppv,
+                                          plot3=runmotevoPG2_1.sens_ppv,
+                                          plot4=runmotevoPG2_2.sens_ppv,
+                                          plot5=runmotevoPG3_1.sens_ppv,
+                                          plot6=runmotevoPG3_2.sens_ppv,
+                                          plot7=runmotevoPG4_1.sens_ppv,
+                                          plot8=runmotevoPG4_2.sens_ppv,
+                                          capt_plot1="sensitivity - ppv plot for PhyloGibbs motif 1. Window length = 10",
+                                          capt_plot2="sensitivity - ppv plot for PhyloGibbs motif 2. Window length = 10",
+                                          capt_plot3="sensitivity - ppv plot for PhyloGibbs motif 3. Window length = 20",
+                                          capt_plot4="sensitivity - ppv plot for PhyloGibbs motif 4. Window length = 20",
+                                          capt_plot5="sensitivity - ppv plot for PhyloGibbs motif 5. Window length = 10, no alignments",
+                                          capt_plot6="sensitivity - ppv plot for PhyloGibbs motif 6. Window length = 10, no alignments",
+                                          capt_plot7="sensitivity - ppv plot for PhyloGibbs motif 7. Window length = 20, no alignments",
+                                          capt_plot8="sensitivity - ppv plot for PhyloGibbs motif 8. Window length = 20, no alignments",
+                                          sectionTitle="Precision and Recall Plots for All Eight de novo Motifs and Their Refined Version:")
+
+
+         latexfragMot2 = LatexFragmentizer(plot1=runmotevoPG1_1.Logo,
+                                           plot2=runmotevoPG1_2.Logo,
+                                           plot3=runmotevoPG2_1.Logo,
+                                           plot4=runmotevoPG2_2.Logo,
+                                           plot5=runmotevoPG3_1.Logo,
+                                           plot6=runmotevoPG3_2.Logo,
+                                           plot7=runmotevoPG4_1.Logo,
+                                           plot8=runmotevoPG4_2.Logo,
+                                           capt_plot1="Refined logo for PhyloGibbs motif 1. Window length = 10",
+                                           capt_plot2="Refined logo for PhyloGibbs motif 2. Window length = 10",
+                                           capt_plot3="Refined logo for PhyloGibbs motif 3. Window length = 20",
+                                           capt_plot4="Refined logo for PhyloGibbs motif 4. Window length = 20",
+                                           capt_plot5="Refined logo for PhyloGibbs motif 5. Window length = 10, no alignments",
+                                           capt_plot6="Refined logo for PhyloGibbs motif 6. Window length = 10, no alignments",
+                                           capt_plot7="Refined logo for PhyloGibbs motif 7. Window length = 20, no alignments",
+                                           capt_plot8="Refined logo for PhyloGibbs motif 8. Window length = 20, no alignments",
+                                           sectionTitle="Logos for All Eight Refined de novo Motifs.")
+
+
+
+         if wm_defined == 1 {
+
+
+            //Run motevo for refinement of existing weight matrix
+            runmotevo = RunMotevo(odd_file = splitalignments.odd_file, even_file = splitalignments.even_file, WM = old_WM.in, shuffledPeaks = shuffledAlns.outfile, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="true", @host="long")
+
+            filterwms = FilterWMs(WM1 = phylogibbs1.WeightMatrix1,
+                                  WM2 = runmotevoPG1_1.refWM,
+                                  WM3 = phylogibbs1.WeightMatrix2,
+                                  WM4 = runmotevoPG1_2.refWM,
+                                  WM5 = phylogibbs2.WeightMatrix1,
+                                  WM6 = runmotevoPG2_1.refWM,
+                                  WM7 = phylogibbs2.WeightMatrix2,
+                                  WM8 = runmotevoPG2_2.refWM,
+                                  WM9 = phylogibbs3.WeightMatrix1,
+                                  WM10 = runmotevoPG3_1.refWM,
+                                  WM11 = phylogibbs3.WeightMatrix2,
+                                  WM12 = runmotevoPG3_2.refWM,
+                                  WM13 = phylogibbs4.WeightMatrix1,
+                                  WM14 = runmotevoPG4_1.refWM,
+                                  WM15 = phylogibbs4.WeightMatrix2,
+                                  WM16 = runmotevoPG4_2.refWM,
+                                  WM17 = runmotevo.refWM,
+                                  @host="long")
+
+
+            trimwm = TrimWM(WM1 = old_WM.in,
+                            WMdir = filterwms.WMdir,
+                            information_cutoff=0.25,
+                            @host="long")
+
+
+            complikeli_slim = ComputeLikelihoodM_greedy(train_set = splitalignments.even_file,
+                                                        test_set = splitalignments.odd_file,
+                                                        BaseFrequencies = buildufe.BaseFrequencies,
+                                                        WMdir = trimwm.outdir,
+                                                        WMdir2 = filterwms.WMdir,
+                                                        UFEmodel = buildufe.UFEmodel,
+                                                        genome="GENOME",
+                                                        motevo_path="MOTEVO_PATH",
+                                                        aligned="true",
+                                                        slim="true",
+                                                        loglik_cutoff=20,
+                                                        @host="long")
+
+            reducewms = ReduceWMs(infile = complikeli_slim.loglik_all_motifs,
+                                  distance_cutoff=0.2,
+                                  score_cutoff=0.0,
+                                  @host="long")
+
+            complikeli = ComputeLikelihoodM_greedy(train_set = splitalignments.even_file,
+                                                   test_set = splitalignments.odd_file,
+                                                   BaseFrequencies = buildufe.BaseFrequencies,
+                                                   keepWM = old_WM.in,
+                                                   WMdir = reducewms.WMdir,
+                                                   UFEmodel = buildufe.UFEmodel,
+                                                   genome="GENOME",
+                                                   motevo_path="MOTEVO_PATH",
+                                                   aligned="true",
+                                                   slim="false",
+                                                   loglik_cutoff=20,
+                                                   @host="long")
+
+
+            //take one set of alignments and background alignments to test all WMs we have. Also gives the best WM.
+            wmqual = WMQuality(peaks = splitalignments.odd_file,
+                               shuffledPeaks = shuffledAlns.outfile,
+                               WMdir = complikeli.WMoutdir,
+                               UFEmodel = buildufe.UFEmodel,
+                               BaseFrequencies = buildufe.BaseFrequencies,
+                               aligned="true", genome="GENOME",
+                               motevo_path="MOTEVO_PATH",
+                               @host="long")
+
+
+
+            latexfrag7 = LatexFragmentizer(plot1=runmotevo.sens_ppv,
+                                           plot2=runmotevo.Logo,
+                                           capt_plot1="Sensitivity - positive predictive value plot for WM refinement, with alignments.",
+                                           capt_plot2="Refined weight matrix logo.",
+                                           sectionTitle="Log for Refinement of Known Motif:")
+
+            latexfrag8 = LatexFragmentizer(plot1=wmqual.sens_ppv,
+                                           capt_plot1="Sensitivity - positive predictive value plot of 4 best performing motifs",
+                                           sectionTitle="Precision and Recall Plots of Five Best Performing Motifs:")
+
+
+            latexfrag9 = LatexFragmentizer(log1=complikeli.loglik_combined,
+                                           plot1=complikeli.loglik_plot,
+                                           capt_log1="",
+                                           capt_plot1="Contribution of motifs to ChIP peak explanantion.",
+                                           sectionTitle="Final Motifs and Their Contribution in Explaining the Peaks:")
+
+
+
+            if BGstring != "" {
+
+               combine2 = CombineLatex(latex1=latexfrag1.fragment, latex2=latexfrag2.fragment, latex3=latexfrag3.fragment, latex4=latexfrag4.fragment, latex5=latexfrag5.fragment, latex6=latexfrag6.fragment, latex7=latexfragPG.fragment, latex8=latexfragMot.fragment, latex9=latexfragMot2.fragment, latex10=latexfrag7.fragment, latex11=latexfrag8.fragment, latex12=latexfrag9.fragment)
+               OUTPUT(combine2.pdfreport)
+
+            }
+
+            else {
+
+               combine2 = CombineLatex(latex1=latexfrag2.fragment, latex2=latexfrag3.fragment, latex3=latexfrag4.fragment, latex4=latexfrag5.fragment, latex5=latexfrag6.fragment, latex6=latexfragPG.fragment, latex7=latexfragMot.fragment, latex8=latexfragMot2.fragment, latex9=latexfrag7.fragment, latex10=latexfrag8.fragment, latex11=latexfrag9.fragment)
+               OUTPUT(combine2.pdfreport)
+
+            }
+
+         } 
+
+
+         else {
+
+            filterwms = FilterWMs(WM1 = phylogibbs1.WeightMatrix1,
+                                  WM2 = runmotevoPG1_1.refWM,
+                                  WM3 = phylogibbs1.WeightMatrix2,
+                                  WM4 = runmotevoPG1_2.refWM,
+                                  WM5 = phylogibbs2.WeightMatrix1,
+                                  WM6 = runmotevoPG2_1.refWM,
+                                  WM7 = phylogibbs2.WeightMatrix2,
+                                  WM8 = runmotevoPG2_2.refWM,
+                                  WM9 = phylogibbs3.WeightMatrix1,
+                                  WM10 = runmotevoPG3_1.refWM,
+                                  WM11 = phylogibbs3.WeightMatrix2,
+                                  WM12 = runmotevoPG3_2.refWM,
+                                  WM13 = phylogibbs4.WeightMatrix1,
+                                  WM14 = runmotevoPG4_1.refWM,
+                                  WM15 = phylogibbs4.WeightMatrix2,
+                                  WM16 = runmotevoPG4_2.refWM,
+                                  @host="long")
+
+            trimwm = TrimWM(WMdir = filterwms.WMdir,
+                            information_cutoff=0.25,
+                            @host="long")
+
+
+            complikeli_slim = ComputeLikelihoodM_greedy(train_set = splitalignments.even_file,
+                                                        test_set = splitalignments.odd_file,
+                                                        BaseFrequencies = buildufe.BaseFrequencies,
+                                                        WMdir = trimwm.outdir,
+                                                        WMdir2 = filterwms.WMdir,
+                                                        UFEmodel = buildufe.UFEmodel,
+                                                        genome="GENOME",
+                                                        motevo_path="MOTEVO_PATH",
+                                                        aligned="true",
+                                                        slim="true",
+                                                        loglik_cutoff=20,                  
+                                                        @host="long")
+
+            reducewms = ReduceWMs(infile = complikeli_slim.loglik_all_motifs,
+                                  distance_cutoff=0.2,
+                                  score_cutoff=0.0,
+                                  @host="long")
+
+            complikeli = ComputeLikelihoodM_greedy(train_set = splitalignments.even_file,
+                                                   test_set = splitalignments.odd_file,
+                                                   BaseFrequencies = buildufe.BaseFrequencies,
+                                                   WMdir = reducewms.WMdir,
+                                                   UFEmodel = buildufe.UFEmodel,
+                                                   genome="GENOME",
+                                                   motevo_path="MOTEVO_PATH",
+                                                   aligned="true",
+                                                   slim="false",
+                                                   loglik_cutoff=20,
+                                                   @host="long")
+
+
+            //take one set of alignments and background alignments to test all WMs we have. Also gives the best WM.
+            wmqual = WMQuality(peaks = splitalignments.odd_file,
+                               shuffledPeaks = shuffledAlns.outfile,
+                               WMdir = complikeli.WMoutdir,
+                               UFEmodel = buildufe.UFEmodel,
+                               BaseFrequencies = buildufe.BaseFrequencies,
+                               aligned="true", genome="GENOME",
+                               motevo_path="MOTEVO_PATH",
+                               @host="long")
+
+
+
+            latexfrag8 = LatexFragmentizer(plot1=wmqual.sens_ppv,
+                                           capt_plot1="Sensitivity - positive predictive value plot of 4 best performing motifs",
+                                           sectionTitle="Precision and Recall Plots of Five Best Performing Motifs:")
+
+
+            latexfrag9 = LatexFragmentizer(log1=complikeli.loglik_combined,
+                                           plot1=complikeli.loglik_plot,
+                                           capt_log1="",
+                                           capt_plot1="Contribution of motifs to ChIP peak explanantion.",
+                                           sectionTitle="Final Motifs and Their Contribution in Explaining the Peaks:")
+
+
+
+            if BGstring != "" {
+
+               combine2 = CombineLatex(latex1=latexfrag1.fragment, latex2=latexfrag2.fragment, latex3=latexfrag3.fragment, latex4=latexfrag4.fragment, latex5=latexfrag5.fragment, latex6=latexfrag6.fragment, latex7=latexfragPG.fragment, latex8=latexfragMot.fragment, latex9=latexfragMot2.fragment, latex10=latexfrag8.fragment, latex11=latexfrag9.fragment)
+               OUTPUT(combine2.pdfreport)
+
+            }
+
+            else {
+
+               combine2 = CombineLatex(latex1=latexfrag2.fragment, latex2=latexfrag3.fragment, latex3=latexfrag4.fragment, latex4=latexfrag5.fragment, latex5=latexfrag6.fragment, latex6=latexfragPG.fragment, latex7=latexfragMot.fragment, latex8=latexfragMot2.fragment, latex9=latexfrag8.fragment, latex10=latexfrag9.fragment)
+               OUTPUT(combine2.pdfreport)
+
+            }
+
+
+
+         }
+
+
+         return record(Sequences = getseqs2.Sequences, RegionCoverageDir = regioncoverage.out_dir, PeakStats = pstats, PeakCallDir = peakcall_newnoise.out_dir, WMDir = complikeli.WMoutdir, LLog = complikeli.loglik_contributing_motifs, AUCLog = wmqual.log_file, Peaks = annotpeaks.peakAnnotations, ShuffledTestSet = shuffled_forreturn, TestSet = test_forreturn, TrainingSet = training_forreturn, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies)
+
+
+}
+
+
+/*-----------------------------------------------------------------------------------------------------------------*/
+/*-----------------------Composite Component to compute statistics for each candidate WM---------------------------*/
+/*-----------------------------------------------------------------------------------------------------------------*/
+
+
+
+function GetWMStats(BinaryFile Sequences, BinaryFolder RegionCoverage, BinaryFile PeakStats, BinaryFile CandWM, BinaryFolder PeakCallDir, BinaryFile LLog, BinaryFile AUCLog, string IP_string) -> (BinaryFile Peakstats, BinaryFile TFBSstats) {
+
+
+             WMlibrary = "WMLIBRARY"
+
+             identifymotif = IdentifyMotif(WM = CandWM, WMlibrary=WMlibrary, ntop=4, @host="long")
+
+             createlogo = CreateLogo(WM = CandWM, llog = LLog, auclog = AUCLog, mylogo_path="MYLOGO_PATH")
+
+             getpeakposts = GetPeakPosteriors(regions = Sequences, RegCov_dir = RegionCoverage,
+                                             statsfile = PeakStats, WM = CandWM,
+                                             minposterior=0.2, motevo_path="MOTEVO_PATH", genome="GENOME", project_leader="PROJECTLEADER", files_per_job=1000,
+                                             read_files=IP_string)
+
+
+             getstats = GetStatistics(peakstats = getpeakposts.peakstats, TFBSstats = getpeakposts.TFBSstats, minposterior=0.2, @host="long")
+
+
+             latexfrag1 = LatexFragmentizer(log1=identifymotif.top_motifs,
+                                            log2=createlogo.log_file,
+                                            plot1=createlogo.Logo,
+                                            plot2=createlogo.sens_spec,
+                                            capt_log1="4 Top Similar Looking Motifs:",
+                                            capt_log2="Statistics:",
+                                            capt_plot1="Logo of Weight Matrix",
+                                            capt_plot2="Precision and Recall curve",
+                                            sectionTitle="General Motif Characteristics:")
+
+             latexfrag2 = LatexFragmentizer(log1=getstats.log_file,
+                                            plot1=getstats.height_post_scatter,
+                                            //plot2=getstats.quality_post_scatter,
+                                            plot3=getstats.height_post_violin,
+                                            //plot4=getstats.quality_post_violin,
+                                            plot5=getstats.post_hist,
+                                            //plot6=getstats.post_cumulative,
+                                            plot7=getstats.TFBS_peakcenter_dist_hist,
+                                            //plot8=getstats.TFBS_post_peakcenter_dist_scatter,
+                                            capt_log3="",
+                                            capt_plot1="Scatter plot of peak height versus peak posterior",
+                                            //capt_plot2="Scatter plot of peak quality versus peak posterior",
+                                            capt_plot3="Violin plot of peak height versus peak posterior",
+                                            //capt_plot4="Violin plot of peak quality versus peak posterior",
+                                            capt_plot5="Histogram of peak posteriors",
+                                            //capt_plot6="Cumulative distribution of peak posteriors",
+                                            capt_plot7="Histogram of distances of TFBS to its nearest peak center",
+                                            //capt_plot8="Scatter plot of TFBS posterior versus distance to its nearest peak center",
+                                            sectionTitle="Statistics for TFBS - Peak Centering and Peak Posterior - Peak Height Correlation:")
+
+
+             //make hd5f_chromdir a variable in yaml file
+             computewmscores = ComputeWMScores(WM = CandWM, chrominfo="CHROMINFOFILE_PATH", WMscore_cutoff=2, hd5f_chromdir="HD5F_CHROMDIR", bg_frequencies="0.25,0.25,0.25,0.25,0.25", project_leader="PROJECTLEADER")
+
+             binwmscores = BinReads(read_file = computewmscores.WMscores, chrominfo="CHROMINFOFILE_PATH", perlPATH="PERL_PATH", FGwinsize=FG_WINSIZE, BGwinsize=BG_WINSIZE, stepsize=STEPSIZE, FMIpath="FMI_PATH", @host="long_hm")
+
+             mergescores = WMscoreCutOff(infile = binwmscores.out_file, perlPATH="PERL_PATH", wmscore_cutoff=10, @host="long") //use a hardcoded cut-off because it is really difficult to find one automatically or even by eye
+
+             //annotpredpeaks = AnnotatePeaks(peaks = mergescores.outfile, genome="GENOME", annotationFile="ANNOTATION_FILE", @host="long")
+
+
+             //latexfrag3 = LatexFragmentizer(log1=annotpredpeaks.log_file,
+             //                               plot1=mergescores.plotfile,
+             //                               capt_log1="",
+             //                               capt_plot1="Reverse Cumulative Distribution of Predicted Peak Scores",
+             //                               sectionTitle="Predicted Peaks Log:")
+
+
+             //gwcorr = GenomeWideCorrelation(indir = PeakCallDir, binnedWMscores = binwmscores.out_file, @host="long")
+
+             //mutinf = ComputeMutualInformation(infile = gwcorr.datafile)
+
+
+             // latexfrag4 = LatexFragmentizer(log1=gwcorr.log_file,
+             //                                log2=mutinf.log_file,
+             //                                plot1=gwcorr.correlation_scatter,
+             //                                plot2=gwcorr.correlation_violin,
+             //                                plot3=mutinf.contourplot,
+             //                                capt_log1="Log for genome wide correlation of Z scores and WM scores",
+             //                                capt_log2="Log for mutual information of ChIP signal (Z-score) and predicted sites (WM-score)",
+             //                                capt_plot1="Scatter plot of region Z scores versus region WM scores",
+             //                                capt_plot2="Violin- and boxplots of region Z scores versus region WM scores, stratified by region Z scores",
+             //                                capt_plot3="Contour plot of mutual information at different Z-score and WM-score cut-offs",
+             //                                sectionTitle="Log for Genome Wide Correlation of ChIP Signal (Window Z-scores) and Predicted Binding:")
+
+
+             combineWM = CombineLatex(latex1=latexfrag1.fragment, latex2=latexfrag2.fragment) //, latex4=latexfrag4.fragment)
+
+             OUTPUT(combineWM.pdfreport)
+
+             return record(Peakstats = getpeakposts.peakstats, TFBSstats = getpeakposts.TFBSstats)
+
+}
+
+
+
+/*----------------------------------------------------------------------------------------------------------------------------------*/
+/*----------------------------------------------------Main function-----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------------------------------------------------------------*/
+
+
+/*----------------1. Read in data--------------------*/
+
+datafiles = INPUT(path="CSV_DATAFILE_PATH")
+existingSamples = INPUT(path="CSV_EXISTING_SAMPLES")
+
+
+TFrecord = record() 
+TFrecordStrings = record() //This is the record for already processed replicates. The strings are thus shifted bedweight files
+WMdict = record()  //contains all WMs for all TFs, if they exist
+
+//Add the BG key, in case there is no background given. Otherwise it will complain below when starting FGBGprocessing.
+TFrecordStrings["BG"] = ""
+  
+//initialize TFrecordString (contains string with paths to the shifted bedfiles)
+//initilaize TFrecord with records for each input replicate
+//initialize WMdict
+
+for file : std.itercsv(datafiles.in){
+	TFrecordStrings[file.mode] = ""
+	TFrecord[file.mode] = record()   
+        WMdict[file.mode] = file.WM
+}
+
+//std.echo(std.recordToString(TFrecord))
+//std.echo(std.recordToString(TFrecordStrings))
+
+////Reading from existingSamples.csv to add shifted.bedweight files to corresponding string.
+for file : std.itercsv(existingSamples.in){
+           TFrecordStrings[file.mode] = ""
+           TFrecord[file.mode] = record()
+           WMdict[file.mode] = file.WM
+}
+
+//std.echo(std.recordToString(TFrecord))
+//std.echo(std.recordToString(TFrecordStrings))
+
+for file : std.itercsv(existingSamples.in){
+           TFrecordStrings[file.mode] = TFrecordStrings[file.mode] + file.filepath + " "
+}
+
+//std.echo(std.recordToString(TFrecord))
+//std.echo(std.recordToString(TFrecordStrings))
+
+
+/*----------------2. process replicates, i.e. get shifted bedweight files--------------------*/
+
+ip = 0
+bg = 0
+
+for file : std.itercsv(datafiles.in){
+	if file.mode != "BG" {
+		ip = ip + 1
+                fastq = INPUT(path=file.filepath, @name="fastq"+ip)
+                fastq_i = std.lookup("fastq"+ip)
+
+		IP = IPfunction(fastq_i.in, repFMIid = file.FMIid, iter = "IP"+ip, DESC = file.desc, TFname=file.mode, formatFlag=file.format, @name=file.mode + "_" + ip)
+		IP_i = std.lookup(file.mode + "_" + ip)
+
+		TFrecord[file.mode][ip] = IP_i.IPout
+
+		}
+
+	else {
+		bg = bg + 1
+		bg_fastq = INPUT(path=file.filepath, @name="bg_fastq"+bg)
+                bg_fastq_i = std.lookup("bg_fastq"+bg)
+
+		BG = BGfunction(bg_fastq_i.in, repFMIid = file.FMIid, iter = "BG"+bg, DESC = file.desc, TFname="Background", formatFlag=file.format, @name=file.mode + "_" + bg)
+		BG_i = std.lookup(file.mode + "_" + bg)
+ 
+		TFrecord[file.mode][bg] = BG_i.BGout
+
+		}
+}
+
+//putting all shifted bedweight file paths from TFrecord into TFrecordStrings
+for key, value : TFrecord{
+
+	for key1, value1 : value{
+
+		for k : std.iterdir(value1){
+			TFrecordStrings[key] = TFrecordStrings[key] + " " + k.path
+			}
+		}
+	}
+
+
+
+/*-----------3. Start downstream processing of foreground and background samples------------*/
+
+/*-------3.1 First find peaks and candidate WMs---------*/
+
+FGBGOUT = record()
+PEAKS_record = record()
+for TF, str : TFrecordStrings{
+	if TF != "BG"{
+		proc = FGBGprocessing(IPstring = str, BGstring = TFrecordStrings["BG"], WM = WMdict[TF], TFname = TF, @name=TF + "_FgBg")
+		proc_i = std.lookup(TF + "_FgBg")
+		FGBGOUT[TF] = proc_i
+
+                PEAKS_record[TF] = record()
+                PEAKS_record[TF]["peaks"] = proc_i.Peaks
+
+		}
+	}
+
+std.echo(std.recordToString(FGBGOUT))
+
+pipeFlag = "PIPEFLAG"
+
+
+//Use non aligned stuff for statistics when using dm3, because it takes too long otherwise.
+if "GENOME" == "dm3" {
+        aligned_flag = "false"
+   }
+   else {
+        aligned_flag = "true"
+   }
+
+
+/*----3.2.1 Now get statistics for contributing WMs from WM library (produced ALWAYS)----*/
+
+
+if pipeFlag != "JUSTPEAKS" {
+
+  WMlibrary = "WMLIBRARY"
+
+  knownWMdir = INPUT(path=WMlibrary, @name="knownWMdir")
+  knownWMdir_i = std.lookup("knownWMdir")
+
+  for TF, outvals : FGBGOUT {
+
+          complikeli = ComputeLikelihoodM_greedy(train_set = outvals.TrainingSet,
+                                                 test_set = outvals.TestSet,
+                                                 BaseFrequencies = outvals.BaseFrequencies,
+                                                 WMdir = knownWMdir_i.in,
+                                                 UFEmodel = outvals.UFEmodel,
+                                                 genome="GENOME",
+                                                 motevo_path="MOTEVO_PATH",
+                                                 aligned=aligned_flag,
+                                                 slim="false",
+                                                 loglik_cutoff=20,
+                                                 @host="long",
+                                                 @name=TF+"_knownWMstats_complikeli")
+
+          complikeli_i = std.lookup(TF+"_knownWMstats_complikeli")
+
+          //take one set of alignments and background alignments to test all WMs given.
+          wmqual = WMQuality(peaks = outvals.TestSet,
+                             shuffledPeaks = outvals.ShuffledTestSet,
+                             WMdir = complikeli_i.WMoutdir,
+                             UFEmodel = outvals.UFEmodel,
+                             BaseFrequencies = outvals.BaseFrequencies,
+                             aligned=aligned_flag, genome="GENOME",
+                             motevo_path="MOTEVO_PATH",
+                             @host="long",
+                             @name=TF+"_knownWMstats_wmqual")
+
+          wmqual_i = std.lookup(TF+"_knownWMstats_wmqual")
+
+
+          //To enable the pipe-line to run this loop parallely, first collect output and later parse it.
+          Peak_stats_record = {}
+          TFBSs_stats_record = {}
+
+          wmiter = 0
+
+          for candwm : std.iterdir(complikeli_i.WMoutdir){
+
+              wmiter = wmiter + 1
+
+              CandWM = INPUT(path=candwm.path, @name=TF+"_knownWM_"+wmiter)
+              CandWM_i = std.lookup(TF+"_knownWM_"+wmiter)
+
+              stets = GetWMStats(outvals.Sequences, outvals.RegionCoverageDir, outvals.PeakStats, CandWM_i.in, outvals.PeakCallDir, complikeli_i.loglik_contributing_motifs, wmqual_i.log_file, IP_string = TFrecordStrings[TF], @name=TF+"_knownWMstats_"+wmiter)
+              stets_i = std.lookup(TF+"_knownWMstats_"+wmiter)
+
+              Peak_stats = stets_i.Peakstats
+              TFBSs = stets_i.TFBSstats
+
+              Peak_stats_record[wmiter] = Peak_stats
+              TFBSs_stats_record[wmiter] = TFBSs
+
+              }
+
+
+          //used to plot correlation of predictions and to combine sites of all motifs in peak file.
+          Peak_stats_string = ""
+          TFBSs_string = ""
+
+          for wmnum, peakval : Peak_stats_record{
+               for f: std.iterdir(peakval){
+
+                    Peak_stats_string = Peak_stats_string + f.path + "/" + f.name + " "
+                    }
+          }
+
+          for wmnum, tfbsval : TFBSs_stats_record{
+               for f: std.iterdir(tfbsval){
+
+                    TFBSs_string = TFBSs_string + f.path + "/" + f.name + " "
+                    }
+          }
+
+
+          PEAKS_record[TF]["known_peakstats"] = Peak_stats_string
+          PEAKS_record[TF]["known_tfbs"] = TFBSs_string
+
+  }
+
+
+  for TF, peaks_tfbs : PEAKS_record{
+
+      motif_correlation = MotifCorrelation(peakstats_string = peaks_tfbs["known_peakstats"], @name=TF+"_knownFINAL_motif_correlation")
+      motif_correlation_i = std.lookup(TF+"_knownFINAL_motif_correlation")
+      OUTPUT(motif_correlation_i.correlation_plot)
+
+  }
+
+}
+
+
+
+/*-------3.2.2 Now get statistics for candidate WMs (de novo motifs) if requested---------*/
+
+if pipeFlag != "JUSTPEAKS" {
+
+          for TF, outvals : FGBGOUT{
+
+              //To enable the pipe-line to run this loop parallely, first collect output and later parse it.
+              Peak_stats_record = {}
+              TFBSs_stats_record = {}
+
+              wmiter = 0
+
+              for candwm : std.iterdir(outvals.WMDir){
+        
+                wmiter = wmiter + 1
+
+                CandWM = INPUT(path=candwm.path, @name=TF+"_denovoWM_"+wmiter)
+                CandWM_i = std.lookup(TF+"_denovoWM_"+wmiter)
+
+                stets = GetWMStats(outvals.Sequences, outvals.RegionCoverageDir, outvals.PeakStats, CandWM_i.in, outvals.PeakCallDir, outvals.LLog, outvals.AUCLog, IP_string = TFrecordStrings[TF], @name=TF+"_denovoWMstats_"+wmiter)
+                stets_i = std.lookup(TF+"_denovoWMstats_"+wmiter)
+
+                Peak_stats = stets_i.Peakstats
+                TFBSs = stets_i.TFBSstats
+
+                Peak_stats_record[wmiter] = Peak_stats
+                TFBSs_stats_record[wmiter] = TFBSs
+
+              }
+
+              //used to plot correlation of predictions and to combine sites of all motifs in peak file.
+              Peak_stats_string = ""
+              TFBSs_string = ""
+
+              for wmnum, peakval : Peak_stats_record{
+                   for f: std.iterdir(peakval){
+
+                          Peak_stats_string = Peak_stats_string + f.path + "/" + f.name + " "
+                    }
+              }
+
+              for wmnum, tfbsval : TFBSs_stats_record{
+                   for f: std.iterdir(tfbsval){
+
+                          TFBSs_string = TFBSs_string + f.path + "/" + f.name + " "
+                   }
+              }
+
+
+              PEAKS_record[TF]["peakstats"] = Peak_stats_string
+              PEAKS_record[TF]["tfbs"] = TFBSs_string
+
+          }
+
+
+          for TF, peaks_tfbs : PEAKS_record{
+
+              // produce the final output file just with known motifs:
+
+              combinepeakstfbs = CombinePeaksTFBSs(peaks = peaks_tfbs["peaks"], denovoTFBSs_string=peaks_tfbs["tfbs"], knownTFBSs_string=peaks_tfbs["known_tfbs"], denovo_peakposts_string=peaks_tfbs["peakstats"], known_peakposts_string=peaks_tfbs["known_peakstats"], minposterior=0.2, FGfiles_string=TFrecordStrings[TF], @host="long", @name=TF+"_combinepeakstfbs")
+              combinepeakstfbs_i = std.lookup(TF+"_combinepeakstfbs")
+
+              motif_correlation = MotifCorrelation(peakstats_string = peaks_tfbs["peakstats"], @host="long", @name=TF+"_denovoFINAL_motif_correlation")
+              motif_correlation_i = std.lookup(TF+"_denovoFINAL_motif_correlation")
+              OUTPUT(motif_correlation_i.correlation_plot)
+          }
+
+ }
+
+/*
+else {
+
+     // produce the final output file just with known motifs:
+
+     for TF, peaks_tfbs : PEAKS_record{
+
+         combinepeakstfbs = CombinePeaksTFBSs(peaks = peaks_tfbs["peaks"], knownTFBSs_string=peaks_tfbs["known_tfbs"], known_peakposts_string=peaks_tfbs["known_peakstats"], minposterior=0.2, FGfiles_string=TFrecordStrings[TF], @name=TF+"_combinepeakstfbs")
+         combinepeakstfbs_i = std.lookup(TF+"_combinepeakstfbs")
+         OUTPUT(combinepeakstfbs_i.peaks_with_sites)
+         }
+}
+*/
+
+
+/*
+         report = ConfigurationReport()
+         latex = LatexCombiner(latex1 = report.report)
+         template = LatexTemplate(authors="USER_NAME", title="Report TF_NAME")
+         pdf = LatexPDF(document = latex.document, header=template.header, footer=template.footer) 
+*/
+
