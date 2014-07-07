@@ -1,0 +1,67 @@
+.standard_img {
+    height: 300px;
+    float: left;
+}
+
+.peak_plot {
+    width: 300px;
+}
+.q_control {
+    height: 310px;
+    clear: both;
+}
+
+.q_control ul {
+    float: left;
+    margin-top: 40px;
+}
+
+body {
+    padding: 40px;
+}
+
+
+td, th {
+    border: 1px solid black;
+    padding: 0.5em;
+}
+
+th {
+
+    text-align: left;
+}
+
+h2 {
+    padding-top: 40px;
+}
+
+h3 {
+    clear: both;
+}
+
+#known_motifs {
+    clear: both;
+}
+
+#downloads {
+    clear: both;
+}
+/* table 
+#peak_table_filter {
+    float: left;
+    text-align: left;
+}
+
+#peak_table_length {
+    clear: left;
+}
+
+#peak_table_info {
+    margin-left: 20px;
+}
+
+#peak_table_paginate {
+    clear: left;
+    float: left;
+}
+*/

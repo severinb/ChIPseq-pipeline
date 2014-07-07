@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>numberMappableReads</name>
+    <version>1.0</version>
+    <doc>
+    numberMappableReads_anduril.py runs numberMappableReads.pl that runs soft/extractData.pl and soft.bc2/frag2totalGenomic.pl. 
+    Gives the number of reads mapped by bowtie.
+    </doc>
+    <launcher type="python">
+        <argument name="file" value="numberMappableReads_anduril.py" />
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <inputs>
+        <!--<input name="in_dir" type="BinaryFolder">
+            <doc>Path to a textfile to process.</doc>
+        </input>-->
+    </inputs>
+    <outputs>
+        <!--<output name="out_dir" type="BinaryFolder">
+            <doc>directory for filename.totalMappable</doc>
+        </output>-->
+        <output name="numberMappableReads_log" type="BinaryFile">
+            <doc>output file containing the number of mappable reads for log.</doc>
+        </output>
+    </outputs>
+    <parameters>
+            <parameter name="FMIid" type="string" default="">
+                <doc>FMI id to sample in FMI repository.</doc>
+            </parameter>
+            <parameter name="annoType" type="string" default="">
+                <doc>something like "mm9-mmV02-aln2".</doc>
+            </parameter>
+            <parameter name="FMIpath" type="string" default="">
+                <doc>Path to FMI directory containing samples, soft and soft.bc2 directories.</doc>
+            </parameter>
+            <parameter name="perlPATH" type="string" default="perl">
+                <doc>Path to right perl to use for execution.</doc>
+            </parameter>
+            <parameter name="FMI_output_dir" type="string" default="">
+                <doc>Directory where FMI output is written to. It is used like the 'samples' directory of the FMI toolkit. I added this because I don't want to store all data in the standard samples repository.</doc>
+            </parameter>
+    </parameters>
+</component>

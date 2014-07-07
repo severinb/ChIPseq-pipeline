@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>PeakMerger</name>
+    <!--<version>1.0</version>-->
+    <doc>
+      Takes output file of noise model fitting (PeakCall_newNoiseModel).
+      It tries to find a z-score cut-off by checking at which z-score cut-off FDR is low enough.
+    </doc>
+    <launcher type="python">
+        <argument name="file" value="zCutOff_byFDR.py" />
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <inputs>
+        <input name="in_dir" type="BinaryFolder">
+            <doc>Path to the out_dir of PeakCall_newNoiseModel component. PeakMerger then picks the file outzvals for further processing.</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="z_cutoff_file" type="BinaryFile">
+            <doc>File containing a number that it is the z-score cut-off.</doc>
+        </output>
+        <output name="revcum" type="PDF">
+            <doc>Reverse cumulative of window z-scores with z-score cut-off.</doc>
+        </output>
+    </outputs>
+    <parameters>
+        <parameter name="FDR" type="float" default="0.1">
+            <doc>Allowed FDR for the peaks above the z-score cut-off.</doc>
+        </parameter>
+    </parameters>
+</component>

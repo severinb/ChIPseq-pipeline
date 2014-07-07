@@ -1,0 +1,103 @@
+#!/import/bc2/home/nimwegen/GROUP/local/bin/python
+""" Script saves files transfered by MARA in chunks """
+
+import sys
+sys.path.append('/import/wnz/home/mara/local/lib/python2.7/site-packages')
+
+from flup.server.fcgi import WSGIServer
+from flask import Flask, request, make_response
+import json
+import logging
+import os
+import tempfile
+
+mara_app = Flask(__name__, template_folder='../')
+
+
+@mara_app.route("/")
+def main_page():
+    """ Show index page """
+    fin = open('severin.html')
+    content = fin.read()
+    fin.close()
+    return content
+
+
+@mara_app.route("/upload", methods=['POST'])
+def upload_files():
+    if request.method == 'POST':
+        logging.debug("received POST request")
+        return handle_post()
+    else:
+        logging.debug("received GET request")
+        return handle_get()
+
+
+@mara_app.route("/run", methods=['POST'])
+def run():
+    print "run ", str(request.form)
+    return 'Ok'
+
+
+def get_save_dir_name(conf):
+    """ Create temp dir in scratch directory"""
+    return "/import/bc2/home/nimwegen/pachko/www/severin/test/fg"
+    save_dir = tempfile.mkdtemp(prefix="data_", dir=conf['scratch_dir'])
+    os.chmod(save_dir, 0777)
+    os.mkdir("%s/upload" % save_dir, 0777)
+    os.chmod("%s/upload" % save_dir, 0777)
+    os.mkdir("%s/%s" % (save_dir, conf['report_dir']), 0777)
+    os.chmod("%s/%s" % (save_dir, conf['report_dir']), 0777)
+    return save_dir
+
+
+def handle_post():
+    """ Handles POST requests """
+    save_dir = get_save_dir_name({}) 
+    file_type = "fg_files[]"
+    if "bg_files[]" in request.files:
+        file_type = "bg_files[]"
+        save_dir = "/import/bc2/home/nimwegen/pachko/www/severin/test/bg"
+
+    print request.files
+
+    print request.headers['Content-Disposition']
+    
+    if 'X-File-Name' not in request.headers:
+        logging.warning('X-File-Name not present')
+        file_name = request.files[file_type].__dict__['filename']
+        file_size = 100000000000
+    else:
+        file_name = request.headers['X-File-Name']
+        file_size = int(request.headers['X-File-Size'])
+        logging.debug("size %s\n" % file_size)
+
+    file_path = "%s/%s" % (save_dir, file_name)
+    logging.debug("file_path %s\n" % file_path)
+    #data = request.data
+    data = request.files[file_type].stream
+
+    if (not os.path.exists(file_path)) \
+            or (os.path.getsize(file_path) < file_size):
+        fout = open(file_path, 'a')
+        for line in data:
+            fout.write(line)
+        fout.close()
+        os.chmod(file_path, 0666)
+    return make_response(json.dumps({'files': [
+        {'name': file_name,
+         'size': os.path.getsize(file_path),
+         'error': ''
+         }]}))
+
+
+def handle_get():
+    """ Handles GET requests """
+    pass
+
+
+if __name__ == "__main__":
+    # run server
+    #WSGIServer(mara_app, debug=True).run()
+    mara_app.debug = True
+    mara_app.run(host="0.0.0.0", port=5001, debug=True)

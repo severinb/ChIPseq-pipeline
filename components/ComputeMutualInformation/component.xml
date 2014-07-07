@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>ComputeMutualInformation</name>
+    <!--<version>1.0</version>-->
+    <doc>
+    This component is another method for motif quality assessment.
+    </doc>
+    <launcher type="python">
+        <argument name="file" value="ComputeMutualInformation.py" />
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <inputs>
+        <input name="infile" type="BinaryFile">
+            <doc>Output from GenomeWideCorrelation component.</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="intermediate" type="BinaryFolder">
+            <doc></doc>
+        </output>
+        <output name="log_file" type="BinaryFile">
+            <doc>log</doc>
+        </output>
+        <output name="contourplot" type="PDF">
+            <doc>log</doc>
+        </output>
+    </outputs>
+</component>

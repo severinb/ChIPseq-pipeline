@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <!-- Force latest IE rendering engine or ChromeFrame if installed -->
+    <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
+    <meta charset="utf-8">
+    <title>CRUNCH Results</title>
+    <meta name="description" content="">
+    <meta name="keywords"    content="">
+    <META HTTP-EQUIV="refresh" CONTENT="300">
+  </head>
+  <body style="padding: 0px;text-align: center;">
+    <br>
+    <h1>Please save this page address or bookmark it if you have not provided your e-mail address during submission! Your results will be shown here in couple hours.</h1>
+    <hr>
+    <br>
+    <img src="http://mara.unibas.ch/img/loader.gif" alt=\"loader\">
+    <br>
+    <h2>Status: Computing</h2>
+    <br>
+    <hr>
+    <br>
+    <h2><a href="{{ conf['root_url'] }}">Back to ChIP-CRUNCH</a></h2>
+  </body> 
+</html>

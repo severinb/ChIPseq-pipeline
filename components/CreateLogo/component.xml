@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>CreateLogo</name>
+    <!--<version>1.0</version>-->
+    <doc>
+    This component creates a logo for a given weight matrix.
+    It also extracts likelihood and AUC from log files of ComputeLikelihood and WMQuality component and writes it to a file. This is used for report generation.
+    </doc>
+    <launcher type="python">
+        <argument name="file" value="CreateLogo.py"/>
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <inputs>
+        <input name="WM" type="BinaryFile">
+            <doc>Wm to refine: either old existing one or the one found by PhyloGibbs.</doc>
+        </input>
+        <input name="llog" type="BinaryFile">
+            <doc>Log file of ComputeLikelihood component. Likelihood an optimal prior is read from here.</doc>
+        </input>
+        <input name="auclog" type="BinaryFile">
+            <doc>Log file of WMQualtiy component. AUC of WM is extracted.</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="Logo" type="PDF">
+            <doc>Logo of the refined weight matrix.</doc>
+        </output>
+        <output name="log_file" type="BinaryFile">
+            <doc>Log file containing likelihood and AUC of WM.</doc>
+        </output>
+        <output name="sens_spec" type="PDF">
+            <doc>Precision-Recall plot copied from WMQuality component.</doc>
+        </output>
+    </outputs>
+    <parameters>
+        <parameter name="mylogo_path" type="string" default="">
+            <doc>Path to mylogo logo creation script.</doc>
+        </parameter>
+    </parameters>
+ </component>

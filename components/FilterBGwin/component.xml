@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>FilterBGwin</name>
+    <!--<version>1.0</version>-->
+    <doc>
+    This component takes the output file of BinReads and a BG cut-off (from BGreadCountCutOff (ran within this component), or given as argument) and filters out lines with too high BG count (on summed BG window counts).
+    </doc>
+    <launcher type="python">
+        <argument name="file" value="FilterBGwin.py" />
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <inputs>
+        <input name="infile" type="BinaryFile">
+            <doc>Output of BinReads component.</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <!--<output name="outfile" type="BinaryFile">
+            <doc>Same as input file but filtered for summed BG win count.</doc>
+        </output>-->
+        <output name="outfile" type="BinaryFile">
+            <doc>same format as input file.</doc>
+        </output>
+        <output name="intermediate" type="BinaryFolder">
+            <doc>For tmp file and BG cut-off estimation stuff.</doc>
+        </output>
+        <output name="plotfile" type="PDF">
+            <doc>For BG window reverse cumulative.</doc>
+        </output>
+        <output name="log_file" type="BinaryFile">
+            <doc></doc>
+        </output>
+    </outputs>
+    <parameters>
+        <parameter name="bg_cutoff" type="int" default="-99">
+            <doc>Manually defined background cutoff. If this parameter is negative, the cutoff estimated by BGreadCountCutoff component is used.</doc>
+        </parameter>
+        <parameter name="perlPATH" type="string" default="perl">
+            <doc></doc>
+        </parameter>
+    </parameters>
+</component>

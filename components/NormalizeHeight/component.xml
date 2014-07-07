@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>NormalizeHeight</name>
+    <!--<version>1.0</version>-->
+    <doc>
+    This component normalizes the height of peaks by the background coverage.
+    </doc>
+    <launcher type="python">
+        <argument name="file" value="NormalizeHeight.py" />
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <inputs>
+        <input name="in_file" type="BinaryFile">
+            <doc>Path to a file containing peaks. allpeaks (or peakscores) from SelectPeaksMM component.</doc>
+        </input>
+        <input name="peakstats_infile" type="BinaryFile">
+            <doc>File from SelectPeaksMM component with all peak statistics (height, RMSD, mu, sigma).</doc>
+        </input>
+        <input name="coverage_dir" type="BinaryFolder">
+            <doc>RegionCoverage of background reads oder the peaks in in_file.</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="allpeaks" type="BinaryFile">
+            <doc>All normalized peaks, sorted by height</doc>
+        </output>
+        <output name="outfile" type="BinaryFile">
+            <doc>topPeaks heighest peaks.</doc>
+        </output>
+        <output name="peakstats" type="BinaryFile">
+            <doc>statistics of peaks (height, RMSD, mu, sigma). The same as peakstats_infile, but normalized height.</doc>
+        </output>
+        <output name="log_file" type="BinaryFile">
+            <doc>log</doc>
+        </output>
+        <output name="height_revcum" type="PDF">
+            <doc>plot of reverse cumulative distribution of peak heights. Position of lowest peak in topPeaks (outfile) is also plotted.</doc>
+        </output>
+        <output name="height_sigma_scatter" type="PDF">
+            <doc>Scatter of peak height versus peak width (sigma).</doc>
+        </output>
+        <output name="height_hist" type="PDF">
+            <doc>Histogram of peak heights.</doc>
+        </output>
+        <output name="height_before_after_scatter" type="PDF">
+            <doc>Scatter plot oh heights before and after normalization.</doc>
+        </output>
+    </outputs>
+    <parameters>
+        <parameter name="topPeaks" type="int" default="1000">
+            <doc>Number of top peaks to return. Default is 1000.</doc>
+        </parameter>
+        <parameter name="bg_length" type="int" default="2000">
+            <doc>Length of profiles in coverage_dir</doc>
+        </parameter>
+    </parameters>
+</component>

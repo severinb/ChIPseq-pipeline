@@ -1,0 +1,15 @@
+metadata.instanceName=PeakMerger
+metadata.Anduril=Engine 1.2.5
+input.in_dir=/import/bc2/home/nimwegen/bergerse00/www/severin/PipeLine/components/zCutOff_byFDR/../../TESTRUN/BRCA1A_2/OUTPUT/BRCA1A_FgBg-peakcall_newnoise/out_dir
+input.z_cutoff_infile=/import/bc2/home/nimwegen/bergerse00/www/severin/PipeLine/components/PeakMerger/../zCutOff_byFDR/execute/zCutOff_byFDR/zco_file
+output.IDfile=/import/bc2/home/nimwegen/bergerse00/www/severin/PipeLine/components/PeakMerger/execute/PeakMerger/IDfile
+output.PeakMerger_log=/import/bc2/home/nimwegen/bergerse00/www/severin/PipeLine/components/PeakMerger/execute/PeakMerger/PeakMerger_log
+output._errors=/import/bc2/home/nimwegen/bergerse00/www/severin/PipeLine/components/PeakMerger/execute/PeakMerger/_errors
+output._log=/import/bc2/home/nimwegen/bergerse00/www/severin/PipeLine/components/PeakMerger/execute/PeakMerger/_log
+output._tempdir=/import/bc2/home/nimwegen/bergerse00/www/severin/PipeLine/components/PeakMerger/execute/PeakMerger/_tempdir
+output.allpeaks=/import/bc2/home/nimwegen/bergerse00/www/severin/PipeLine/components/PeakMerger/execute/PeakMerger/allpeaks
+output.out_file=/import/bc2/home/nimwegen/bergerse00/www/severin/PipeLine/components/PeakMerger/execute/PeakMerger/out_file
+output.revcum=/import/bc2/home/nimwegen/bergerse00/www/severin/PipeLine/components/PeakMerger/execute/PeakMerger/revcum.pdf
+output.z_cutoff_file=/import/bc2/home/nimwegen/bergerse00/www/severin/PipeLine/components/PeakMerger/execute/PeakMerger/z_cutoff_file
+parameter.topPeaks=500
+parameter.z_cutoff=-1

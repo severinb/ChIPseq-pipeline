@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>SelectPeaksMM</name>
+    <!--<version>1.0</version>-->
+    <doc>
+    This component selects peaks by taking into account:
+        -Z-score
+        -length of peak at half height
+        -fit to a Gaussian
+    </doc>
+    <author email="severin.berger@stud.unibas.ch">Severin</author>
+    <launcher type="python">
+        <argument name="file" value="SelectPeaksMM_testing.py" />
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <inputs>
+        <input name="in_dir" type="BinaryFolder">
+            <doc>Output directory of RegionCoverage. Contains top files with bp coverage per region.</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="outfile" type="BinaryFile">
+            <doc>File containig the scores of topPeaks peaks (height of Gaussian)</doc>
+        </output>
+        <output name="allpeaks" type="BinaryFile">
+            <doc>File containig the scores of all peaks (height of Gaussian)</doc>
+        </output>
+        <output name="peakstats" type="BinaryFile">
+            <doc>statistics of the peaks (height, rmsd, mu, sigma) linked with peak ID.</doc>
+        </output>
+        <output name="peak_plots" type="BinaryFolder">
+            <doc>Plots of coverage profile with fitted mixture model and chosen windows/peaks.</doc>
+        </output>
+        <output name="log_file" type="BinaryFile">
+            <doc>Log file.</doc>
+        </output>
+        <output name="intermediate" type="BinaryFolder">
+            <doc>Directory for output mainly plots.</doc>
+        </output>
+        <output name="height_sigma_scatter" type="PDF">
+            <doc>scatter plot of peakheight versus peakwidth (sigma).</doc>
+        </output>
+        <output name="height_rmsd_scatter" type="PDF">
+            <doc>scatter plot of peakheight versus peakquality (RMSD)</doc>
+        </output>
+        <output name="sigma_rmsd_scatter" type="PDF">
+            <doc>scatter plot of peakwidth (sigma) versus peakquality (RMSD).</doc>
+        </output>
+        <output name="height_revcum" type="PDF">
+            <doc>Reverse cumulative distribution of peakheights. Position of lowest peak in outfile is also plotted.</doc>
+        </output>
+        <output name="rmsd_hist" type="PDF">
+            <doc>Histogram of peakquality values.</doc>
+        </output>
+        <output name="sigma_hist" type="PDF">
+            <doc>Histogram of peakwidths.</doc>
+        </output>
+        <output name="height_hist" type="PDF">
+            <doc>Histogram of peakheights.</doc>
+        </output>
+    </outputs>
+    <parameters>
+        <parameter name="FGfiles_string" type="string" default="">
+            <doc>Used to find the fragment length log_file. Fragment length is used to find reasonable cut-offs on peak lengths.</doc>
+        </parameter>
+        <parameter name="FragmentLength" type="int" default="-1">
+            <doc>This is used to constrain the sigmas of the gaussians in the mixture model. If this value is -1, fragment length is read from FGfiles_string. If the value is -2, sigma is not constrained.</doc>
+        </parameter>
+        <parameter name="files_per_job" type="int" default="5">
+            <doc>Number of coverage profile ran per job.</doc>
+        </parameter>
+        <parameter name="topPeaks" type="int" default="1000">
+            <doc>Number of heighest peaks to give out.</doc>
+        </parameter>
+        <parameter name="order" type="int" default="4">
+            <doc>Number of Gaussians used for the mixture model. Mixture consists of 1 uniform and order Gaussians.</doc>
+        </parameter>
+        <parameter name="widthFactor" type="float" default="1">
+            <doc>A peak is defined by a Gaussian with length mu-widthFactor*sigma to mu+widthFactor*sigma. Peaks that are then overlapping are merged. So this factor also influences how peaks get merged.</doc>
+        </parameter>
+        <parameter name="project_leader" type="string" default="project_nimwegen">
+            <doc>Used for queue submission.</doc>
+        </parameter>
+        <parameter name="RMSD_cutoff" type="float" default="0.0005">
+            <doc>This cut-off is used for filtering out peaks that have higher RMSD values and to rerun MMEM if the peaks are above cut-off to bring back initial non optimal fits.</doc>
+        </parameter>
+    </parameters>
+</component>

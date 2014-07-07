@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>BuildUFEmodel</name>
+    <!--<version>1.0</version>-->
+    <doc>
+      This component builds the UFE model for a phylogenetic tree and the base frequencies of the given sequences.
+    </doc>
+    <launcher type="python">
+        <argument name="file" value="BuildUFEmodel.py" />
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <inputs>
+        <input name="Sequences" type="BinaryFile">
+            <doc>Sequence file in fasta format. Used to compute base frequencies</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="UFEmodel" type="BinaryFile">
+            <doc>The model.</doc>
+        </output>
+        <output name="BaseFrequencies" type="BinaryFile">
+            <doc>File that contains base frequencies computed from the given sequences.</doc>
+        </output>
+    </outputs>
+    <parameters>
+        <parameter name="genome" type="string" default="">
+            <doc>genome: hg19, mm9 ...</doc>
+        </parameter>
+        <parameter name="motevoUFE_path" type="string" default="">
+            <doc>Path to motevo runUFE executable.</doc>
+        </parameter>
+    </parameters>
+ </component>

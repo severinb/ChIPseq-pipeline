@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>ReduceWMs</name>
+    <!--<version>1.0</version>-->
+    <doc>
+     This component filters out uninformative WMs (unfiform base distribution at each column). These WMs arise from unsuccesful refinement of other WMs.
+    </doc>
+    <launcher type="python">
+        <argument name="file" value="FilterWMs.py" />
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <inputs>
+        <input name="WM1" type="BinaryFile">
+            <doc></doc>
+        </input>
+        <input name="WM2" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM3" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM4" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM5" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM6" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM7" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM8" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM9" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM10" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM11" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM12" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM13" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM14" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM15" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM16" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM17" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM18" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM19" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM20" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM21" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM22" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM23" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM24" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM25" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM26" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM27" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM28" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM29" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM30" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="WMdir" type="BinaryFolder">
+            <doc>Directory containing the final candidate WMs.</doc>
+        </output>
+        <output name="log_file" type="BinaryFile">
+            <doc>Contains the final candidate WMs (original path and new name).</doc>
+        </output>
+    </outputs>
+    <parameters>
+    </parameters>
+</component>

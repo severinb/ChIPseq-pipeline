@@ -1,0 +1,5 @@
+---
+pipeline_dir: '/import/wnz/home/crunch/PipeLine'
+scratch_dir: '/import/wnz/home/crunch/www/CRUNCH/scratch'
+report_dir:  'report'
+template_dir: '/import/wnz/home/crunch/PipeLine/web/templates'

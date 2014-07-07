@@ -1,0 +1,192 @@
+#!/import/wnz/home/mara/local/bin/python
+#/import/bc2/soft/app/Python/2.7.5/Linux/bin/python
+
+
+""" Script saves files transfered by CRUNCH in chunks """
+
+import sys
+sys.path.append("/import/wnz/home/crunch/pyhton2.7.5_packages/lib/python2.7/site-packages")
+
+from flup.server.fcgi import WSGIServer
+from flask import Flask, request, make_response, render_template, session
+import json
+import logging
+import os
+import tempfile
+import yaml
+from string import *
+
+# set logging level
+FORMAT = '%(asctime)s %(name)s %(funcName)s %(levelname)s %(message)s'
+log_file = "/import/wnz/home/crunch/log/crunch.log"
+logging.basicConfig(format=FORMAT,
+                    filename=log_file,
+                    level=logging.WARNING)
+logging.warning("CRUNCH started")
+
+CONF_FILE = '/import/wnz/home/crunch/PipeLine/web/config/crunch.conf'
+conf = yaml.load(open(CONF_FILE))
+
+crunch_app = Flask(__name__, template_folder=conf['template_dir'])
+crunch_app.secret_key = 'abcafaflurtegeghtdabcd'
+
+
+@crunch_app.route("/")
+def main_page():
+    """ Show index page """
+    fin = open("%s/crunch.html" % conf['template_dir'])
+    content = fin.read()
+    fin.close()
+    session['save_dir'] = get_save_dir_name(conf)
+    logging.warning(session['save_dir'])
+    return content
+
+
+@crunch_app.route("/upload", methods=['POST'])
+def upload_files():
+    if request.method == 'POST':
+        logging.debug("received POST request")
+        return handle_post()
+    else:
+        logging.debug("received GET request")
+        return handle_get()
+
+
+@crunch_app.route("/run", methods=['POST'])
+def run():
+    logging.warning("run %s" % str(request.form))
+    email = 'not_specified'
+    if request.form['email']:
+        fout = open("%s/address" % session['save_dir'],
+                    'w')
+        fout.write(request.form['email'])
+        fout.close()
+        email = request.form['email']
+    if request.form['project']:
+        fout = open("%s/project" % session['save_dir'],
+                    'w')
+        fout.write(request.form['project'])
+        fout.close()
+
+    bg_window = request.form['bg_window']
+    fg_window = request.form['fg_window']
+    step = request.form['step']
+    organism = request.form['organism']
+    adaptor = request.form['adaptor']
+    fdr = '0.05'
+    if request.form['fdr']:
+        fdr = request.form['fdr']
+    #find_motifs = request.form['find_motifs'] #motif finding is always on
+    find_motifs = 'true'
+
+    os.chdir(session['save_dir'])
+    fg_files = ' '.join([os.path.join(os.path.abspath('fg'), i)
+                         for i in os.listdir('fg')])
+    bg_files = ' '.join([os.path.join(os.path.abspath('bg'), i)
+                         for i in os.listdir('bg')])
+
+    logging.warning("fg files: %s\nbg files%s" % (str(fg_files), str(bg_files)))
+    logging.warning("bg_window %s step: %s organism: %s fg_window: %s find_motifs: %s" % (bg_window, step, organism, fg_window, find_motifs))
+    if find_motifs == 'true':
+        motiffinding = 1
+    else:
+        motiffinding = 0
+
+    create_index_page(session['save_dir'], conf)
+
+    cmd = '%s/scripts/webStart.py -fg \"%s\" -bg \"%s\" -g %s -fgwin %s -bgwin %s -step %s -mf %i -fdr %s -email \'%s\'' % (conf['pipeline_dir'],
+                                                                                                                            fg_files,
+                                                                                                                            bg_files,
+                                                                                                                            organism,
+                                                                                                                            fg_window,
+                                                                                                                            bg_window,
+                                                                                                                            step,
+                                                                                                                            motiffinding,
+                                                                                                                            fdr,
+                                                                                                                            email)
+
+    if adaptor != '':
+        cmd += ' -a3 %s' % adaptor
+
+    os.system("%s &" % cmd)
+
+    create_index_page(session['save_dir'], conf)
+
+    return os.path.basename(session['save_dir'])
+
+
+def get_save_dir_name(conf):
+    """ Create temp dir in scratch directory"""
+    save_dir = tempfile.mkdtemp(prefix="data_", dir=conf['scratch_dir'])
+    os.chmod(save_dir, 0777)
+    os.mkdir("%s/%s" % (save_dir, conf['report_dir']), 0777)
+    os.chmod("%s/%s" % (save_dir, conf['report_dir']), 0777)
+    os.mkdir("%s/fg" % save_dir, 0777)
+    os.mkdir("%s/bg" % save_dir, 0777)
+    return save_dir
+
+
+def handle_post():
+    """ Handles POST requests """
+    save_dir = "%s/fg" % session['save_dir']
+    file_type = "fg_files[]"
+
+    if "bg_files[]" in request.files:
+        file_type = "bg_files[]"
+        save_dir = "%s/bg" % session['save_dir']
+
+    file_name = request.files[file_type].filename
+    if file_name == 'blob':
+        file_name = request.headers['Content-Disposition'].split('=')[1].strip('"').rstrip('"')
+    logging.warning(str(request.files[file_type]))
+    logging.warning(str(request.files))
+    logging.warning(str(request.files[file_type].name))
+    logging.warning(str(request.files[file_type].headers))
+    logging.warning(str(request.headers))
+    if 'Content-Range' not in request.headers:
+        file_size = 100000000000
+    else:
+        file_size = int(request.headers['Content-Range'].split('/')[-1])
+
+    file_path = "%s/%s" % (save_dir, file_name)
+    logging.debug("file_path %s\n" % file_path)
+    data = request.files[file_type].stream
+
+    if (not os.path.exists(file_path)) \
+            or (os.path.getsize(file_path) < file_size):
+        fout = open(file_path, 'a')
+        fout.write(data.read())
+        fout.close()
+        os.chmod(file_path, 0666)
+
+    try:
+        data.close()
+    except:
+        log.write("Failed to close stream.\n")
+
+    return make_response(json.dumps({'files': [
+        {'name': file_name,
+         'size': os.path.getsize(file_path),
+         'error': ''
+         }]}))
+
+
+def handle_get():
+    """ Handles GET requests """
+    pass
+
+
+def create_index_page(save_dir, config):
+    """ Create index.html for user to bookmark """
+    fout = open("%s/%s/index.html" % (save_dir,
+                                      config['report_dir']),
+                                      'w')
+    fout.write(render_template('status.html', conf=config))
+    fout.close()
+
+
+if __name__ == "__main__":
+    # run server
+    WSGIServer(crunch_app, debug=True).run()
+    #crunch_app.debug = True
+    #crunch_app.run(host="0.0.0.0", port=5000, debug=True)

@@ -1,0 +1,134 @@
+#!/import/bc2/home/nimwegen/GROUP/local/bin/python
+""" Script saves files transfered by MARA in chunks """
+
+import sys
+sys.path.append('/import/wnz/home/mara/local/lib/python2.7/site-packages')
+
+from flup.server.fcgi import WSGIServer
+from flask import Flask, request, make_response, session
+import json
+import logging
+import os
+import tempfile
+import yaml
+from string import *
+
+CONF_FILE = '/import/bc2/home/nimwegen/pachko/www/severin/config/severin.conf'
+conf = yaml.load(open(CONF_FILE))
+
+mara_app = Flask(__name__, template_folder='../')
+mara_app.secret_key = 'abcafaflurtegeghtdabcd'
+
+
+@mara_app.route("/")
+def main_page():
+    """ Show index page """
+    fin = open('severin.html')
+    content = fin.read()
+    fin.close()
+    session['save_dir'] = get_save_dir_name(conf)
+    return content
+
+
+@mara_app.route("/upload", methods=['POST'])
+def upload_files():
+    if request.method == 'POST':
+        logging.debug("received POST request")
+        return handle_post()
+    else:
+        logging.debug("received GET request")
+        return handle_get()
+
+
+@mara_app.route("/run", methods=['POST'])
+def run():
+
+    print "run ", str(request.form)
+
+    pipeline_dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
+
+    bg_window = request.form['bg_window']
+    step = request.form['step']
+    organism = request.form['organism']
+    fg_window = request.form['fg_window']
+    adaptor = request.form['adaptor']
+    find_motifs = request.form['find_motifs']
+
+    os.chdir(session['save_dir'])
+    fg_files = ' '.join([os.path.join(os.path.abspath('fg'), i) for i in os.listdir('fg')])
+    bg_files = ' '.join([os.path.join(os.path.abspath('bg'), i) for i in os.listdir('bg')])
+
+    print fg_files, bg_files
+    print bg_window, step, organism, fg_window, find_motifs
+    if find_motifs == 'true':
+        motiffinding = 1
+    else:
+        motiffinding = 0
+
+    create_index_page(session['save_dir'], conf)
+
+
+    if adaptor != '':
+        os.system('%s/scripts/webStart.py -fg \"%s\" -bg \"%s\" -g %s -mf %i -a3 %s &' %(pipeline_dir, fg_files, bg_files, organism, motiffinding, adaptor))
+    else:
+        os.system('%s/scripts/webStart.py -fg \"%s\" -bg \"%s\" -g %s -mf %i &' %(pipeline_dir, fg_files, bg_files, organism, motiffinding))
+
+    return 'Ok'
+
+
+def get_save_dir_name(conf):
+    """ Create temp dir in scratch directory"""
+    save_dir = tempfile.mkdtemp(prefix="data_", dir=conf['scratch_dir'])
+    os.chmod(save_dir, 0777)
+    os.mkdir("%s/%s" % (save_dir, conf['report_dir']), 0777)
+    os.chmod("%s/%s" % (save_dir, conf['report_dir']), 0777)
+    return save_dir
+
+
+def handle_post():
+    """ Handles POST requests """
+    save_dir = "%s/fg" % session['save_dir']
+    file_type = "fg_files[]"
+
+    if "bg_files[]" in request.files:
+        file_type = "bg_files[]"
+        save_dir = "%s/bg" % session['save_dir']
+
+    # create save dir if not exests
+    if not os.path.exists(save_dir):
+        os.mkdir(save_dir, 0777)
+
+    file_name = request.files[file_type].filename
+    if 'Content-Range' not in request.headers:
+        file_size = 100000000000
+    else:
+        file_size = int(request.headers['Content-Range'].split('/')[-1])
+
+    file_path = "%s/%s" % (save_dir, file_name)
+    logging.debug("file_path %s\n" % file_path)
+    data = request.files[file_type].stream
+
+    if (not os.path.exists(file_path)) \
+            or (os.path.getsize(file_path) < file_size):
+        fout = open(file_path, 'a')
+        fout.write(data.read())
+        fout.close()
+        os.chmod(file_path, 0666)
+
+    return make_response(json.dumps({'files': [
+        {'name': file_name,
+         'size': os.path.getsize(file_path),
+         'error': ''
+         }]}))
+
+
+def handle_get():
+    """ Handles GET requests """
+    pass
+
+
+if __name__ == "__main__":
+    # run server
+    #WSGIServer(mara_app, debug=True).run()
+    mara_app.debug = True
+    mara_app.run(host="0.0.0.0", port=5000, debug=True)

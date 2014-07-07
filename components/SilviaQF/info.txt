@@ -1,0 +1,16 @@
+log: gives percent of reads that passed the filter.
+
+to pass: reads have to be longer than a minimum length (=25), have to be of higher average quality (sum(quality_ascii_code-offset_of_codification)/len(read)) than minimum quality score (=25) and are not allowed to have more undefined residues N than max_N (=2).
+ --> problem: maybe some reads get discarded, because they don't pass max_N but they have high enough quality if one would cut them at min_length = 25, but read
+     still has high enough average quality with 3 Ns from 25 to 35 or so. (see qftest.py in SilviaQF component directory)
+
+     For these reads (high q_mean but too many Ns, one should one by one rstrip('any letter') the sequence and reevaluate q_mean and number of Ns and then maybe 
+     let the read pass if length is still longer than min_length.
+ 
+     Maybe one could count reads that were discarded because of failure due to max_n, min_length or min_quality. Or one could also introduce max_length. 
+   
+     This could be a real problem, because read can have good quality that pulls bad quality from 30-36 above min_quality but good read is discarded because
+     bad quality of sequencer from 30-36 is taken into account.
+
+
+fast_quality_filtering_with_plots_2.py is the faster version (modified by Mikhail)

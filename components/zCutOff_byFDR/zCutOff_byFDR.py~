@@ -1,0 +1,60 @@
+#!/usr/bin/env python
+
+import sys, os
+from string import *
+import component_skeleton.main
+from pylab import *
+
+def get_zco(sorted_z_p, FDR):
+
+    # loop downwards the list
+    for i in arange(len(sorted_z_p)):
+        fdr = (i+1. - sum(sorted_z_p[:i+1,1])) / (i+1.)
+
+        if fdr >= FDR:
+            z_co = sorted_z_p[i,0]
+            break
+
+    return z_co
+
+
+def execute(cf):
+    in_dir = cf.get_input("in_dir")
+    zco_file = cf.get_output("z_cutoff_file")
+    revcum = cf.get_output("revcum")
+    FDR = cf.get_parameter("FDR", "float")
+
+    infile = os.path.join(in_dir, 'outzvals')
+
+    # load Z-values and posteriors
+    z_p = loadtxt(infile, usecols=[-2,-1])
+
+    # sort the matrix by z-score (not by posterior, because then Z-scores are not sorted by negative/positive)
+    z_p = array(sorted(z_p, key=lambda k: k[0], reverse=1))
+
+    z_co = round(get_zco(z_p, FDR), 2)
+ 
+    # plot reverse cumulative
+    x = sorted(z_p[:,0])
+    y = log(arange(1, len(x)+1, 1))[::-1]
+
+    figure()
+    plot(x, y, 'k')
+    plot([z_co, z_co], [min(y), max(y)], 'r', label='Chosen cut-off %s at FDR %s' %(z_co, FDR))
+    ylim(0,int(max(y)+1))
+    xlabel("Window Z-score")
+    ylabel("log(Number of Windows)")
+    legend()
+    title('Reverse Cumulative Distribution of Window Z-scores')
+    savefig(revcum)
+    savefig(revcum.rstrip('.pdf'))
+    close()
+
+    o = open(zco_file, 'w')
+    o.write('%s\n' %z_co)
+    o.close()
+
+    return 0
+
+
+component_skeleton.main.main(execute)
