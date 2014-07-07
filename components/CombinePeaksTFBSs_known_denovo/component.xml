@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>CombinePeaksTFBSs</name>
+    <!--<version>1.0</version>-->
+    <doc>
+    This component takes a peak file and adds to each peak all near binding sites as given in TFBSs_string.
+    </doc>
+    <launcher type="python">
+        <argument name="file" value="CombinePeaksTFBSs.py"/>
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <inputs>
+        <input name="peaks" type="BinaryFile">
+            <doc>Peak file (bed like format) as given from RecomputeZscores (or also SelectPeaksMM, RepeatsOut...).</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="peaks_with_sites" type="BinaryFile">
+            <doc>A file with one line per peak. For each peak sites are listed that are above minposterior and closer than fragment length.</doc>
+        </output>
+    </outputs>
+    <parameters>
+        <parameter name="knownTFBSs_string" type="string" default="">
+            <doc>Actually an input port: A string with the file paths of the TFBSstats file of GetPeakPosteriors for all WMs. For known motifs.</doc>
+        </parameter>
+        <parameter name="denovoTFBSs_string" type="string" default="">
+            <doc>Actually an input port: A string with the file paths of the TFBSstats file of GetPeakPosteriors for all WMs. For de novo motifs. This can also be omitted.</doc>
+        </parameter>
+        <parameter name="known_peakposts_string" type="string" default="">
+            <doc>Actually an input port: A string with the file paths of the peakstats file of GetPeakPosteriors for all WMs. For known motifs.</doc>
+        </parameter>
+        <parameter name="denovo_peakposts_string" type="string" default="">
+            <doc>Actually an input port: A string with the file paths of the TFBSstats file of GetPeakPosteriors for all WMs. For de novo motifs. This can also be omitted.</doc>
+        </parameter>
+        <parameter name="minposterior" type="float" default="0.2">
+            <doc>Minimum posterior to print a site</doc>
+        </parameter>
+        <parameter name="FGfiles_string" type="string" default="">
+            <doc>Used to find fragment length.</doc>
+        </parameter>
+    </parameters>
+ </component>

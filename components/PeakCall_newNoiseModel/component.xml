@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>PeakCall_newNoiseModel</name>
+    <!--<version>1.0</version>-->
+    <doc>
+    This component computes Z-values for each foreground window to belong to the noise model distribution. 
+    The noise model distribution is a mixture of gaussian and poissonian noise. 
+    Foreground and background counts are assumed to belong either to this same distribution or that they are different (uniform distribution).
+    This model is then fit by expectation maximization (fitting sigma, mu and rho): Compute loglikelihood of the data under this mixture model.
+    </doc>
+    <launcher type="python">
+        <argument name="file" value="PeakCall_newNoiseModel.py" />
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <inputs>
+        <input name="in_file" type="BinaryFile">
+            <doc>Path to outfile of FilterBGwin or BinReads.</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="out_dir" type="BinaryFolder">
+            <doc>Folder that contains all output files.</doc>
+        </output>
+        <output name="Z_hist" type="PDF">
+            <doc>Plot with z values histogram and gaussian fit.</doc>
+        </output>
+        <output name="log_file" type="BinaryFile">
+            <doc>log file.</doc>
+        </output>
+    </outputs>
+    <parameters>
+        <parameter name="perlPATH" type="string" default="perl">
+            <doc>Path to perl that should used to launch fit_sigma_mu_rho.pl.</doc>
+        </parameter>
+        <parameter name="R_LIBS_USER" type="string" default="">
+            <doc>Path to R libraries. This is used for the Hmisc library needed for histogram plotting.</doc>
+        </parameter>
+        <parameter name="noBG" type="boolean" default="false">
+            <doc>If this flag is set true, then a uniform background is assumed.</doc>
+        </parameter>        
+    </parameters>
+</component>

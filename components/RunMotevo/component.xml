@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>RunMotevo</name>
+    <!--<version>1.0</version>-->
+    <doc>
+    This component runs motevo for weight matrix refinement. 
+    It also produces a positive predictive value vs. sensitivity plot and the logo of the refined weight matrix.
+    For this it takes two halfs of the alignments (refined regions), the old WM and shuffled peaks as input. 
+    For the ppv - sensitivity analysis it predicts binding sites one the odd half and on the shuffledPeaks with the old WM.
+    Then WM is refined with even half and predictions are computed again. 
+    Curve for both analyses are then computed by calling a peak a true site if summed transcription factor binding sites posteriors on a certain region are greater than a cut-off.
+    The cut-off is varied from 0 up to highest scoring region to get this plot.  
+    </doc>
+    <launcher type="python">
+        <argument name="file" value="RunMotevo.py" />
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <inputs>
+        <input name="odd_file" type="BinaryFile">
+            <doc>Half of alignments (from Splitalignments) used to predict sites on.</doc>
+        </input>
+        <input name="even_file" type="BinaryFile">
+            <doc>Even half of Alignments from SplitAlignments. Used for WM refinement.</doc>
+        </input>
+        <input name="WM" type="BinaryFile">
+            <doc>Wm to refine: either old existing one or the one found by PhyloGibbs.</doc>
+        </input>
+        <input name="shuffledPeaks" type="BinaryFile">
+            <doc>Shuffled Peaks to predict sites on. From ShufflePeaks component.</doc>
+        </input>
+        <input name="WM2" type="BinaryFile" optional="true">
+            <doc>If this one is defined, a ROC plot is drawn for this (WM2) together with WM. If not defined, WM is refined (motevo) and ROC plot thereof is drawn.</doc>
+        </input>
+        <input name="UFEmodel" type="BinaryFile" optional="true">
+            <doc>File containing the UFE model. Only optional when ran without alignments.</doc>
+        </input>
+        <input name="BaseFrequencies" type="BinaryFile" optional="true">
+            <doc>File from BuildUFEmodel component containing the frequencies of A/t and G/C. Only optional when ran without alignments.</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="intermediate" type="BinaryFolder">
+            <doc>Tracking output file.</doc>
+        </output>
+        <output name="refWM" type="BinaryFile">
+            <doc>This is the refined weight matrix.</doc>
+        </output>
+        <output name="sens_ppv" type="PDF">
+            <doc>Sensitivity positive predictive value plot.</doc>
+        </output>
+        <output name="Logo" type="PDF">
+            <doc>Logo of the refined weight matrix.</doc>
+        </output>
+        <output name="nonref_WM_Quality" type="BinaryFile">
+            <doc>Quality value for non-refined weight matrix based on specificty sensitivity performance.</doc>
+        </output>
+        <output name="ref_WM_Quality" type="BinaryFile">
+            <doc>Quality value for refined weight matrix based on specificty sensitivity performance.</doc>
+        </output>
+    </outputs>
+    <parameters>
+        <parameter name="genome" type="string" default="">
+            <doc>genome: hg19, mm9 ...</doc>
+        </parameter>
+        <parameter name="mylogo_path" type="string" default="">
+            <doc>Path to mylogo logo creation script.</doc>
+        </parameter>
+        <parameter name="motevo_path" type="string" default="">
+            <doc>Path to motevo executable.</doc>
+        </parameter>
+        <parameter name="minpostwm" type="float" default="0.25">
+            <doc>Minimal posterior of sites to be included for WM refinement.</doc>
+        </parameter>
+        <parameter name="wmdiff" type="float" default="0.0075">
+            <doc>Maximal difference between old and refined WM. Convergence criterion. A smaller number would be better, but then it too often doesn't converge (annoying for automation).</doc>
+        </parameter>
+        <parameter name="aligned" type="boolean" default="true">
+            <doc>Whether input files (even and odd) are aligned or not (relevant for TFBS predictions).</doc>
+        </parameter>
+    </parameters>
+ </component>

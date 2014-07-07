@@ -1,0 +1,298 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<cmeta charset="utf-8">
+<title>CRUNCH results</title>
+<meta name="description" content="ISMARA - Integrated Motif Activity Response Analysis is a free online
+                                      tool that recognizes most important transcription factors that
+                                      are changing their activity in a set of samples.">
+<meta name="keywords"    content="swissregulon, human, mouse,
+                                      affymetrics, microarray,
+                                      Erik van Nimwegen,
+                                      Swiss Institute of Bioinformatics,
+                                      Biozentrum University of Basel">
+<link rel="stylesheet" href="css/index.css" type="text/css">
+<link rel="stylesheet" href="css/jquery.dataTables.css" type="text/css">
+<link href="js/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<ul id="nav_main" class="nav nav-pills">
+  <li class="active"><a href="#">Quality Control, Mapping, Fragment Size Estimation</a></li>
+  <li><a href="#peaks">Peaks</a></li>
+  <li><a href="#motifs">Complementary Motifs Enriched In Peaks</a></li>
+  <li><a href="#motifs_tops">Top Motifs Enriched In Peaks</a></li>
+  <li><a href="#downloads">Downloads</a></li>
+</ul>
+</div>
+</div>
+<div id="main">
+<h1>CRUNCH Results {% if project != '' %} for {{ project }}{% endif %}</h1>
+
+<h2 id="QC">Quality Control, Mapping, Fragment Size Estimation:</h2>
+
+
+{% for rep in samples %}
+{% if rep.file_type == "shiftedbed" -%}
+<div>
+  <h3>{{rep.name}}</h3>
+  <ul>
+    <li>{{rep.num_reads_input}} input reads (in BED format, shifted by half of fragment size).</li>
+    <li><a href="{{rep.report_pdf}}">Report PDF</a></li>
+  </ul>
+</div>
+{% elif rep.file_type == "bed" -%}
+<div>
+  <h3>{{rep.name}}</h3>
+  <a href="{{rep.fragsize_plot}}">
+  <img class="standard_img" src="{{rep.fragsize_plot}}" alt="fragment size plot">
+  </a>
+  <ul>
+    <li>{{rep.num_reads_input}} input reads (in BED format).</li>
+    <li><a href="{{rep.report_pdf}}">Report PDF</a></li>
+  </ul>
+</div>
+{% elif rep.file_type == "fasta" -%}
+<div class="q_control">
+  <h3>{{rep.name}}</h3>
+  <a href="{{rep.fragsize_plot}}">
+  <img class="standard_img" src="{{rep.fragsize_plot}}" alt="fragment size plot">
+  </a>
+  <ul>
+    <li>{{rep.num_reads_input}} input reads (in FASTA format).</li>
+    <li>{{rep.num_reads_2QC}} reads after removal of adapters and low complexity reads.</li>
+    <li>{{rep.num_reads_mapped}} reads after mapping.</li>
+    <li><a href="{{rep.report_pdf}}">Report PDF</a></li>
+  </ul>
+</div>
+{% elif rep.file_type == "fastq" -%}
+<div class="q_control">
+  <h3>{{rep.name}}</h3>
+  <a href="{{rep.fragsize_plot}}">
+  <img class="standard_img" src="{{rep.fragsize_plot}}" alt="fragment size plot">
+  </a>
+  <ul>
+    <li>{{rep.num_reads_input}} input reads (in FASTQ format).</li>
+    <li>{{rep.num_reads_1QC}} reads after removal of low quality reads.</li>
+    <li>{{rep.num_reads_2QC}} reads after removal of adapters and low complexity reads.</li>
+    <li>{{rep.num_reads_mapped}} reads after mapping.</li>
+    <li><a href="{{rep.report_pdf}}">Report PDF</a></li>
+  </ul>
+</div>
+{% endif %}
+{% endfor %}
+
+
+<h2 id="peaks">Peak Calling:</h2>
+
+<ul>
+  <li>{{windows_num}} windows are significantly enriched at FDR=10% (z-value cut-off: {{z_cutoff}})</li>
+  <li>{{windows_num}} windows merged to {{regions_num}} regions.</li>
+  <li>{{peaks_num}} significant peaks fitted within {{regions_num}} regions.</li> 
+</ul>
+
+<a href="{{zhist}}"><img class="standard_img" src="{{zhist}}" alt="zvalue histogram"></a>
+<a href="{{revcum}}"><img class="standard_img" src="{{revcum}}" alt="reverse cumulative of zvalues"></a>
+
+<h3>Top peaks:</h3>
+
+<div class="dropdown">
+  <button class="dropdown-toggle btn" data-toggle="dropdown">Select motif</button>
+  <ul id="motif_select" class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+  </ul>
+</div>
+<hr>
+
+<table id="peak_table">
+  <thead>
+  <tr>
+    <th>Coordinates</th>
+    <th  style="white-space: nowrap;">Z-score</th>
+    <th>Nearest Genes on the Left</th>
+    {% if organism == "dm3" -%}
+    <th>Offset of Nearest Genes on the Left (Strand)</th>
+    {% else %}
+    <th>Offset of Nearest TSS on the Left (Strand)</th>
+    {% endif %}
+
+    <th>Nearest Genes on the Right</th>
+    {% if organism == "dm3" -%}
+    <th>Offset of Nearest Genes on the Right (Strand)</th>
+    {% else %}
+    <th>Offset of Nearest TSS on the Right (Strand)</th>
+    {% endif %}
+
+    {% for name in motif_names %}
+    <th>{{name}}</th>
+    {% endfor %}
+
+  </tr>
+  </thead>
+  <tbody>
+  {% for peak in peak_lines %}
+  <tr>
+    <td><a href="http://test.swissregulon.unibas.ch/gbrowse2/fcgi/gbrowse/{{organism}}/?name={{peak.chrom}}%3A{{peak.swiss_reg_frame_start}}..{{peak.swiss_reg_frame_stop}}">
+        {{peak.chrom}}:{{peak.start}}..{{peak.stop}}</a></td>
+    <td>{{peak.score}}</td>
+    <td>{{peak.upstream_genes}}</td>
+    <td>{{peak.upstream_offset}}</td>
+    <td>{{peak.downstream_genes}}</td>
+    <td>{{peak.downstream_offset}}</td>
+    {% for name in motif_names %}
+    {% for key, value in peak.sites.iteritems() %}
+    {% if key == name -%}
+    <td><p>{{value}}</p></td>
+    {% endif %}
+    {% endfor %}
+    {% endfor %}
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+
+<div class="hidden">
+<h3>Examples of peaks fitted within regions<button type="button" class="sh_switch btn">show</button></h3>
+  <div class="images" style="display: none;">
+<table border=1>
+  <tr>
+    <td><p>Example from top 5% of regions</p></td>
+    <td><p>Example from top 10% of regions</p></td>
+    <td><p>Example from top 20% of regions</p></td>
+    <td><p>Example from top 40% of regions</p></td>
+    <td><p>Example from top 60% of regions</p></td>
+    <td><p>Example from top 90% of regions</p></td>
+  </tr>
+  <tr>
+    <td> <a href="{{peak_plot_1}}"><img src="{{peak_plot_1}}" class="peak_plot" alt="peak plot"></a> </td>
+    <td><a href="{{peak_plot_2}}"><img src="{{peak_plot_2}}" class="peak_plot" alt="peak plot"></a></td >
+    <td><a href="{{peak_plot_3}}"><img src="{{peak_plot_3}}" class="peak_plot" alt="peak plot"></a></td>
+    <td><a href="{{peak_plot_4}}"><img src="{{peak_plot_4}}" class="peak_plot" alt="peak plot"></a></td>
+    <td><a href="{{peak_plot_5}}"><img src="{{peak_plot_5}}" class="peak_plot" alt="peak plot"></a></td>
+    <td><a href="{{peak_plot_6}}"><img src="{{peak_plot_6}}" class="peak_plot" alt="peak plot"></a></td>
+  </tr>
+</table>
+</div>
+</div>
+
+<h2 id="motifs">Complementary Motifs Enriched In Peaks:</h2>
+
+<table class="motif_table">
+  <thead>
+  <tr>
+    <th><p>Motif Name</p></th>
+    <th><p>Sequence Logo</p></th>
+    <th><p>Rank</p></th>
+    <th><p>Contribution to Motif Ensemble Enrichment</p></th>
+    <th><p>Enrichment Score</p></th>
+    <th><p>Precision and Recall</p></th>
+    <th><p>Prediction - Observation Correlation</p></th>
+    <th><p>Enrichment at Binding Sites</p></th>
+    <th><p>Number of Positively Predicted Peaks</p></th>
+  </tr>
+  </thead>
+  <tbody>
+
+  {% for motif in motif_list %}
+  <tr>
+    <td><a href="{{motif.html}}">{{motif.name_unquote}}</a></td>
+    <td> <a href="{{motif.logo}}"><img src="{{motif.logo}}" style="width: 200px;" alt="motif logo"></a></td>
+    <td>{{motif.rank}}</td>
+    <td>{{motif.contribution}}</td>
+    <td>{{motif.score}}</td>
+    <td>{{motif.auc}}</td>
+    <td>{{motif.fov}}</td>
+    <td>{{motif.eabs}}</td>
+    <td>{{motif.truepeaks}}</td>
+  </tr>
+  {% endfor %}
+
+  </tbody>
+</table>
+<br>
+
+<div class="hidden">
+<h3>Contribution and Correlation Plots <button type="button" class="sh_switch btn">show</button></h3>
+  <div class="images" style="display: none">
+    <a href="{{motif_contribution_plot}}"><img class="standard_img" src="{{motif_contribution_plot}}" alt="contribution plot"></a>
+    <a href="{{motif_correlation_heatmap}}"><img class="standard_img" src="{{motif_correlation_heatmap}}" alt="correlation heatmap"></a>
+  </div>
+</div>
+
+
+<h2 id="motifs_tops">Top Motifs Enriched In Peaks:</h2>
+
+<table class="motif_tops_table">
+  <thead>
+  <tr>
+    <th><p>Motif Name</p></th>
+    <th><p>Sequence Logo</p></th>
+    <th><p>Enrichment Score</p></th>
+    <th><p>Precision and Recall</p></th>
+    <th><p>Prediction - Observation Correlation</p></th>
+    <th><p>Enrichment at Binding Sites</p></th>
+    <th><p>Number of Positively Predicted Peaks</p></th>
+  </tr>
+  </thead>
+  <tbody>
+
+  {% for motif in motif_tops_list %}
+  <tr>
+    <td><a href="{{motif.html}}">{{motif.name_unquote}}</a></td>
+    <td> <a href="{{motif.logo}}"><img src="{{motif.logo}}" style="width: 200px;" alt="motif logo"></a></td>
+    <td>{{motif.score}}</td>
+    <td>{{motif.auc}}</td>
+    <td>{{motif.fov}}</td>
+    <td>{{motif.eabs}}</td>
+    <td>{{motif.truepeaks}}</td>
+  </tr>
+  {% endfor %}
+
+  </tbody>
+</table>
+
+
+<h2 id="downloads">Downloads</h2>
+
+<a href="{{peak_file}}">Download Peaks (with annotations and predicted binding sites)</a><br>
+<a href="{{report_pdf}}">Download Detailed Report PDF</a>
+
+
+{% for rep in samples %}
+{% if rep.file_type == "shiftedbed" -%}
+<h3>{{rep.name}}</h3>
+<ul>
+<li><a href="{{rep.report_pdf}}">Report PDF</a></li>
+</ul>
+{% elif rep.file_type == "bed" -%}
+<h3>{{rep.name}}</h3>
+<ul>
+<li><a href="{{rep.report_pdf}}">Report PDF</a></li>
+</ul>
+{% elif rep.file_type == "fasta" -%}
+<h3>{{rep.name}}</h3>
+<ul>
+<li><a href="{{rep.wig}}">WIG-file</a></li>
+<li><a href="{{rep.bed}}">BED-file</a></li>
+<li><a href="{{rep.report_pdf}}">Report PDF</a></li>
+</ul>
+{% elif rep.file_type == "fastq" -%}
+<h3>{{rep.name}}</h3>
+<ul>
+<li><a href="{{rep.wig}}">WIG-file</a></li>
+<li><a href="{{rep.bed}}">BED-file</a></li>
+<li><a href="{{rep.report_pdf}}">Report PDF</a></li>
+</ul>
+{% endif %}
+{% endfor %}
+
+</div>
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery.dataTables.min.js"></script>
+<script src="js/bootstrap/js/bootstrap.min.js"></script>
+<script src="js/index.js"></script>
+
+</body>
+</html>

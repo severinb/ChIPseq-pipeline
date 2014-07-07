@@ -1,0 +1,283 @@
+#!/import/bc2/home/nimwegen/GROUP/local/bin/python
+""" Script saves files transfered by MARA in chunks """
+
+import sys
+sys.path.append('/import/wnz/home/mara/local/lib/python2.7/site-packages')
+
+import argparse
+import bz2
+import datetime
+from flup.server.fcgi import WSGIServer
+from flask import Flask, request, make_response, render_template, session
+import gzip
+import jinja2
+import json
+import logging
+import os
+import re
+import subprocess
+import tarfile
+import tempfile
+import zipfile
+import yaml
+
+mara_app = Flask(__name__, template_folder='../')
+
+@mara_app.route("/")
+def main_page():
+    """ Show index page """
+    fin = open('severin.html')
+    content = fin.read()
+    fin.close()
+    return content
+
+
+@mara_app.route("/upload", methods=['POST'])
+def upload_files():
+    if request.method == 'POST':
+        logging.debug("received POST request")
+        return handle_post()
+    else:
+        logging.debug("received GET request")
+        return handle_get()
+
+
+def handle_post():
+    """ Handles POST requests """
+    save_dir = '/import/bc2/home/nimwegen/pachko/www/severin/test/fg'
+    print str(request.files)
+    file_type = 'fg_files[]'
+    if "bg_files[]" in request.files:
+        file_type = 'bg_files[]'
+        save_dir = '/import/bc2/home/nimwegen/pachko/www/severin/test/bg'
+    if 'X-File-Name' not in request.headers:
+        logging.warning('X-File-Name not present')
+        file_name = request.files[file_type].__dict__['filename']
+        file_size = 100000000000
+    else:
+        file_name = request.headers['X-File-Name']
+        file_size = int(request.headers['X-File-Size'])
+        logging.debug("size %s\n" % file_size)
+
+    file_path = "%s/%s" % (save_dir, file_name)
+    logging.debug("file_path %s\n" % file_path)
+    #data = request.data
+    data = request.files[file_type].stream
+
+    if (not os.path.exists(file_path)) \
+        or (os.path.getsize(file_path) < file_size):
+        fout = open(file_path, 'a')
+        for line in data:
+            fout.write(line)
+        fout.close()
+        os.chmod(file_path, 0666)
+    return make_response(json.dumps({"files": [{'name': file_name,
+                                                'size': os.path.getsize(file_path),
+
+                                      }]}))
+
+
+def handle_get():
+    """ Handles GET requests """
+    pass
+
+
+@mara_app.route("/run", methods=['POST'])
+def run():
+    """ Upload files and run mara """
+    #save_dir = get_save_dir_name(MARA_CONFIG)
+    logging.debug("form: " + str(request.form))
+    logging.debug("type: " + str(request.form['type']))
+    upload_dir = "%s/upload" % session['save_dir']
+    dir_list = os.listdir(upload_dir)
+    proc = []
+    for dir_item in dir_list:
+        if re.search("\.zip$", dir_item, flags=2):
+            proc.append(subprocess.Popen(['unzip',
+                                          '-q',
+                                          '-j',
+                                          "%s/%s" % (upload_dir, dir_item),
+                                          '-d',
+                                          upload_dir]))
+        elif re.search("\.tar$", dir_item, flags=2):
+            proc.append(subprocess.Popen(['tar',
+                                          '-C',
+                                          upload_dir,
+                                          '-xf',
+                                          "%s/%s" % (upload_dir, dir_item)]))
+        elif re.search("\.tar.gz$", dir_item, flags=2):
+            proc.append(subprocess.Popen(['tar',
+                                          '-C',
+                                          upload_dir,
+                                          '-zxf',
+                                          "%s/%s" % (upload_dir, dir_item)]))
+        elif re.search("\.tar.bz2$", dir_item, flags=2):
+            proc.append(subprocess.Popen(['tar',
+                                          '-C',
+                                          upload_dir,
+                                          '-jxf',
+                                          "%s/%s" % (upload_dir, dir_item)]))
+        elif re.search("\.bz2$", dir_item, flags=2):
+            proc.append(subprocess.Popen(['bunzip2',
+                                          "%s/%s" % (upload_dir, dir_item)]))
+
+    for proc_item in proc:
+        proc_item.wait()
+
+    # remove archives
+    proc = []
+    for dir_item in dir_list:
+        if re.search("\.(zip|tar|tar.gz|tar.bz2)$", dir_item, flags=2):
+            proc.append(subprocess.Popen(['rm',
+                                          "%s/%s" % (upload_dir, dir_item)]))
+    for proc_item in proc:
+        proc_item.wait()
+
+    # change file permissions
+    dir_list = os.listdir(upload_dir)
+    proc = []
+    for dir_item in dir_list:
+        proc.append(subprocess.Popen(['chmod',
+                                      'a+rw',
+                                      "%s/%s" % (upload_dir, dir_item)]))
+    for proc_item in proc:
+        proc_item.wait()
+
+    # save email and project
+    if request.form['email']:
+        fout = open("%s/address" % session['save_dir'],
+                    'w')
+        fout.write(request.form['email'])
+        fout.close()
+
+    if request.form['project']:
+        fout = open("%s/project" % session['save_dir'],
+                    'w')
+        fout.write(request.form['project'])
+        fout.close()
+
+    conf = MARA_CONFIG.copy()
+    conf['type'] = request.form['type']
+    conf['organism'] = request.form['organism']
+    conf['input_dir'] = upload_dir
+    conf['cwd'] = session['save_dir']
+    conf['job_name'] = "MR-%s" % conf['cwd'][-6:]
+    conf['hold_jid'] = None
+    conf['chipseq_window'] = '2000'
+    if request.form['mirna'] == 'true':
+        conf['mirnas'] = True
+    else:
+        conf['mirnas'] = False
+
+    # get current time
+    now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    # open log
+    log = open(conf['submission_log'], 'a')
+
+    run_scripts = run_mara.RunScripts(conf)
+    if run_scripts.error:
+        log.write("[%s] Error! %s %s\n" % (now,
+                                         request.form['email'],
+                                         run_scripts.error
+                                         ))
+        log.close()
+        return "<h2 id=\"error_responce\">" + run_scripts.error + "</h2>"
+
+    run_scripts.make()
+    original_cwd = os.getcwd()
+    os.chdir(conf['cwd'])
+    run_scripts.submit()
+    os.chdir(original_cwd)
+
+    # write submission info into the log
+    chip = ''
+    if 'chip' in run_scripts.conf:
+        chip = run_scripts.conf['chip']
+    log.write("[%s] %s %s %s %s\n" % (now,
+                                      request.form['email'],
+                                      request.form['type'],
+                                      request.form['organism'],
+                                      chip
+                                      ))
+    log.close()
+    create_index_page(session['save_dir'], MARA_CONFIG)
+
+    return os.path.basename(session['save_dir'])
+
+
+def create_index_page(save_dir, config):
+    """ Create index.html for user to bookmark """
+    fout = open("%s/%s/index.html" % (save_dir,
+                                      config['report_dir'])
+                , 'w')
+    fout.write(render_template('status.html', conf=config))
+    fout.close()
+
+
+def save_field(file_name, data):
+    """ Save form field to file """
+    fout = open(file_name, 'w')
+    logging.debug("Saving %s %s" % (file_name, data))
+    fout.write(data)
+    fout.close()
+
+
+def get_sample_num(file_name):
+    """ Count how many samples in expression table """
+    sample_num = 0
+    fin = open(file_name)
+    for line in fin:
+        if line.strip() == '':
+            continue
+        sample_num = len(line.rstrip().split("\t"))
+        break
+    return sample_num
+
+
+
+
+def error(message):
+    """ Return error page with given message """
+    return message
+
+
+def get_sample_indices(data_dir):
+    """ Reads sample names and indices from file sample indices
+    in data_dir
+    """
+    if not os.path.exists("%s/%s" % (data_dir, 'sample_indices')):
+        return 0
+    return [x.rstrip() for x in open("%s/%s" % (data_dir, 'sample_indices'))]
+
+
+def create_avrg_conf_table(data, save_dir):
+    """ crates html table with averaging configuration """
+    fout = open("%s/conf_table.html" % save_dir, 'w')
+    fout.write("\n".join(['<div id="avrg_conf">',
+                          '<p>Averaging sample configuration</p>',
+                          '<table>',
+                          '<thead>',
+                          '<tr>',
+                          '<th>Sample</th>',
+                          '<th>Condition</th>']))
+    if data[0]['ri'] != '0':
+        fout.write('<th>Replicate/Batch</th>')
+    fout.write("</tr>\n</thead>\n<tbody>\n")
+
+    for record in data:
+        fout.write("<tr><td>%s</td>" % "</td><td>".join([record['name'],
+                                                                record['new_name']
+                                                                ]))
+        if record['ri'] != '0':
+            fout.write("<td>replicate/batch%s</td>" % record['ri'])
+        fout.write("</tr>\n")
+
+    fout.write("</tbody></table></div>\n")
+    fout.close()
+
+
+if __name__ == "__main__":
+    # run server
+    #WSGIServer(mara_app, debug=True).run()
+    mara_app.debug = True
+    mara_app.run(host="0.0.0.0", port=5000, debug=True)

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>SiteEnrichmentM_greedy</name>
+    <!--<version>1.0</version>-->
+    <doc>
+    This component tries to find for all input WMs the prior (pi) which maximizes Likelihood of the training set.
+    With this prior it then computes the log likelihhod of the test set.
+    This is done with the help of motevo. To optimize the prior EM prior updating is used on the training set.
+    </doc>
+    <launcher type="python">
+        <argument name="file" value="SiteEnrichmentM_greedy.py" />
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <inputs>
+        <input name="train_set" type="BinaryFile">
+            <doc>Training sequences or alignments. Used to find optimal prior for a WM.</doc>
+        </input>
+        <input name="test_set" type="BinaryFile">
+            <doc>Used to compute likelihhod of these sequences or alignments under the WM model.</doc>
+        </input>
+        <input name="background_set" type="BinaryFile">
+            <doc>Used to compute likelihhod of these sequences or alignments under the WM model.</doc>
+        </input>
+        <input name="BaseFrequencies" type="BinaryFile">
+            <doc>File from BuildUFEmodel component containing the frequencies of A/T and G/C.</doc>
+        </input>
+        <input name="WM1" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM2" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM3" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM4" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM5" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM6" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM7" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM8" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM9" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM10" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM11" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM12" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM13" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM14" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM15" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM16" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM17" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM18" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM19" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM20" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="keepWM" type="BinaryFile" optional="true">
+            <doc>A motif that is added to the output anyway, no matter if it's contributing or not.</doc>
+        </input>
+        <input name="WMdir" type="BinaryFolder" optional="true">
+            <doc>Directory containing WMs. Typically these are trimmed WMs from TrimWM component or filtered WMs from FilterWMs.</doc>
+        </input>
+        <input name="WMdir2" type="BinaryFolder" optional="true">
+            <doc>Directory containing WMs. Typically these are trimmed WMs from TrimWM component</doc>
+        </input>
+        <input name="UFEmodel" type="BinaryFile" optional="true">
+            <doc>File containing the UFE model. Only optional when ran without alignments.</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="loglik_all_motifs" type="BinaryFile">
+            <doc>This file contains the log-likelihood of the test sequences given each given WM</doc>
+        </output>
+        <output name="loglik_contributing_motifs" type="BinaryFile">
+            <doc>This file contains the log-likelihood of the test sequences given one contributing WM</doc>
+        </output>
+        <output name="loglik_combined" type="BinaryFile">
+            <doc>This file contains the log-likelihood of the best combination of WMs. Each line one WM gets added.</doc>
+        </output>
+        <output name="loglik_plot" type="PDF">
+            <doc></doc>
+        </output>
+        <output name="intermediate" type="BinaryFolder">
+            <doc></doc>
+        </output>
+    </outputs>
+    <parameters>
+        <parameter name="genome" type="string" default="">
+            <doc>genome: hg19, mm9 ...</doc>
+        </parameter>
+        <parameter name="motevo_path" type="string" default="">
+            <doc>Path to motevo executable.</doc>
+        </parameter>
+        <parameter name="aligned" type="boolean" default="true">
+            <doc>Whether test and training sets are multiple alignments or sequences.</doc>
+        </parameter>
+        <parameter name="slim" type="boolean" default="false">
+            <doc>If this flag is true, then only log-likelihoods ofsequences given single given WMs is given out.</doc>
+        </parameter>
+        <parameter name="site_enrichment_cutoff" type="float" default="20">
+            <doc>This specifies how much each WMs has to improve log-likelihood to not get discarded.</doc>
+        </parameter>
+    </parameters>
+ </component>

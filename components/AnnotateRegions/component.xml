@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>AnnotateRegions</name>
+    <!--<version>1.0</version>-->
+    <doc>
+    This component runs homer's (http://biowhat.ucsd.edu/homer/index.html) annotatePeaks.pl to annotate each given peak with:
+        -Nearest TSS:
+            -distance to nearest TSS from RefSeq (negative means upstream, positive means downstream)
+            -ID of nearest promoter (RefSeq)
+            -ID of associated gene (RefSeq, Enseml, Entrez, Unigene)
+            -Gene name, alias, description and type
+        -Genomic Annotation. Does peak lie in:
+            -TSS (-1kb +100bp)
+            -TTS (-100bp +1kb)
+            -CDS exons
+            -5' UTR
+            -3' UTR
+            -CpG islands
+            -repeats
+            -Introns
+            -Intergenic
+        -Gene ontology analysis of nearest genes: enrichment for biological functions of genes.
+        -Genome ontology analysis of peaks: genomic regions that are enriched in the input peaks.
+    </doc>
+    <launcher type="python">
+        <argument name="file" value="AnnotateRegions.py" />
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <requires>URL="http://biowhat.ucsd.edu/homer/index.html" type="manual">homer</requires>
+    <inputs>
+        <input name="regions" type="BinaryFile">
+            <doc>Regions, output from SelectPeaks, NormalizeHeights or RepeatsOut.</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="regionAnnotations" type="BinaryFile">
+            <doc>File containing annotations of each region (like mentioned in the first two points of the component doc).</doc>
+        </output>
+        <output name="intermediate" type="BinaryFolder">
+            <doc>Directory containing intermediate results.</doc>
+        </output>
+        <output name="GenomeOntology" type="BinaryFolder">
+            <doc>Directory containing results from genome ontology analysis.</doc>
+        </output>
+        <output name="GeneOntology" type="BinaryFolder">
+            <doc>Directory containing results from gene ontology analysis.</doc>
+        </output>
+    </outputs>
+    <parameters>
+        <parameter name="genome" type="string" default="">
+            <doc>genome: hg19, mm9 ...</doc>
+        </parameter>
+        <parameter name="homerPATH" type="string" default="/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/homer/bin">
+            <doc>Location of the homer executables. This path is added to the PATH.</doc>
+        </parameter>
+        <!--<parameter name="perlPATH" type="string" default="perl">
+            <doc></doc>
+        </parameter>-->
+    </parameters>
+</component>

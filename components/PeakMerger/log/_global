@@ -1,0 +1,10 @@
+Warning: all outports are unconnected: PeakMerger
+Executing input_in_dir (INPUT)
+Executing input_z_cutoff_infile (INPUT)
+Component input_in_dir finished with success; READY queue is empty.
+Component input_z_cutoff_infile finished with success; READY queue: PeakMerger 
+Executing PeakMerger (PeakMerger)
+Clearing directory /import/bc2/home/nimwegen/bergerse00/www/severin/PipeLine/components/PeakMerger/execute/PeakMerger
+Component PeakMerger finished with success; READY queue is empty.
+Done. No errors occurred.
+Log closed on 2013-07-26 22:25:33; user bergerse00

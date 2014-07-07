@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>RunPhyloGibbs</name>
+    <!--<version>1.0</version>-->
+    <doc>
+    This component runs PhyloGibbs with some hardcoded parameters.
+    It tries to find five motifs, which all are returned in the output.
+    Also logos are produced for all of the motifs.
+    </doc>
+    <launcher type="python">
+        <argument name="file" value="RunPhyloGibbs.py" />
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <inputs>
+        <input name="infile" type="BinaryFile">
+            <doc>Typically even half of Alignments or Sequences from SplitAlignments.</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="out_file" type="BinaryFile">
+            <doc>Output file of PhyloGibbs.</doc>
+        </output>
+        <output name="report" type="BinaryFile">
+            <doc>File for phylogibbs stdout.</doc>
+        </output>
+        <output name="WeightMatrix1" type="BinaryFile">
+            <doc>This is the weight matrix of the motif that phylogibbs found.</doc>
+        </output>
+        <output name="Logo1" type="PDF">
+            <doc>Logo of the weight matrix.</doc>
+        </output>
+        <output name="WeightMatrix2" type="BinaryFile">
+            <doc>This is the weight matrix of the motif that phylogibbs found.</doc>
+        </output>
+        <output name="Logo2" type="PDF">
+            <doc>Logo of the weight matrix.</doc>
+        </output>
+        <output name="intermediate" type="BinaryFolder">
+            <doc>Directory for intermediate files. Might be empty after running this component.</doc>
+        </output>
+        <output name="log_file" type="BinaryFile">
+            <doc>Log file.</doc>
+        </output>
+    </outputs>
+    <parameters>
+        <parameter name="PhyloGibbsPATH" type="string" default="">
+            <doc>Path to PhyloGibbs</doc>
+        </parameter>
+        <parameter name="mylogo_path" type="string" default="">
+            <doc>Path to mylogo logo creation script.</doc>
+        </parameter>
+        <parameter name="markovorder" type="int" default="1">
+            <doc>Markov order of background model. 0 is bg base probability estimated from base counts in the input data. -1 is 0.25 each.</doc>
+        </parameter>
+        <parameter name="WindowLength" type="int" default="15">
+            <doc>Length of the windows/motives.</doc>
+        </parameter>
+        <parameter name="numberWindows" type="int" default="-1">
+            <doc>The number of windows that are allowed to be placed. -1 is default, which means that this number if a function of the number of input alignments/sequences given (num=0.7*input_alns). If a positive number is given here, it will be used instead.</doc>
+        </parameter>
+        <parameter name="numberColours" type="int" default="2">
+            <doc>The number of different colours or motives. This mustn't be smaller than 2. If this number is greater than 2, just the first two motifs get reported!</doc>
+        </parameter>
+        <parameter name="AlignmentOrder" type="int" default="1">
+            <doc>How alignments should be treated: 0=no alignments are assumed, 1=only species are taken into account that are gaplessly aligned to the reference, 2=no windows are put at positions where any of the species has a gap.</doc>
+        </parameter>
+        <parameter name="genome" type="string" default="">
+            <doc>Genome.</doc>
+        </parameter>
+    </parameters>
+ </component>

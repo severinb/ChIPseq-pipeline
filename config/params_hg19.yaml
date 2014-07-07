@@ -1,0 +1,89 @@
+IP_FASTQ_FILES: #(comment: Do not use underscores in TF names (here MAX))
+IP_FASTA_FILES:
+IP_BED_FILES:
+IP_SHIFTEDBED_FILES:
+
+BG_FASTQ_FILES: #(comment: .fastq extension)
+BG_FASTA_FILES: #(comment: .fa extension)
+BG_BED_FILES: #(comment: .bedweight or .bed extension)
+BG_SHIFTEDBED_FILES: #(comment: .bedweight or .bed extension)
+
+WM:
+OUT_DIR: OUTPUT
+ADAPTOR:
+ANNOTATION_TYPE: hg19-none-aln2.3
+GENOME: hg19
+GENDIR_PATH: /import/wnz/home/crunch/data/hg19/genome
+CHROMOSOME_INFO: /import/wnz/home/crunch/data/hg19/chrominfo.txt
+REPEAT_PATH:     /import/wnz/home/crunch/data/hg19/repeatmask
+ANNOTATION_FILE: /import/wnz/home/crunch/data/hg19/clusters_150_gene_associations
+WMLIBRARY: /import/wnz/home/crunch/data/hg19/WMs
+FDR: 0.1
+WINDOW: 500
+BACKGROUND_WINDOW: 2000
+STEP: 250
+DO_MOTIF_FINDING: TRUE
+USER:
+PROJECTLEADER:
+RENAME_TAG:
+IP_FASTQ_DESCRIPTION:
+BG_FASTQ_DESCRIPTION:
+IP_FASTA_DESCRIPTION:
+BG_FASTA_DESCRIPTION:
+
+
+##invariant, do not touch:
+TO_FMI_REPOSITORY:
+    #- qualityfilter
+    #- adaptor
+    #- transform
+    #- import
+    #- annotate
+    #- bedweight
+    #- bed
+    #- wig
+    #- mappable
+    #- errorplots
+    #- fraglen
+    #- latexfrag
+    #- pdfreport
+FMI_PATH:
+    /import/wnz/home/crunch/PipeLine/fmitools
+ANDURIL_COMPONENTS_PATH:
+    /import/wnz/home/crunch/PipeLine/components
+ANDURIL_TEMPLATES_PATH:
+    /import/wnz/home/crunch/PipeLine/templates
+ANDURIL_HOME:
+    /import/wnz/home/crunch/soft/anduril-1.2.5
+PERL_PATH:
+    /import/bc2/soft/app/perl/5.10.1/Linux/bin/perl
+PYTHON_PATH:
+    /import/bc2/soft/app/Python/2.7.5/Linux/bin/python
+R_PATH:
+    /import/bc2/soft/app/R/current/Linux/bin/R
+R_LIBS_USER:
+    /import/wnz/home/crunch/local/Rlibs
+SORT_TMPDIR:
+    /import/bc2/scratch/tmp/
+USE_CLUSTER:
+    TRUE
+QUEUE_NAMES:
+    long=long
+    verylong=very_long
+    long_hm=long
+    verylong_hm=very_long
+    sjpn_long_hm=long
+ALIGN_PIPE_PATH:
+    /import/wnz/home/crunch/AlignmentPipeline/scripts/pipeline.pl
+BEDTOOLS_PATH:
+    /import/wnz/home/crunch/PipeLine/fmitools/soft/bedtools
+PHYLOGIBBS_PATH:
+    /import/wnz/home/crunch/soft/phylogibbs-1.2/src/phylogibbs
+MYLOGO_PATH:
+    /import/wnz/home/crunch/soft/weblogo/mylogo
+MOTEVO_PATH:
+    /import/wnz/home/crunch/soft/motevo_ver1.03/bin/motevo
+MOTEVOUFE_PATH:
+    /import/wnz/home/crunch/soft/motevo_ver1.03/bin/runUFE
+DRMAA_LIBRARY_PATH:
+    /import/bc2/soft/app/SGE/6.2/Linux/lib/lx24-amd64/libdrmaa.so

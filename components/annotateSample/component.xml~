@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>annotateSample</name>
+    <version>1.0</version>
+    <doc>
+    Runs Bowtie on a fasta file for mapping and stores results in FMI repository.
+    Call sequence: annotateSample_anduril.py runs /GROUP/DeepSeqPipeline.Piotr/soft/annotateSample.pl.
+    </doc>
+    <launcher type="python">
+        <argument name="file" value="annotateSample.py" />
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <inputs>
+        <!--<input name="in_dir" type="BinaryFolder">
+            <doc>Path to a textfile to process.</doc>
+        </input>-->
+    </inputs>
+    <outputs>
+        <output name="annotateSample_log" type="BinaryFile">
+            <doc>log file. contains time it toook to finish.</doc>
+        </output>
+    </outputs>
+    <parameters>
+            <parameter name="FMIid" type="string" default="">
+                <doc>FMIid string. Looks like input filename without gz fastq extensions.</doc>
+            </parameter>
+            <parameter name="annoType" type="string" default="">
+                <doc>something like "mm9-mmV02-aln2".</doc>
+            </parameter>
+            <parameter name="FMIpath" type="string" default="">
+                <doc>Path to the FMI pipeline directory to find FMI tool.</doc>
+            </parameter>
+            <parameter name="perlPATH" type="string" default="perl">
+                <doc>Path to right perl to use for execution.</doc>
+            </parameter>
+    </parameters>
+</component>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>importSample</name>
+    <version>1.0</version>
+    <doc>
+    Imports data into FMI repository. Following components work from there.
+    importSample_anduril.py runs soft/importSample.pl
+    It looks for seqs.tab file to check whether sample was already imported. If it was, it returns with no error. 
+    </doc>
+    <launcher type="python">
+        <argument name="file" value="importSample.py" />
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <inputs>
+        <input name="in_file" type="BinaryFile">
+            <doc>Path to the out_file of transform component.</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="importSample_log" type="BinaryFile">
+            <doc></doc>
+        </output>
+    </outputs>
+    <parameters>
+            <parameter name="desc" type="string" default="No sample description given">
+                <doc>description.</doc>
+            </parameter>
+            <parameter name="FMIpath" type="string" default="">
+                <doc>Path to the FMI pipeline. This folder contains soft and samples directory.</doc>
+            </parameter>
+            <parameter name="FMIid" type="string" default="">
+                <doc>A folder named FMIid will be created in the FMI repository/samples directory.</doc>
+            </parameter>
+            <parameter name="perlPATH" type="string" default="perl">
+                <doc>Path to right perl for execution.</doc>
+            </parameter>
+            <parameter name="FMI_output_dir" type="string" default="">
+                <doc>Directory where FMI output is written to. It is used like the 'samples' directory of the FMI toolkit. I added this because I don't want to store all data in the standard samples repository.</doc>
+            </parameter>
+    </parameters>
+</component>

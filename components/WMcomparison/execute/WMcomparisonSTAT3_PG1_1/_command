@@ -1,0 +1,13 @@
+metadata.instanceName=WMcomparison
+metadata.Anduril=Engine 1.2.5
+input.WM=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/testrun/STAT3.v5.2/OUTPUT/PEAKSHAPE/OUTPUT/phylogibbs1Z1000/WeightMatrix1
+input.WM_dir=/import/bc2/home/nimwegen/GROUP/WMs/Mammals/CurrentWMs
+output._errors=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/COMPONENTS/COMPONENTS.v5/WMcomparison/execute/WMcomparison/_errors
+output._log=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/COMPONENTS/COMPONENTS.v5/WMcomparison/execute/WMcomparison/_log
+output._tempdir=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/COMPONENTS/COMPONENTS.v5/WMcomparison/execute/WMcomparison/_tempdir
+output.intermediate=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/COMPONENTS/COMPONENTS.v5/WMcomparison/execute/WMcomparison/intermediate
+output.log_file=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/COMPONENTS/COMPONENTS.v5/WMcomparison/execute/WMcomparison/log_file
+output.out_file=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/COMPONENTS/COMPONENTS.v5/WMcomparison/execute/WMcomparison/out_file
+parameter.gap_penalty=0.3
+parameter.mylogo_path=/import/bc2/home/nimwegen/GROUP/Scripts/weblogo/mylogo
+parameter.numWMs=4

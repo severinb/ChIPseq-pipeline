@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>ComputeWMScores</name>
+    <!--<version>1.0</version>-->
+    <doc>
+    This component computes WM scores (log odds ratio of WM model over background (random) model) for a given WM genome wide.
+    It uses for this chromosomes stored in hdf5 format. It submits jobs itself (with drmaa library), one for each chromsome region defined in chrominfo file.
+    </doc>
+    <launcher type="python">
+        <argument name="file" value="ComputeWMScores.py" />
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <inputs>
+        <input name="WM" type="BinaryFile">
+            <doc>WM to compute scores with.</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="WMscores" type="BinaryFile">
+            <doc>File containing window coordinates, binding sequences and WM scores.</doc>
+        </output>
+        <output name="log_file" type="BinaryFile">
+            <doc>log</doc>
+        </output>
+        <output name="intermediate" type="BinaryFolder">
+            <doc></doc>
+        </output>
+    </outputs>
+    <parameters>
+        <parameter name="chrominfo" type="string" default="">
+            <doc>Path to a file conating chromosome windows (regions not containing long stretches of N) in bed format.</doc>
+        </parameter>
+        <parameter name="WMscore_cutoff" type="float" default="1">
+            <doc>Binding sites with WM score above this cut-off get reported. A random binding site has score 0.</doc>
+        </parameter>
+        <parameter name="hd5f_chromdir" type="string" default="/import/bc2/home/nimwegen/geier/data/hg19_genome">
+            <doc>Chromosome sequence files in hdf5 format. Default is for hg19. Default for dm3: /import/bc2/home/nimwegen/geier/data/dm3_genome, for mm9: /import/bc2/home/nimwegen/geier/data/mm9_genome. There are also copies of these files on each cluster node (using those is faster).</doc>
+        </parameter>
+        <parameter name="bg_frequencies" type="string" default="0.25,0.25,0.25,0.25,0.25">
+            <doc>To compute background model.</doc>
+        </parameter>
+        <parameter name="project_leader" type="string" default="project_nimwegen">
+            <doc>Used to submit jobs to the queue with drmaa library.</doc>
+        </parameter>
+    </parameters>
+</component>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>TrimWM</name>
+    <!--<version>1.0</version>-->
+    <doc>
+      This component computes information content of WM columns.
+      Then it trims the input WMs from left and right until information content of a column is greater than defined cut-off. 
+    </doc>
+    <launcher type="python">
+        <argument name="file" value="TrimWM.py" />
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <inputs>
+        <input name="WM1" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM2" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM3" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM4" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM5" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM6" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM7" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM8" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM9" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM10" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM11" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM12" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM13" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM14" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM15" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM16" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM17" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM18" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM19" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WM20" type="BinaryFile" optional="true">
+            <doc></doc>
+        </input>
+        <input name="WMdir" type="BinaryFolder" optional="true">
+            <doc></doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="outdir" type="BinaryFolder">
+            <doc>Directory containing all trimmed input WMs.</doc>
+        </output>
+        <output name="log_file" type="BinaryFile">
+            <doc></doc>
+        </output>
+    </outputs>
+    <parameters>
+        <parameter name="information_cutoff" type="float" default="0.25">
+            <doc>Cut-off from WM column information cut-off. Trimming is stopped when one column is above cut-off</doc>
+        </parameter>
+    </parameters>
+ </component>

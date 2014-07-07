@@ -1,0 +1,3 @@
+input_in_dir	YES	YES	INPUT OUT in P path=/import/bc2/home/nimwegen/bergerse00/www/severin/PipeLine/components/zCutOff_byFDR/../../TESTRUN/BRCA1A_2/OUTPUT/BRCA1A_FgBg-peakcall_newnoise/out_dir TS in=1374271650000 
+input_z_cutoff_infile	YES	YES	INPUT OUT in P path=/import/bc2/home/nimwegen/bergerse00/www/severin/PipeLine/components/PeakMerger/../zCutOff_byFDR/execute/zCutOff_byFDR/zco_file TS in=1374860487000 
+PeakMerger	YES	YES	PeakMerger IN in_dir=input_in_dir:in IN z_cutoff_infile=input_z_cutoff_infile:in OUT out_file OUT allpeaks OUT revcum OUT PeakMerger_log OUT IDfile OUT z_cutoff_file P topPeaks=500 P z_cutoff=-1 
