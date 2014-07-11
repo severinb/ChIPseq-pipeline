@@ -1,8 +1,0 @@
-Warning: all outports are unconnected: ExtendPeaks
-Executing input_infile (INPUT)
-Component input_infile finished with success; READY queue: ExtendPeaks 
-Executing ExtendPeaks (ExtendPeaks)
-Clearing directory /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/ExtendPeaks/execute/ExtendPeaks
-Component ExtendPeaks finished with success; READY queue is empty.
-Done. No errors occurred.
-Log closed on 2013-03-14 14:57:24; user bergerse00

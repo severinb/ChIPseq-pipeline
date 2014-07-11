@@ -1,6 +1,0 @@
-shiftd0    130.000000,     shiftd1 130.000000,     shiftd2 136.000000,     Zd0     1.719653 - CHOSE: 130.000000
-
-Running time for fragment length finder:
-	-Finding Shift and Shifting: 0:02:41.882276
-	-Sorting and gzipping bedweight: 0:00:14.951815
-	-Overall: 0:02:56.842795

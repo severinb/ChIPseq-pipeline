@@ -1,2 +1,0 @@
-ExtendPeaks	YES	YES	ExtendPeaks IN infile=input_infile:in OUT outfile P length=2000 
-input_infile	YES	YES	INPUT OUT in P path=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/HOMER_ANALYSIS/PROCESSING/PAX7_GSE25064/OUTPUT/PAX7_FgBg-selectpeaks/allpeaks TS in=1363262715000 
