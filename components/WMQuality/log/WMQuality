@@ -1,0 +1,664 @@
+Executing WMQuality (WMQuality)
+Clearing directory /import/bc2/home/nimwegen/bergerse00/Projects/ChIPseq-pipeline/components/WMQuality/execute/WMQuality
+[STDERR WMQuality] 
+[STDERR WMQuality] 
+[STDOUT WMQuality] 
+[STDERR WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file fitP_wm_0
+[STDOUT WMQuality] aligned False
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo fitP_wm_0
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.367879 parent hg19_
+[STDOUT WMQuality] node 1 name hg19_ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA ARID5B.p2
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00    190.59      58.23      37.53       7.64          A        0.58
+[STDOUT WMQuality] 01    188.00      12.31      11.80      81.88          A        0.66
+[STDOUT WMQuality] 02     16.96     116.35      91.82      68.85          B        0.18
+[STDOUT WMQuality] 03     22.33     174.32      18.36      78.97          C        0.47
+[STDOUT WMQuality] 04    217.45      36.61      17.47      22.46          A        0.74
+[STDOUT WMQuality] 05     52.86     155.89      35.12      50.11          C        0.23
+[STDOUT WMQuality] 06    288.66       3.39       1.45       0.49          A        1.81
+[STDOUT WMQuality] 07    276.67       6.56       9.48       1.27          A        1.56
+[STDOUT WMQuality] 08     10.04      25.36      14.50     244.09          T        1.05
+[STDOUT WMQuality] 09    264.80      15.34       9.55       4.30          A        1.35
+[STDOUT WMQuality] 10      2.86     210.71       7.14      73.28          C        0.92
+[STDOUT WMQuality] 11    107.64     124.85      16.18      45.31          M        0.26
+[STDOUT WMQuality] 12    164.85      61.78      65.15       2.21          A        0.48
+[STDOUT WMQuality] 13    214.17      39.16      31.88       8.78          A        0.74
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior ARID5B.p2 is 0.010000 0.010000
+[STDOUT WMQuality] UFE wm prior 0.000000 0.000000
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is (hg19: 1)
+[STDOUT WMQuality] em_prior is 1
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] total prior dif 0.240227
+[STDOUT WMQuality] total prior dif 0.195971
+[STDOUT WMQuality] total prior dif 0.179710
+[STDOUT WMQuality] total prior dif 0.176551
+[STDOUT WMQuality] total prior dif 0.176031
+[STDOUT WMQuality] total prior dif 0.000000
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file fg_sites_wm_0
+[STDOUT WMQuality] aligned False
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo fg_sites_wm_0
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.367879 parent hg19_
+[STDOUT WMQuality] node 1 name hg19_ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA ARID5B.p2
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00    190.59      58.23      37.53       7.64          A        0.58
+[STDOUT WMQuality] 01    188.00      12.31      11.80      81.88          A        0.66
+[STDOUT WMQuality] 02     16.96     116.35      91.82      68.85          B        0.18
+[STDOUT WMQuality] 03     22.33     174.32      18.36      78.97          C        0.47
+[STDOUT WMQuality] 04    217.45      36.61      17.47      22.46          A        0.74
+[STDOUT WMQuality] 05     52.86     155.89      35.12      50.11          C        0.23
+[STDOUT WMQuality] 06    288.66       3.39       1.45       0.49          A        1.81
+[STDOUT WMQuality] 07    276.67       6.56       9.48       1.27          A        1.56
+[STDOUT WMQuality] 08     10.04      25.36      14.50     244.09          T        1.05
+[STDOUT WMQuality] 09    264.80      15.34       9.55       4.30          A        1.35
+[STDOUT WMQuality] 10      2.86     210.71       7.14      73.28          C        0.92
+[STDOUT WMQuality] 11    107.64     124.85      16.18      45.31          M        0.26
+[STDOUT WMQuality] 12    164.85      61.78      65.15       2.21          A        0.48
+[STDOUT WMQuality] 13    214.17      39.16      31.88       8.78          A        0.74
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior ARID5B.p2 is 0.000000 0.000000
+[STDOUT WMQuality] UFE wm prior 0.000000 0.000000
+[STDOUT WMQuality] bg prior 1.000000 1.000000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is (hg19: 1)
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file bg_sites_wm_0
+[STDOUT WMQuality] aligned False
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo bg_sites_wm_0
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.367879 parent hg19_
+[STDOUT WMQuality] node 1 name hg19_ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA ARID5B.p2
+[STDOUT WMQuality] PW 0.000000
+[STDERR WMQuality] 
+[STDERR WMQuality] 
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00    190.59      58.23      37.53       7.64          A        0.58
+[STDOUT WMQuality] 01    188.00      12.31      11.80      81.88          A        0.66
+[STDOUT WMQuality] 02     16.96     116.35      91.82      68.85          B        0.18
+[STDOUT WMQuality] 03     22.33     174.32      18.36      78.97          C        0.47
+[STDOUT WMQuality] 04    217.45      36.61      17.47      22.46          A        0.74
+[STDOUT WMQuality] 05     52.86     155.89      35.12      50.11          C        0.23
+[STDOUT WMQuality] 06    288.66       3.39       1.45       0.49          A        1.81
+[STDOUT WMQuality] 07    276.67       6.56       9.48       1.27          A        1.56
+[STDOUT WMQuality] 08     10.04      25.36      14.50     244.09          T        1.05
+[STDOUT WMQuality] 09    264.80      15.34       9.55       4.30          A        1.35
+[STDOUT WMQuality] 10      2.86     210.71       7.14      73.28          C        0.92
+[STDOUT WMQuality] 11    107.64     124.85      16.18      45.31          M        0.26
+[STDOUT WMQuality] 12    164.85      61.78      65.15       2.21          A        0.48
+[STDOUT WMQuality] 13    214.17      39.16      31.88       8.78          A        0.74
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior ARID5B.p2 is 0.000000 0.000000
+[STDOUT WMQuality] UFE wm prior 0.000000 0.000000
+[STDOUT WMQuality] bg prior 1.000000 1.000000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is (hg19: 1)
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file fitP_wm_1
+[STDOUT WMQuality] aligned False
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo fitP_wm_1
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.367879 parent hg19_
+[STDOUT WMQuality] node 1 name hg19_ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA ARNT_ARNT2_BHLHB2_MAX_MYC_USF1.p2
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00    263.79      46.45     529.56      43.89          G        0.58
+[STDOUT WMQuality] 01    317.56     117.17     447.13       1.84          R        0.55
+[STDOUT WMQuality] 02    115.53     333.17     226.59     208.40          N        0.07
+[STDOUT WMQuality] 03     11.42     872.28       0.00       0.00          C        1.88
+[STDOUT WMQuality] 04    876.79       0.79       1.66       4.45          A        1.91
+[STDOUT WMQuality] 05      0.80     849.49       0.00      33.40          C        1.74
+[STDOUT WMQuality] 06     35.17       1.63     846.90       0.00          G        1.72
+[STDOUT WMQuality] 07      1.73      16.89       0.87     864.21          T        1.82
+[STDOUT WMQuality] 08      0.00       0.00     883.69       0.00          G        1.98
+[STDOUT WMQuality] 09    382.01      35.78     443.55      22.35          R        0.64
+[STDOUT WMQuality] 10    132.68     418.43      31.99     300.59          Y        0.36
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior ARNT_ARNT2_BHLHB2_MAX_MYC_USF1.p2 is 0.010000 0.010000
+[STDOUT WMQuality] UFE wm prior 0.000000 0.000000
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is (hg19: 1)
+[STDOUT WMQuality] em_prior is 1
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] total prior dif 0.233599
+[STDOUT WMQuality] total prior dif 0.089926
+[STDOUT WMQuality] total prior dif 0.023909
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file fg_sites_wm_1
+[STDOUT WMQuality] aligned False
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo fg_sites_wm_1
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.367879 parent hg19_
+[STDOUT WMQuality] node 1 name hg19_ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA ARNT_ARNT2_BHLHB2_MAX_MYC_USF1.p2
+[STDOUT WMQuality] PW 0.000122
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00    263.79      46.45     529.56      43.89          G        0.58
+[STDOUT WMQuality] 01    317.56     117.17     447.13       1.84          R        0.55
+[STDOUT WMQuality] 02    115.53     333.17     226.59     208.40          N        0.07
+[STDOUT WMQuality] 03     11.42     872.28       0.00       0.00          C        1.88
+[STDOUT WMQuality] 04    876.79       0.79       1.66       4.45          A        1.91
+[STDOUT WMQuality] 05      0.80     849.49       0.00      33.40          C        1.74
+[STDOUT WMQuality] 06     35.17       1.63     846.90       0.00          G        1.72
+[STDERR WMQuality] 
+[STDOUT WMQuality] 07      1.73      16.89       0.87     864.21          T        1.82
+[STDOUT WMQuality] 08      0.00       0.00     883.69       0.00          G        1.98
+[STDOUT WMQuality] 09    382.01      35.78     443.55      22.35          R        0.64
+[STDERR WMQuality] 
+[STDOUT WMQuality] 10    132.68     418.43      31.99     300.59          Y        0.36
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior ARNT_ARNT2_BHLHB2_MAX_MYC_USF1.p2 is 0.000122 0.000122
+[STDOUT WMQuality] UFE wm prior 0.000000 0.000000
+[STDOUT WMQuality] bg prior 0.999878 0.999878
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is (hg19: 1)
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file bg_sites_wm_1
+[STDOUT WMQuality] aligned False
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo bg_sites_wm_1
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.367879 parent hg19_
+[STDOUT WMQuality] node 1 name hg19_ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA ARNT_ARNT2_BHLHB2_MAX_MYC_USF1.p2
+[STDOUT WMQuality] PW 0.000122
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00    263.79      46.45     529.56      43.89          G        0.58
+[STDOUT WMQuality] 01    317.56     117.17     447.13       1.84          R        0.55
+[STDOUT WMQuality] 02    115.53     333.17     226.59     208.40          N        0.07
+[STDOUT WMQuality] 03     11.42     872.28       0.00       0.00          C        1.88
+[STDOUT WMQuality] 04    876.79       0.79       1.66       4.45          A        1.91
+[STDOUT WMQuality] 05      0.80     849.49       0.00      33.40          C        1.74
+[STDOUT WMQuality] 06     35.17       1.63     846.90       0.00          G        1.72
+[STDOUT WMQuality] 07      1.73      16.89       0.87     864.21          T        1.82
+[STDOUT WMQuality] 08      0.00       0.00     883.69       0.00          G        1.98
+[STDOUT WMQuality] 09    382.01      35.78     443.55      22.35          R        0.64
+[STDOUT WMQuality] 10    132.68     418.43      31.99     300.59          Y        0.36
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior ARNT_ARNT2_BHLHB2_MAX_MYC_USF1.p2 is 0.000122 0.000122
+[STDOUT WMQuality] UFE wm prior 0.000000 0.000000
+[STDOUT WMQuality] bg prior 0.999878 0.999878
+[STDOUT WMQuality] ref species is hg19
+[STDERR WMQuality] 
+[STDOUT WMQuality] treestring is (hg19: 1)
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file fitP_wm_2
+[STDOUT WMQuality] aligned False
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo fitP_wm_2
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.367879 parent hg19_
+[STDOUT WMQuality] node 1 name hg19_ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA AR.p2
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00     43.76      60.51      15.97      30.70          H        0.08
+[STDOUT WMQuality] 01     67.95      21.38      16.72      44.88          H        0.14
+[STDOUT WMQuality] 02     70.62      34.15      26.88      19.28          N        0.11
+[STDOUT WMQuality] 03    104.01       0.00      44.66       2.27          A        0.95
+[STDOUT WMQuality] 04     10.59       0.00     137.69       2.66          G        1.44
+[STDOUT WMQuality] 05     90.20      29.12      13.88      17.74          A        0.35
+[STDOUT WMQuality] 06    136.46       6.37       3.34       4.77          A        1.33
+[STDOUT WMQuality] 07      0.77     145.36       2.53       2.27          C        1.65
+[STDOUT WMQuality] 08    125.55       0.80      13.36      11.23          A        1.08
+[STDOUT WMQuality] 09     38.29      55.88       7.85      48.91          H        0.15
+[STDOUT WMQuality] 10     50.98      52.56      16.81      30.59          H        0.05
+[STDOUT WMQuality] 11     26.07      66.87      54.71       3.28          S        0.32
+[STDOUT WMQuality] 12     14.20      15.05       9.30     112.39          T        0.72
+[STDOUT WMQuality] 13      0.74       0.00     150.19       0.00          G        1.88
+[STDOUT WMQuality] 14     13.15       0.60       4.76     132.43          T        1.27
+[STDOUT WMQuality] 15     44.20      65.20       7.41      34.12          H        0.19
+[STDOUT WMQuality] 16      6.68     134.09       0.90       9.27          C        1.29
+[STDOUT WMQuality] 17     20.35     105.79       0.00      24.80          C        0.75
+[STDOUT WMQuality] 18     44.97      35.90      22.06      48.00          N       -0.01
+[STDOUT WMQuality] 19     37.46      41.61      49.70      22.17          N       -0.01
+[STDERR WMQuality] 
+[STDOUT WMQuality] 20     40.20      89.43       2.43      18.87          C        0.51
+[STDOUT WMQuality] 21     39.85      57.65      32.91      20.52          N        0.02
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior AR.p2 is 0.010000 0.010000
+[STDOUT WMQuality] UFE wm prior 0.000000 0.000000
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is (hg19: 1)
+[STDOUT WMQuality] em_prior is 1
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] total prior dif 0.255318
+[STDOUT WMQuality] total prior dif 0.172621
+[STDOUT WMQuality] total prior dif 0.133994
+[STDOUT WMQuality] total prior dif 0.123775
+[STDOUT WMQuality] total prior dif 0.121215
+[STDOUT WMQuality] total prior dif 0.120577
+[STDOUT WMQuality] total prior dif 0.000000
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file fg_sites_wm_2
+[STDOUT WMQuality] aligned False
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo fg_sites_wm_2
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.367879 parent hg19_
+[STDOUT WMQuality] node 1 name hg19_ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA AR.p2
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00     43.76      60.51      15.97      30.70          H        0.08
+[STDOUT WMQuality] 01     67.95      21.38      16.72      44.88          H        0.14
+[STDOUT WMQuality] 02     70.62      34.15      26.88      19.28          N        0.11
+[STDOUT WMQuality] 03    104.01       0.00      44.66       2.27          A        0.95
+[STDOUT WMQuality] 04     10.59       0.00     137.69       2.66          G        1.44
+[STDOUT WMQuality] 05     90.20      29.12      13.88      17.74          A        0.35
+[STDOUT WMQuality] 06    136.46       6.37       3.34       4.77          A        1.33
+[STDOUT WMQuality] 07      0.77     145.36       2.53       2.27          C        1.65
+[STDOUT WMQuality] 08    125.55       0.80      13.36      11.23          A        1.08
+[STDOUT WMQuality] 09     38.29      55.88       7.85      48.91          H        0.15
+[STDOUT WMQuality] 10     50.98      52.56      16.81      30.59          H        0.05
+[STDOUT WMQuality] 11     26.07      66.87      54.71       3.28          S        0.32
+[STDOUT WMQuality] 12     14.20      15.05       9.30     112.39          T        0.72
+[STDOUT WMQuality] 13      0.74       0.00     150.19       0.00          G        1.88
+[STDOUT WMQuality] 14     13.15       0.60       4.76     132.43          T        1.27
+[STDOUT WMQuality] 15     44.20      65.20       7.41      34.12          H        0.19
+[STDOUT WMQuality] 16      6.68     134.09       0.90       9.27          C        1.29
+[STDOUT WMQuality] 17     20.35     105.79       0.00      24.80          C        0.75
+[STDOUT WMQuality] 18     44.97      35.90      22.06      48.00          N       -0.01
+[STDOUT WMQuality] 19     37.46      41.61      49.70      22.17          N       -0.01
+[STDOUT WMQuality] 20     40.20      89.43       2.43      18.87          C        0.51
+[STDOUT WMQuality] 21     39.85      57.65      32.91      20.52          N        0.02
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior AR.p2 is 0.000000 0.000000
+[STDOUT WMQuality] UFE wm prior 0.000000 0.000000
+[STDOUT WMQuality] bg prior 1.000000 1.000000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is (hg19: 1)
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file bg_sites_wm_2
+[STDOUT WMQuality] aligned False
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo bg_sites_wm_2
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.367879 parent hg19_
+[STDOUT WMQuality] node 1 name hg19_ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA AR.p2
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00     43.76      60.51      15.97      30.70          H        0.08
+[STDOUT WMQuality] 01     67.95      21.38      16.72      44.88          H        0.14
+[STDOUT WMQuality] 02     70.62      34.15      26.88      19.28          N        0.11
+[STDOUT WMQuality] 03    104.01       0.00      44.66       2.27          A        0.95
+[STDOUT WMQuality] 04     10.59       0.00     137.69       2.66          G        1.44
+[STDOUT WMQuality] 05     90.20      29.12      13.88      17.74          A        0.35
+[STDOUT WMQuality] 06    136.46       6.37       3.34       4.77          A        1.33
+[STDOUT WMQuality] 07      0.77     145.36       2.53       2.27          C        1.65
+[STDOUT WMQuality] 08    125.55       0.80      13.36      11.23          A        1.08
+[STDERR WMQuality] 
+[STDERR WMQuality] 
+[STDOUT WMQuality] 09     38.29      55.88       7.85      48.91          H        0.15
+[STDOUT WMQuality] 10     50.98      52.56      16.81      30.59          H        0.05
+[STDOUT WMQuality] 11     26.07      66.87      54.71       3.28          S        0.32
+[STDOUT WMQuality] 12     14.20      15.05       9.30     112.39          T        0.72
+[STDOUT WMQuality] 13      0.74       0.00     150.19       0.00          G        1.88
+[STDOUT WMQuality] 14     13.15       0.60       4.76     132.43          T        1.27
+[STDOUT WMQuality] 15     44.20      65.20       7.41      34.12          H        0.19
+[STDOUT WMQuality] 16      6.68     134.09       0.90       9.27          C        1.29
+[STDOUT WMQuality] 17     20.35     105.79       0.00      24.80          C        0.75
+[STDOUT WMQuality] 18     44.97      35.90      22.06      48.00          N       -0.01
+[STDOUT WMQuality] 19     37.46      41.61      49.70      22.17          N       -0.01
+[STDOUT WMQuality] 20     40.20      89.43       2.43      18.87          C        0.51
+[STDOUT WMQuality] 21     39.85      57.65      32.91      20.52          N        0.02
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior AR.p2 is 0.000000 0.000000
+[STDOUT WMQuality] UFE wm prior 0.000000 0.000000
+[STDOUT WMQuality] bg prior 1.000000 1.000000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is (hg19: 1)
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file fitP_wm_3
+[STDOUT WMQuality] aligned False
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo fitP_wm_3
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.367879 parent hg19_
+[STDOUT WMQuality] node 1 name hg19_ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA ENCODE.UA1
+[STDOUT WMQuality] PW 0.000000
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00      0.16       0.34       0.21       0.29          N       -1.09
+[STDOUT WMQuality] 01      0.01       0.14       0.04       0.80          T       -0.47
+[STDOUT WMQuality] 02      0.14       0.82       0.03       0.02          C       -0.44
+[STDOUT WMQuality] 03      0.02       0.08       0.02       0.89          T       -0.29
+[STDOUT WMQuality] 04      0.00       1.00       0.00       0.00          C        0.00
+[STDOUT WMQuality] 05      0.02       0.00       0.98       0.00          G       -0.07
+[STDOUT WMQuality] 06      0.00       1.00       0.00       0.00          C       -0.01
+[STDOUT WMQuality] 07      0.00       0.00       1.00       0.00          G        0.00
+[STDOUT WMQuality] 08      0.77       0.06       0.12       0.04          A       -0.55
+[STDOUT WMQuality] 09      0.01       0.06       0.73       0.20          G       -0.59
+[STDOUT WMQuality] 10      0.73       0.04       0.16       0.07          A       -0.64
+[STDOUT WMQuality] 11      0.17       0.28       0.21       0.33          N       -1.10
+[STDOUT WMQuality] 12      0.01       0.37       0.07       0.55          T       -0.77
+[STDOUT WMQuality] 13      0.11       0.19       0.12       0.58          T       -0.89
+[STDOUT WMQuality] 14      0.07       0.34       0.46       0.13          S       -0.95
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior ENCODE.UA1 is 0.010000 0.010000
+[STDOUT WMQuality] UFE wm prior 0.000000 0.000000
+[STDOUT WMQuality] bg prior 0.990000 0.990000
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is (hg19: 1)
+[STDOUT WMQuality] em_prior is 1
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] total prior dif 0.000432
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file fg_sites_wm_3
+[STDOUT WMQuality] aligned False
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo fg_sites_wm_3
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.367879 parent hg19_
+[STDOUT WMQuality] node 1 name hg19_ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA ENCODE.UA1
+[STDOUT WMQuality] PW 0.011470
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00      0.16       0.34       0.21       0.29          N       -1.09
+[STDOUT WMQuality] 01      0.01       0.14       0.04       0.80          T       -0.47
+[STDOUT WMQuality] 02      0.14       0.82       0.03       0.02          C       -0.44
+[STDOUT WMQuality] 03      0.02       0.08       0.02       0.89          T       -0.29
+[STDOUT WMQuality] 04      0.00       1.00       0.00       0.00          C        0.00
+[STDOUT WMQuality] 05      0.02       0.00       0.98       0.00          G       -0.07
+[STDOUT WMQuality] 06      0.00       1.00       0.00       0.00          C       -0.01
+[STDERR WMQuality] 
+[STDOUT WMQuality] 07      0.00       0.00       1.00       0.00          G        0.00
+[STDOUT WMQuality] 08      0.77       0.06       0.12       0.04          A       -0.55
+[STDOUT WMQuality] 09      0.01       0.06       0.73       0.20          G       -0.59
+[STDOUT WMQuality] 10      0.73       0.04       0.16       0.07          A       -0.64
+[STDOUT WMQuality] 11      0.17       0.28       0.21       0.33          N       -1.10
+[STDOUT WMQuality] 12      0.01       0.37       0.07       0.55          T       -0.77
+[STDOUT WMQuality] 13      0.11       0.19       0.12       0.58          T       -0.89
+[STDOUT WMQuality] 14      0.07       0.34       0.46       0.13          S       -0.95
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior ENCODE.UA1 is 0.011469 0.011469
+[STDOUT WMQuality] UFE wm prior 0.000000 0.000000
+[STDOUT WMQuality] bg prior 0.988531 0.988531
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is (hg19: 1)
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] Create motevo parameter file bg_sites_wm_3
+[STDOUT WMQuality] aligned False
+[STDOUT WMQuality] 
+[STDOUT WMQuality] run Motevo bg_sites_wm_3
+[STDOUT WMQuality] letter A val is 0.250000
+[STDOUT WMQuality] letter T val is 0.250000
+[STDOUT WMQuality] letter G val is 0.250000
+[STDOUT WMQuality] letter C val is 0.250000
+[STDOUT WMQuality] Running in TFBS mode
+[STDOUT WMQuality] node 0 name hg19 qval 0.367879 parent hg19_
+[STDOUT WMQuality] node 1 name hg19_ qval 0 parent (null)
+[STDOUT WMQuality] //
+[STDOUT WMQuality] NA ENCODE.UA1
+[STDOUT WMQuality] PW 0.011470
+[STDOUT WMQuality] PO         A          C          G          T       cons         inf
+[STDOUT WMQuality] 00      0.16       0.34       0.21       0.29          N       -1.09
+[STDOUT WMQuality] 01      0.01       0.14       0.04       0.80          T       -0.47
+[STDOUT WMQuality] 02      0.14       0.82       0.03       0.02          C       -0.44
+[STDOUT WMQuality] 03      0.02       0.08       0.02       0.89          T       -0.29
+[STDOUT WMQuality] 04      0.00       1.00       0.00       0.00          C        0.00
+[STDOUT WMQuality] 05      0.02       0.00       0.98       0.00          G       -0.07
+[STDOUT WMQuality] 06      0.00       1.00       0.00       0.00          C       -0.01
+[STDOUT WMQuality] 07      0.00       0.00       1.00       0.00          G        0.00
+[STDOUT WMQuality] 08      0.77       0.06       0.12       0.04          A       -0.55
+[STDOUT WMQuality] 09      0.01       0.06       0.73       0.20          G       -0.59
+[STDOUT WMQuality] 10      0.73       0.04       0.16       0.07          A       -0.64
+[STDOUT WMQuality] 11      0.17       0.28       0.21       0.33          N       -1.10
+[STDOUT WMQuality] 12      0.01       0.37       0.07       0.55          T       -0.77
+[STDOUT WMQuality] 13      0.11       0.19       0.12       0.58          T       -0.89
+[STDOUT WMQuality] 14      0.07       0.34       0.46       0.13          S       -0.95
+[STDOUT WMQuality] //
+[STDOUT WMQuality] final prior ENCODE.UA1 is 0.011469 0.011469
+[STDOUT WMQuality] UFE wm prior 0.000000 0.000000
+[STDOUT WMQuality] bg prior 0.988531 0.988531
+[STDOUT WMQuality] ref species is hg19
+[STDOUT WMQuality] treestring is (hg19: 1)
+[STDOUT WMQuality] em_prior is 0
+[STDOUT WMQuality] em_wm is 0
+[STDOUT WMQuality] do_segment is 0
+[STDOUT WMQuality] seglen is 0
+[STDOUT WMQuality] bg[0] = 0.250000
+[STDOUT WMQuality] bg[1] = 0.250000
+[STDOUT WMQuality] bg[2] = 0.250000
+[STDOUT WMQuality] bg[3] = 0.250000
+[STDOUT WMQuality] allocated memory
+[STDOUT WMQuality] read sequences
+[STDOUT WMQuality] parsed sequences
+[STDOUT WMQuality] mybgfile is set to 
+[STDOUT WMQuality] Calculating background frequencies from input sequence
+[STDOUT WMQuality] Calculating background model (markov order = 0) ... 
+[STDOUT WMQuality] 
+[STDOUT WMQuality] create ROC plot
+Component WMQuality finished with success; READY queue is empty.
+Log closed on 2014-07-15 13:52:42; user bergerse00

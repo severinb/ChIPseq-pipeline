@@ -1,0 +1,3 @@
+crunch.env are environment variables. When ran by web server it is used by webStart.py. When Crunch is ran locally, one needs to source it. Or start pipeline with webStart.py manually, then it's used..
+params_*.yaml files are parameter file templates
+severin.conf is only used for the web server, i.e. when Crunch is ran locally this file is not used. 

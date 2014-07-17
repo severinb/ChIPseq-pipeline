@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>RefinePeaks</name>
+    <!--<version>1.0</version>-->
+    <doc>
+    This component takes 500 regions with bp coverage (output directory of RegionCoverage component) as input and refines them. 
+    For this, the highest covered bp of the region is taken and extended up- and downstream until the coverage of a bp falls under a cut-off. 
+    The cut-off is the coverage at peak top times the as parameter defined cut-off. 
+    </doc>
+    <author email="severin.berger@stud.unibas.ch">Severin</author>
+    <launcher type="python">
+        <argument name="file" value="RefinePeaks.py" />
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <inputs>
+        <input name="in_dir" type="BinaryFolder">
+            <doc>Output directory of RegionCoverage. Contains 500 files with bp coverage per region.</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="refined_peaks" type="BinaryFile">
+            <doc>File with coordinates of refined peaks. Can be used for alignment.</doc>
+        </output>
+        <output name="statistics" type="BinaryFile">
+            <doc>Contains statistics of the peaks. Peak length and height.</doc>
+        </output>
+        <output name="peak_plots" type="BinaryFolder">
+            <doc>Contains 500 plots. One plot per region that shows coverage versus bp. Also the positions of the refined peak are plotted.</doc>
+        </output>
+        <output name="length_height" type="PDF">
+            <doc>Scatter plot off length and height of the refined peaks.</doc>
+        </output>
+    </outputs>
+    <parameters>
+        <parameter name="cutoff" type="float" default="0.5">
+            <doc>Cutoff like described above. Default is 0.5, which means the extension of the highest covered bp is stopped if a bp has less coverage than 0.5*(highest covered bp).</doc>
+        </parameter>
+    </parameters>
+</component>

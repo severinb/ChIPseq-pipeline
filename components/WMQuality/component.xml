@@ -10,14 +10,20 @@
     The cut-off is varied from 0 up to highest scoring region to get this plot.  
     </doc>
     <launcher type="python">
-        <argument name="file" value="WMQuality.py" />
+        <argument name="file" value="WMQuality_updated.py" />
     </launcher>
     <requires>URL="http://www.python.org/not" type="manual">python</requires>
     <inputs>
-        <input name="peaks" type="BinaryFile">
+        <input name="train_set" type="BinaryFile">
             <doc>Alignments or sequences. This must be specified with the parameter 'aligned'.</doc>
         </input>
-        <input name="shuffledPeaks" type="BinaryFile">
+        <input name="bg_train_set" type="BinaryFile">
+            <doc>Shuffled Peaks to predict sites on. From ShufflePeaks component.</doc>
+        </input>
+        <input name="test_set" type="BinaryFile">
+            <doc>Alignments or sequences. This must be specified with the parameter 'aligned'.</doc>
+        </input>
+        <input name="bg_test_set" type="BinaryFile">
             <doc>Shuffled Peaks to predict sites on. From ShufflePeaks component.</doc>
         </input>
         <input name="WM1" type="BinaryFile" optional="true">

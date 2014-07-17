@@ -1,0 +1,4 @@
+input_WM	YES	YES	INPUT OUT in P path=/import/bc2/home/nimwegen/bergerse00/Projects/ChIPseq-pipeline/components/RunMotevo/../../WMs/WMs_human_mouse/ENCODE.UA1 TS in=1404829410000 
+input_odd_file	YES	YES	INPUT OUT in P path=/import/bc2/home/nimwegen/bergerse00/Projects/ChIPseq-pipeline/components/RunMotevo/../../../../Crunch_stable_testruns/OUTPUT/IP_FgBg-splitseqs/odd_file TS in=1404841043000 
+RunMotevo	YES	YES	RunMotevo IN WM=input_WM:in IN even_file=input_even_file:in IN odd_file=input_odd_file:in OUT intermediate OUT refWM OUT Logo P aligned=false P genome=hg19 P minpostwm=0.25 P motevo_path=/import/bc2/home/nimwegen/GROUP/software/motevo_ver1.03/bin/motevo P mylogo_path=/import/bc2/home/nimwegen/GROUP/Scripts/weblogo/mylogo P wmdiff=0.0075 
+input_even_file	YES	YES	INPUT OUT in P path=/import/bc2/home/nimwegen/bergerse00/Projects/ChIPseq-pipeline/components/RunMotevo/../../../../Crunch_stable_testruns/OUTPUT/IP_FgBg-splitseqs/even_file TS in=1404841043000 

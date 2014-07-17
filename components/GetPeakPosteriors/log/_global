@@ -1,0 +1,32 @@
+Warning: all outports are unconnected: GetPeakPosteriors
+Executing input_RegCov_dir (INPUT)
+Executing input_statsfile (INPUT)
+Component input_RegCov_dir finished with success; READY queue: input_regions input_WM 
+Executing input_regions (INPUT)
+Component input_statsfile finished with success; READY queue: input_WM 
+Executing input_WM (INPUT)
+Component input_regions finished with success; READY queue is empty.
+Component input_WM finished with success; READY queue: GetPeakPosteriors 
+Executing GetPeakPosteriors (GetPeakPosteriors)
+Clearing directory /import/bc2/home/nimwegen/bergerse00/Projects/ChIPseq-pipeline/components/GetPeakPosteriors/execute/GetPeakPosteriors
+[STDOUT GetPeakPosteriors] 
+[STDOUT GetPeakPosteriors] run Motevo
+[STDERR GetPeakPosteriors] tar: Removing leading `/' from member names
+[STDERR GetPeakPosteriors] sh: line 0: cd: /import/bc2/home/nimwegen/bergerse00/Projects/ChIPseq-pipeline/components/GetPeakPosteriors/execute/GetPeakPosteriors/peak_plots: No such file or directory
+[STDERR GetPeakPosteriors] rm: cannot remove `/import/bc2/home/nimwegen/bergerse00/Projects/ChIPseq-pipeline/components/GetPeakPosteriors/execute/GetPeakPosteriors/peak_plots': No such file or directory
+[STDOUT GetPeakPosteriors] 
+[STDOUT GetPeakPosteriors] Found: /import/bc2/home/nimwegen/bergerse00/Crunch_stable_testruns/OUTPUT/IP_1-fraglen/out_dir/outfile.gz with fragment length: 117
+[STDOUT GetPeakPosteriors] 
+[STDOUT GetPeakPosteriors] 
+[STDOUT GetPeakPosteriors] Fragment Length: [117]
+[STDOUT GetPeakPosteriors] 
+[STDOUT GetPeakPosteriors] Create motevo parameter file
+[STDOUT GetPeakPosteriors] {'A': 21801.0, 'C': 35929.0, 'T': 21732.0, 'G': 36205.0}
+[STDOUT GetPeakPosteriors] {'A': 0.1884807248394097, 'C': 0.31062446505917851, 'T': 0.1878841847718018, 'G': 0.31301062532960999}
+[STDOUT GetPeakPosteriors] submitted 131605
+[STDOUT GetPeakPosteriors] motevo job finished with status:  True
+[STDOUT GetPeakPosteriors] 2
+[STDOUT GetPeakPosteriors] submitted 131606.1
+Component GetPeakPosteriors finished with success; READY queue is empty.
+Done. No errors occurred.
+Log closed on 2014-07-15 13:42:04; user bergerse00

@@ -4,15 +4,9 @@
     <!--<version>1.0</version>-->
     <doc>
     This component runs motevo for weight matrix refinement. 
-    It also produces a positive predictive value vs. sensitivity plot and the logo of the refined weight matrix.
-    For this it takes two halfs of the alignments (refined regions), the old WM and shuffled peaks as input. 
-    For the ppv - sensitivity analysis it predicts binding sites one the odd half and on the shuffledPeaks with the old WM.
-    Then WM is refined with even half and predictions are computed again. 
-    Curve for both analyses are then computed by calling a peak a true site if summed transcription factor binding sites posteriors on a certain region are greater than a cut-off.
-    The cut-off is varied from 0 up to highest scoring region to get this plot.  
     </doc>
     <launcher type="python">
-        <argument name="file" value="RunMotevo.py" />
+        <argument name="file" value="RunMotevo_updated.py" />
     </launcher>
     <requires>URL="http://www.python.org/not" type="manual">python</requires>
     <inputs>
@@ -24,9 +18,6 @@
         </input>
         <input name="WM" type="BinaryFile">
             <doc>Wm to refine: either old existing one or the one found by PhyloGibbs.</doc>
-        </input>
-        <input name="shuffledPeaks" type="BinaryFile">
-            <doc>Shuffled Peaks to predict sites on. From ShufflePeaks component.</doc>
         </input>
         <input name="WM2" type="BinaryFile" optional="true">
             <doc>If this one is defined, a ROC plot is drawn for this (WM2) together with WM. If not defined, WM is refined (motevo) and ROC plot thereof is drawn.</doc>
@@ -45,17 +36,8 @@
         <output name="refWM" type="BinaryFile">
             <doc>This is the refined weight matrix.</doc>
         </output>
-        <output name="sens_ppv" type="PDF">
-            <doc>Sensitivity positive predictive value plot.</doc>
-        </output>
         <output name="Logo" type="PDF">
             <doc>Logo of the refined weight matrix.</doc>
-        </output>
-        <output name="nonref_WM_Quality" type="BinaryFile">
-            <doc>Quality value for non-refined weight matrix based on specificty sensitivity performance.</doc>
-        </output>
-        <output name="ref_WM_Quality" type="BinaryFile">
-            <doc>Quality value for refined weight matrix based on specificty sensitivity performance.</doc>
         </output>
     </outputs>
     <parameters>

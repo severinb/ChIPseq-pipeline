@@ -1,0 +1,35 @@
+* Running
+  
+  perl ~/../GROUP/Pipeline2/Scripts/pipeline.pl pipeline.conf &> pipeline.log &
+  
+  Usually working directory contains two files "pipeline.conf" and "regions",
+  options for pipeline and regions of interest respectively.
+  
+  Examples could be found here:
+  [[file:~pachko/hg19_13.12.2011/][working directory example]]
+qq
+* Conf file
+  example: [[file:example_pipeline.conf][example pipeline.conf]]
+  If "ALIGN_METHOD" option is set to "none" pipeline stops after extracting sequences.
+  
+  If "MOTEVOC_PARAMS" option is set to "none" pipeline stops after aligning sequences.
+  
+  Individual alignment files by default are in dir "ALIGNMENT" (option
+  "ALIGN_OUT_DIR"). Concatenated alignments ready for motevo processing are
+  in file "final_out.aln".
+
+* Regions file
+  Regions file contains coordinates for regions of interest. Configuration
+  option "REGIONS_FILE".
+  
+  example:
+  chr1	68590	69590	+	hg19_v1_chr1_+_69090_69090
+  chr1	367139	368158	+	hg19_v1_chr1_+_367639_367658
+  chr1	762487	763540	+	hg19_v1_chr1_+_762987_763040
+
+  Values are tab separated.
+  first column -- chromosome
+  second column -- start position
+  third column -- end position
+  fourth column -- strand
+  fifth column -- optional, could contain any information. In the example this is promoter id 

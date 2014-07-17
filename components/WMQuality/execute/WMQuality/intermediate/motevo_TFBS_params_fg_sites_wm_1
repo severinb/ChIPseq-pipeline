@@ -1,0 +1,16 @@
+refspecies hg19
+TREE (hg19: 1)
+Mode TFBS
+EMprior 0
+priordiff 0.05
+markovorderBG 0
+bgprior 0.999878
+bg A 0.25
+bg T 0.25
+bg G 0.25
+bg C 0.25
+restrictparses 0
+priorfile /import/bc2/home/nimwegen/bergerse00/Projects/ChIPseq-pipeline/components/WMQuality/execute/WMQuality/intermediate/priors_fg_sites_wm_1
+printsiteals 0
+minposterior 0.001000
+sitefile /import/bc2/home/nimwegen/bergerse00/Projects/ChIPseq-pipeline/components/WMQuality/execute/WMQuality/intermediate/sites_fg_sites_wm_1

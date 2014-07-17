@@ -196,7 +196,7 @@ def execute(cf):
         tf.close()
 
 
-        JOB_PARAM = '-q %s -e %s/job.stderr -o %s/job.stdout -j n -w n -N %s-CSE.%i -cwd -V -b y' %(queue_name, os.path.split(interm)[0], os.path.split(interm)[0], instance_name, j)
+        JOB_PARAM = '-q %s -P %s -e %s/job.stderr -o %s/job.stdout -j n -w n -N %s-CSE.%i -cwd -V -b y' %(queue_name, project_leader, os.path.split(interm)[0], os.path.split(interm)[0], instance_name, j)
 
         s = drmaa.Session()
         s.initialize()
@@ -335,7 +335,7 @@ def execute(cf):
             os.system('cat %s > %s' %(' '.join(goodwmpaths + [keepWM]), tmpwm_tag))
 
 
-            JOB_PARAM = '-q %s -e %s/job.stderr -o %s/job.stdout -j n -w n -N %s-CSE_keepWM -cwd -V -b y' %(queue_name, os.path.split(interm)[0], os.path.split(interm)[0], instance_name)
+            JOB_PARAM = '-q %s -P %s -e %s/job.stderr -o %s/job.stdout -j n -w n -N %s-CSE_keepWM -cwd -V -b y' %(queue_name, project_leader, os.path.split(interm)[0], os.path.split(interm)[0], instance_name)
     
             s = drmaa.Session()
             s.initialize()

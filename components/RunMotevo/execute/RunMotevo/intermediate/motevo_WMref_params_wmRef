@@ -1,0 +1,12 @@
+refspecies hg19
+TREE (hg19: 1)
+Mode WMREF
+minposteriorWM 0.25
+wmdiff 0.007500
+EMprior 1
+priordiff 0.01
+markovorderBG 1
+bgprior 0.99
+restrictparses 0
+priorfile /import/bc2/home/nimwegen/bergerse00/Projects/ChIPseq-pipeline/components/RunMotevo/execute/RunMotevo/intermediate/priors_wmRef
+minposterior 0.2
