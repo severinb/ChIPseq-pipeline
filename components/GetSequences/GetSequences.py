@@ -3,9 +3,10 @@
 import component_skeleton.main
 import sys, os
 from string import *
+import re
 
 def execute(cf):
-
+    
     infile = cf.get_input("in_file") #format: chr start end strand (refined_peaks)
     genome = cf.get_parameter("genome", "string")
     genome_path = cf.get_parameter("genome_path", "string")
@@ -52,8 +53,10 @@ def execute(cf):
             ID = '_'.join([genome] + peak)
             start = int(peak[1])
             end = int(peak[2])
-            o.write('>>' + ID + '\n')
-            o.write(''.join(bases[start-1:end]).upper() + '\n')
+            seq = ''.join(bases[start-1:end]).upper()
+            if not re.search(re.search('^(N)+$', seq):
+                o.write('>>%s\n' % ID)
+                o.write('%s\n' % seq)
             
         c.close()
 
