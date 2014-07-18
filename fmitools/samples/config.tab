@@ -1,0 +1,3 @@
+DbDir	/import/bc2/home/nimwegen/bergerse00/Projects/ChIPseq-pipeline/fmitools/DB	#sequence database directory
+Threads	1	#maximum number of threads used throughout the annotation process
+tmpDelDays	15	#Time until temporary files are removed
