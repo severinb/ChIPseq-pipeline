@@ -4,6 +4,54 @@ import subprocess
 import os, re
 from string import *
 from datetime import datetime
+from pylab import *
+import time
+
+
+def informCont(wmLine):
+    pseudo_count = 0.001  ## maybe we need to change/adjust this value
+    try:
+        wmValues = map(float, wmLine.split()[1:5]) # the first element is the index of the WM column, so we skip it
+    except IndexError:
+        print t
+        print cols
+        print i
+        print wmfile
+        return .0
+    totalInformation = sum(wmValues) + 4*pseudo_count
+    return 2.0 - sum([(-(i+pseudo_count)/totalInformation) * log2((i+pseudo_count)/totalInformation) for i in wmValues])
+
+
+def trimWM(lines, cutoff):
+    """
+    This function trims the input WM, which is represented by a list that each of its entries
+    is corresponded to each line of the input WM.
+    """    
+    header = lines[:3]
+    footer = lines[-1]
+    cols = lines[3:-1]
+    start, stop = 0, len(cols) -1
+    for i in arange(len(cols)):
+        if informCont(cols[i]) < cutoff:
+            start = i
+            continue
+        else:
+            start = i
+            break
+
+    for i in arange(len(cols))[::-1]:
+        if informCont(cols[i]) < cutoff:
+            stop = i - 1
+            continue
+        else:
+            stop = i
+            break
+    convertToString = lambda i,j: '\t'.join([str(i+1).zfill(2)] + j.split()[1:]) + '\n'
+    newWM = ''.join(header + 
+                    [convertToString(i, counts) for i,counts in enumerate(cols[start:stop])] + 
+                    [footer])
+    return newWM
+
 
 def prepareInputAlns(alns, wmlen, tmpfile):
     """
@@ -74,7 +122,7 @@ def execute(cf):
     numberMotives = cf.get_parameter("numberColours", "int")
     alignOrder = cf.get_parameter("AlignmentOrder", "int")
     genome = cf.get_parameter("genome", "string")
-
+    cutoff = cf.get_parameter("information_cutoff", "float")
     T1 = datetime.now()
 
     os.mkdir(interm)
@@ -153,7 +201,7 @@ def execute(cf):
     for i in [0,1]:
         #sometimes phylogibbs gives just one WM without complaining. For this case I just give a WM with 1 everywhere to not get problems
         try:
-            WM = lines[indices[i]+1:indices[i]+int(wmlen)+5]
+            WM = trimWM(lines[indices[i]+1:indices[i]+int(wmlen)+5], cutoff)
         except IndexError:
             WM = ['//\n', 'NA\n', 'PO\tA\tC\tG\tT\tcons\tinf\n', '01\t1\t1\t1\t1\tN\t0.001\n', '02\t1\t1\t1\t1\tN\t0.001\n', '03\t1\t1\t1\t1\tN\t0.001\n', '04\t1\t1\t1\t1\tN\t0.001\n', '//\n']
 

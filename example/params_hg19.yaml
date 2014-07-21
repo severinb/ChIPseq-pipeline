@@ -1,22 +1,16 @@
-IP_FASTQ_FILES: #(comment: Do not use underscores in TF names)
-           CTCF:
-                /import/bc2/home/nimwegen/GROUP/ENCODE.ChIPseq/raw.data.fastq/wgEncodeBroadHistoneGm12878CtcfStdRawDataRep1.fastq.gz
-                /import/bc2/home/nimwegen/GROUP/ENCODE.ChIPseq/raw.data.fastq/wgEncodeBroadHistoneGm12878CtcfStdRawDataRep2.fastq.gz
-           EZH2:
-                /import/bc2/home/nimwegen/GROUP/ENCODE.ChIPseq/raw.data.fastq/wgEncodeBroadHistoneGm12878Ezh239875RawDataRep1.fastq.gz
-                /import/bc2/home/nimwegen/GROUP/ENCODE.ChIPseq/raw.data.fastq/wgEncodeBroadHistoneGm12878Ezh239875RawDataRep2.fastq.gz
+IP_FASTQ_FILES: 
+        CTCF:
+                /import/bc2/home/nimwegen/omidi/Projects/ChIPseq-pipeline/example/data/wgEncodeBroadHistoneGm12878CtcfStdRawDataRep1.fastq.gz
+                /import/bc2/home/nimwegen/omidi/Projects/ChIPseq-pipeline/example/data/wgEncodeBroadHistoneGm12878CtcfStdRawDataRep2.fastq.gz
 IP_FASTA_FILES:
 IP_BED_FILES:
 IP_SHIFTEDBED_FILES:
-
-BG_FASTQ_FILES: #(comment: .fastq extension)
-          /import/bc2/home/nimwegen/GROUP/ENCODE.ChIPseq/raw.data.fastq/wgEncodeBroadHistoneGm12878ControlStdRawDataRep1.fastq.gz
-          /import/bc2/home/nimwegen/GROUP/ENCODE.ChIPseq/raw.data.fastq/wgEncodeBroadHistoneGm12878ControlStdRawDataRep2.fastq.gz
-
+BG_FASTQ_FILES: 
+          /import/bc2/home/nimwegen/omidi/Projects/ChIPseq-pipeline/example/data/wgEncodeBroadHistoneGm12878ControlStdRawDataRep1.fastq.gz
+          /import/bc2/home/nimwegen/omidi/Projects/ChIPseq-pipeline/example/data/wgEncodeBroadHistoneGm12878ControlStdRawDataRep2.fastq.gz
 BG_FASTA_FILES: #(comment: .fa extension)
 BG_BED_FILES: #(comment: .bedweight or .bed extension)
 BG_SHIFTEDBED_FILES: #(comment: .bedweight or .bed extension)
-
 WM:
 OUT_DIR: OUTPUT
 ADAPTOR:
@@ -25,15 +19,14 @@ GENOME: hg19
 GENDIR_PATH: /import/bc2/data/databases/UCSC/hg19
 CHROMOSOME_INFO: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/general/chromInfo/hg19chrs.tab
 REPEAT_PATH:     /import/bc2/home/nimwegen/GROUP/hseq_pipeline/general/repeatMask/hg19
-HD5F_CHROMDIR:   /scratch/databases/hg19_genome_hdf5
 ANNOTATION_FILE: /import/bc2/home/nimwegen/GROUP/software/mara_data/hg19/clusters_150_gene_associations
-WMLIBRARY: /import/bc2/home/nimwegen/bergerse00/www/severin/PipeLine/WMs/WMs_human_mouse
+WMLIBRARY: /import/bc2/home/nimwegen/bergerse00/Projects/ChIPseq-pipeline/WMs/WMs_human_mouse
+FDR: 0.1
 WINDOW: 500
 BACKGROUND_WINDOW: 2000
 STEP: 250
-PEAK_NUMBER: 3000
 DO_MOTIF_FINDING: TRUE
-USER: Severin Berger
+USER:
 PROJECTLEADER: project_nimwegen
 RENAME_TAG:
 IP_FASTQ_DESCRIPTION:
@@ -51,28 +44,28 @@ TO_FMI_REPOSITORY:
     #- annotate
     #- bedweight
     #- bed
-    - wig
-    - mappable
+    #- wig
+    #- mappable
     #- errorplots
-    - fraglen
+    #- fraglen
     #- latexfrag
-    - pdfreport
-FMI_PATH: #Warning: here piotrs FMI toolkit is used
-    /import/bc2/home/nimwegen/GROUP/DeepSeqPipeline.Piotr
+    #- pdfreport
+FMI_PATH:
+    /import/bc2/home/nimwegen/omidi/Projects/ChIPseq-pipeline/fmitools
 ANDURIL_COMPONENTS_PATH:
-    /import/bc2/home/nimwegen/bergerse00/www/severin/PipeLine/components
+    /import/bc2/home/nimwegen/omidi/Projects/ChIPseq-pipeline/components
 ANDURIL_TEMPLATES_PATH:
-    /import/bc2/home/nimwegen/bergerse00/www/severin/PipeLine/templates
+    /import/bc2/home/nimwegen/omidi/Projects/ChIPseq-pipeline/templates
 ANDURIL_HOME:
     /import/bc2/soft/app/anduril/1.2.5/Linux
 PERL_PATH:
     /import/bc2/soft/app/perl/5.10.1/Linux/bin/perl
 PYTHON_PATH:
     /import/bc2/home/nimwegen/GROUP/local/bin/python
-R_LIBS_USER:
-    /import/bc2/home/nimwegen/GROUP/local/lib/R
 R_PATH:
     /import/bc2/soft/Linux/bin/R
+R_LIBS_USER:
+    /import/bc2/home/nimwegen/GROUP/local/lib/R
 SORT_TMPDIR:
     /import/bc2/scratch/tmp/
 USE_CLUSTER:
@@ -84,9 +77,9 @@ QUEUE_NAMES:
     verylong_hm=fs_very_long_hm
     sjpn_long_hm=fs_long@@x3755
 ALIGN_PIPE_PATH:
-    /import/bc2/home/nimwegen/GROUP/Pipeline2/Scripts/pipeline_dev.pl
+    /import/bc2/home/nimwegen/GROUP/AlignmentPipeline/scripts/pipeline.pl
 BEDTOOLS_PATH:
-    /import/bc2/home/nimwegen/GROUP/DeepSeqPipeline.Piotr/soft/bedtools
+    /import/bc2/home/nimwegen/omidi/Projects/ChIPseq-pipeline/fmitools/soft/bedtools
 PHYLOGIBBS_PATH:
     /import/bc2/home/nimwegen/GROUP/software/phylogibbs-1.2/src/phylogibbs
 MYLOGO_PATH:
@@ -95,9 +88,5 @@ MOTEVO_PATH:
     /import/bc2/home/nimwegen/GROUP/software/motevo_ver1.03/bin/motevo
 MOTEVOUFE_PATH:
     /import/bc2/home/nimwegen/GROUP/software/motevo_ver1.03/bin/runUFE
-HOMER_PATH:
-    /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/homer/bin
 DRMAA_LIBRARY_PATH:
     /import/bc2/soft/app/SGE/6.1/Linux/lib/lx24-amd64/libdrmaa.so
-LD_LIBRARY_PATH:
-    /import/bc2/home/nimwegen/GROUP/local/lib

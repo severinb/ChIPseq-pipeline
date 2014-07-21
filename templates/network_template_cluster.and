@@ -507,20 +507,20 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
 
 
          //Runs PhyloGibbs
-         phylogibbs1 =  RunPhyloGibbs(infile = splitalignments.even_file, PhyloGibbsPATH="PHYLOGIBBS_PATH", mylogo_path="MYLOGO_PATH", markovorder=1, WindowLength=10, numberWindows=-1, numberColours=2, AlignmentOrder=1, genome="GENOME", @host="long")
+         phylogibbs1 =  RunPhyloGibbs(infile = splitalignments.even_file, PhyloGibbsPATH="PHYLOGIBBS_PATH", mylogo_path="MYLOGO_PATH", markovorder=1, WindowLength=10, numberWindows=-1, numberColours=2, AlignmentOrder=1, genome="GENOME", information_cutoff=0.25, @host="long")
 
-         phylogibbs2 =  RunPhyloGibbs(infile = splitalignments.even_file, PhyloGibbsPATH="PHYLOGIBBS_PATH", mylogo_path="MYLOGO_PATH", markovorder=1, WindowLength=15, numberWindows=-1, numberColours=2, AlignmentOrder=1, genome="GENOME", @host="long")
+         phylogibbs2 =  RunPhyloGibbs(infile = splitalignments.even_file, PhyloGibbsPATH="PHYLOGIBBS_PATH", mylogo_path="MYLOGO_PATH", markovorder=1, WindowLength=15, numberWindows=-1, numberColours=2, AlignmentOrder=1, genome="GENOME", information_cutoff=0.25, @host="long")
 
-         phylogibbs3 =  RunPhyloGibbs(infile = splitalignments.even_file, PhyloGibbsPATH="PHYLOGIBBS_PATH", mylogo_path="MYLOGO_PATH", markovorder=1, WindowLength=20, numberWindows=-1, numberColours=2, AlignmentOrder=1, genome="GENOME", @host="long")
+         phylogibbs3 =  RunPhyloGibbs(infile = splitalignments.even_file, PhyloGibbsPATH="PHYLOGIBBS_PATH", mylogo_path="MYLOGO_PATH", markovorder=1, WindowLength=20, numberWindows=-1, numberColours=2, AlignmentOrder=1, genome="GENOME", information_cutoff=0.25, @host="long")
 
 
 /*phylogibbs without taking alignments into account*/
 
-         phylogibbs4 =  RunPhyloGibbs(infile = splitseqs.even_file, PhyloGibbsPATH="PHYLOGIBBS_PATH", mylogo_path="MYLOGO_PATH", markovorder=1, WindowLength=10, numberWindows=-1, numberColours=2, AlignmentOrder=0, genome="GENOME", @host="long")
+         phylogibbs4 =  RunPhyloGibbs(infile = splitseqs.even_file, PhyloGibbsPATH="PHYLOGIBBS_PATH", mylogo_path="MYLOGO_PATH", markovorder=1, WindowLength=10, numberWindows=-1, numberColours=2, AlignmentOrder=0, genome="GENOME", information_cutoff=0.25, @host="long")
 
-         phylogibbs5 =  RunPhyloGibbs(infile = splitseqs.even_file, PhyloGibbsPATH="PHYLOGIBBS_PATH", mylogo_path="MYLOGO_PATH", markovorder=1, WindowLength=15, numberWindows=-1, numberColours=2, AlignmentOrder=0, genome="GENOME", @host="long")
+         phylogibbs5 =  RunPhyloGibbs(infile = splitseqs.even_file, PhyloGibbsPATH="PHYLOGIBBS_PATH", mylogo_path="MYLOGO_PATH", markovorder=1, WindowLength=15, numberWindows=-1, numberColours=2, AlignmentOrder=0, genome="GENOME", information_cutoff=0.25, @host="long")
 
-         phylogibbs6 =  RunPhyloGibbs(infile = splitseqs.even_file, PhyloGibbsPATH="PHYLOGIBBS_PATH", mylogo_path="MYLOGO_PATH", markovorder=1, WindowLength=20, numberWindows=-1, numberColours=2, AlignmentOrder=0, genome="GENOME", @host="long")
+         phylogibbs6 =  RunPhyloGibbs(infile = splitseqs.even_file, PhyloGibbsPATH="PHYLOGIBBS_PATH", mylogo_path="MYLOGO_PATH", markovorder=1, WindowLength=20, numberWindows=-1, numberColours=2, AlignmentOrder=0, genome="GENOME", information_cutoff=0.25, @host="long")
 
 
          //Runs motevo for weight matrix refinement. Also produces sensitivity-positive predicitve value plots for the weight matrix 
@@ -1192,7 +1192,7 @@ if pipeFlag != "JUSTPEAKS" {
                   CandWM_i = std.lookup(TF+"_WM_tops_"+wmiter)
 
 		  outvals = FGBGOUT[TF]
-                  stets = GetWMStats(outvals.Sequences, outvals.RegionCoverageDir, outvals.PeakStats, CandWM_i.in, outvals.PeakCallDir, outvals.LLog_tops, outvals.AUCLog_tops, IP_string = TFrecordStrings[TF], @name=TF+"_WM_tops_stats_"+wmiter)
+                  stets = GetWMStats(outvals.Sequences, outvals.TrainingSet, outvals.ShuffledTrainSet, outvals.RegionCoverageDir, outvals.PeakStats, CandWM_i.in, outvals.PeakCallDir, outvals.LLog_tops, outvals.AUCLog_tops, IP_string = TFrecordStrings[TF], @name=TF+"_WM_tops_stats_"+wmiter)
                   stets_i = std.lookup(TF+"_WM_tops_stats_"+wmiter)
 
 
