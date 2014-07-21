@@ -49,7 +49,7 @@ def execute(cf):
         '-a %s' % peaks,
         '-b %s' % repeatfile,
         '|',
-        'awk  awk \'{if(($3-$2)>=50) print $0}\'',
+        'awk \'{if(($3-$2)>=50) print $0}\'',
         '|',
         'head -1000',
         '>',
