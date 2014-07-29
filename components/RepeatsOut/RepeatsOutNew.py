@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 import component_skeleton.main
 import os, re
-from operator import itemgetter
-from itertools import groupby
 from subprocess import *
 from string import *
+import cProfile, pstats 
 
 def concatRepeats2Bed(repeatPath, repeatfile):
     """
@@ -34,15 +33,15 @@ def execute(cf):
     log_file = cf.get_output("log_file")
     repeatPath = cf.get_parameter("repeatPath", "string")
     BedToolsPath = cf.get_parameter("BedToolsPath", "string")
-    
     os.mkdir(interm)
+    
+    profile = cProfile.Profile()
+    profile.enable()
     ##concatenate all chromosome repeat files into one.
     repeatfile = os.path.join(interm, 'repeats')
     concatRepeats2Bed(repeatPath, repeatfile)
-            
     ##run intersectBed
     intersectfile = os.path.join(interm, 'intersects')
-    #proc = subprocess.Popen('%s intersect -a %s -b %s -wb -wa > %s' %(os.path.join(BedToolsPath, 'bedtools'), peaks, repeatfile, intersectfile),
     cmd = ' '.join([
         BedToolsPath,
         'subtract',        
@@ -53,11 +52,15 @@ def execute(cf):
     with open(noRepPeaks, 'w') as file:
         for i in xrange(1000):   # selecting top 1000 sequences, this can be changed or even provided as an input paramter to the component 
             file.write(p2.stdout.readline())
-
+    
     # cleaning up the intermediate directory
     cmd = 'gzip %s' % repeatfile
     os.system(cmd)
-    
+    profile.disable()
+    log_file = open(log_file, 'w')
+    ps = pstats.Stats(profile, stream=log_file).sort_stats('cumulative')
+    ps.print_stats()
+    log_file.close()
     return 0
 
 

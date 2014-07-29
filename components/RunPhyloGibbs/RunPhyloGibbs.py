@@ -6,6 +6,7 @@ from string import *
 from datetime import datetime
 from pylab import *
 import time
+import cProfile, pstats 
 
 
 def informCont(wmLine):
@@ -112,7 +113,7 @@ def execute(cf):
     logo1 = cf.get_output("Logo1")
     weightMat2 = cf.get_output("WeightMatrix2")
     logo2 = cf.get_output("Logo2")
-    logfile = cf.get_output("log_file") 
+    logfile = cf.get_output("log_file")
 
     PGpath = cf.get_parameter("PhyloGibbsPATH", "string")
     mylogo_path = cf.get_parameter("mylogo_path", "string")
@@ -123,8 +124,11 @@ def execute(cf):
     alignOrder = cf.get_parameter("AlignmentOrder", "int")
     genome = cf.get_parameter("genome", "string")
     cutoff = cf.get_parameter("information_cutoff", "float")
-    T1 = datetime.now()
 
+    profile = cProfile.Profile()
+    profile.enable()    
+    # T1 = datetime.now()
+    
     os.mkdir(interm)
 
     ##Sort out 'N's to '-'
@@ -201,17 +205,19 @@ def execute(cf):
     for i in [0,1]:
         #sometimes phylogibbs gives just one WM without complaining. For this case I just give a WM with 1 everywhere to not get problems
         try:
-            WM = trimWM(lines[indices[i]+1:indices[i]+int(wmlen)+5], cutoff)
+            WM = trimWM(lines[indices[i]+1:indices[i]+int(wmlen)+6], cutoff).split('\n')
         except IndexError:
-            WM = ['//\n', 'NA\n', 'PO\tA\tC\tG\tT\tcons\tinf\n', '01\t1\t1\t1\t1\tN\t0.001\n', '02\t1\t1\t1\t1\tN\t0.001\n', '03\t1\t1\t1\t1\tN\t0.001\n', '04\t1\t1\t1\t1\tN\t0.001\n', '//\n']
+            WM = ['//', 'NA', 'PO\tA\tC\tG\tT\tcons\tinf', '01\t1\t1\t1\t1\tN\t0.001', '02\t1\t1\t1\t1\tN\t0.001', '03\t1\t1\t1\t1\tN\t0.001', '04\t1\t1\t1\t1\tN\t0.001', '//']
 
+        print '\n'.join(WM)
         logo_dir, logo_name = os.path.split(logopaths[i])
-        WM[1] = 'NA ' + re.sub('.pdf','',logo_name) + '\n'
+        WM_header = 'NA ' + re.sub('.pdf','',logo_name)
+        WM[1] = WM_header
 
         wm = open(wmpaths[i], 'w')
 
         for line in WM:
-            wm.write(line)
+            wm.write(line + '\n')
 
         wm.close()
 
@@ -232,10 +238,15 @@ def execute(cf):
 
         os.chdir(pwd)
 
-
-    T2 = datetime.now()
-    time = 'Running time for PhyloGibbs: ' + str(T2-T1) + '\n'
-    text = '\n'.join(['PhyloGibbs parameters:',
+    profile.disable()
+    log_file = open(logfile, 'w')
+    ps = pstats.Stats(profile, stream=log_file).sort_stats('cumulative')
+    ps.print_stats()
+    log_file.close()
+    # T2 = datetime.now()
+    # time = 'Running time for PhyloGibbs: ' + str(T2-T1) + '\n'
+    text = '\n'.join(['\n',
+                      'PhyloGibbs parameters:',
                       '\t-number of used input alignments/sequences: %s' %numalns,
                       '\t-number of too short input alignments/sequences: %s' %tooshort,
                       '\t-alignment order: %s' %alignOrder,
@@ -244,8 +255,8 @@ def execute(cf):
                       '\t-number of colours: %s' %numberMotives,
                       '\t-markov order: %s' %markovorder])
 
-    lf = open(logfile, 'w')
-    lf.write(time)
+    lf = open(logfile, 'a')
+    # lf.write(time)
     lf.write(text)
     lf.close
                         

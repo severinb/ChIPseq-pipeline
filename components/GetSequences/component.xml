@@ -18,6 +18,9 @@
         <output name="Sequences" type="BinaryFile">
             <doc>File containing all 500 or so extracted reference sequences.</doc>
         </output>
+        <output name="log_file" type="BinaryFile">
+            <doc></doc>
+        </output>
         <!--<output name="log_file" type="BinaryFile">
            <doc></doc>
         </output>-->
