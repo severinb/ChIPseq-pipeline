@@ -31,25 +31,24 @@ def trimWM(lines, cutoff):
     header = lines[:3]
     footer = lines[-1]
     cols = lines[3:-1]
-    start, stop = 0, len(cols) -1
+    start, stop = 0, len(cols)
     for i in arange(len(cols)):
         if informCont(cols[i]) < cutoff:
-            start = i
+            start = i + 1
             continue
         else:
-            start = i
             break
 
     for i in arange(len(cols))[::-1]:
-        if informCont(cols[i]) < cutoff:
-            stop = i - 1
+        if informCont(cols[i]) < cutoff:            
+            stop = i 
             continue
         else:
-            stop = i
             break
+
     convertToString = lambda i,j: '\t'.join([str(i+1).zfill(2)] + j.split()[1:]) + '\n'
     newWM = ''.join(header + 
-                    [convertToString(i, counts) for i,counts in enumerate(cols[start:stop])] + 
+                    [convertToString(i, counts) for i,counts in enumerate(cols[start:(stop)])] + 
                     [footer])
     return newWM
 
@@ -97,8 +96,6 @@ def prepareInputAlns(alns, wmlen, tmpfile):
                     continue
             else:
                 continue
-
-
     return tooshort, goodalns
 
 
@@ -205,11 +202,10 @@ def execute(cf):
     for i in [0,1]:
         #sometimes phylogibbs gives just one WM without complaining. For this case I just give a WM with 1 everywhere to not get problems
         try:
-            WM = trimWM(lines[indices[i]+1:indices[i]+int(wmlen)+6], cutoff).split('\n')
+            WM = trimWM(lines[indices[i]+1:indices[i]+int(wmlen)+5], cutoff).split('\n')
         except IndexError:
             WM = ['//', 'NA', 'PO\tA\tC\tG\tT\tcons\tinf', '01\t1\t1\t1\t1\tN\t0.001', '02\t1\t1\t1\t1\tN\t0.001', '03\t1\t1\t1\t1\tN\t0.001', '04\t1\t1\t1\t1\tN\t0.001', '//']
 
-        print '\n'.join(WM)
         logo_dir, logo_name = os.path.split(logopaths[i])
         WM_header = 'NA ' + re.sub('.pdf','',logo_name)
         WM[1] = WM_header
@@ -238,6 +234,10 @@ def execute(cf):
 
         os.chdir(pwd)
 
+    # os.system('tar -zcvf %s %s' % (interm +'.tar.gz', interm) )
+    # os.system('rm -fr %s' % interm )
+    # os.system('gzip %s %s' % (report, out_file) )
+
     profile.disable()
     log_file = open(logfile, 'w')
     ps = pstats.Stats(profile, stream=log_file).sort_stats('cumulative')
@@ -253,7 +253,7 @@ def execute(cf):
                       '\t-window length: %s' %wmlen,
                       '\t-number of windows: %s' %numberTFBS,
                       '\t-number of colours: %s' %numberMotives,
-                      '\t-markov order: %s' %markovorder])
+                      '\t-markov order: %s' %markovorder])    
 
     lf = open(logfile, 'a')
     # lf.write(time)
