@@ -1,6 +1,6 @@
 import subprocess, os, datetime, time
 
-def create_motevo_param_file(param_filename, site_filename, prior_filename, refined_wm_filename, genome, priordiff=0.05, minposterior=0.0):
+def create_motevo_param_file(param_filename, site_filename, prior_filename, genome, priordiff=0.05, minposterior=0.0):
     param_file = open(param_filename, 'w')
     param_file.write('\n'.join([
         'refspecies %s' % genome,
@@ -9,8 +9,6 @@ def create_motevo_param_file(param_filename, site_filename, prior_filename, refi
         'EMprior 1',
         'priordiff %f' % priordiff,
         'markovorderBG 0',
-        # 'minposteriorWM 0.1',
-        # 'wmdiff 0.01'        
         'bgprior 0.99',  # as an initial value for fitting the prior
         'bg A 0.25',
         'bg T 0.25',
@@ -19,7 +17,6 @@ def create_motevo_param_file(param_filename, site_filename, prior_filename, refi
         'restrictparses 0',
         'sitefile %s' % site_filename,
         'priorfile %s' % prior_filename,
-        'refinedwmfile %s' % refined_wm_filename,
         'minposterior %f' % minposterior,
         'printsiteals 0',
         ]))
@@ -27,15 +24,14 @@ def create_motevo_param_file(param_filename, site_filename, prior_filename, refi
     return 0
 
 
-def run_motevo(motevo_path, WM, sequences, refinedWMFile, interm_dir, genome):
+def run_motevo(motevo_path, WM, sequences, interm_dir, genome):
     stime = datetime.datetime.now()
     motifName = os.path.basename(WM)
     print '\nrunnig Motevo for %s' % motifName
-    # siteFilename = '/scratch/%s.sites' % motifName
     siteFilename = os.path.join(interm_dir, '%s.sites' % motifName)
     priorFilename = os.path.join(interm_dir, '%s.priors' % motifName)
     paramFilename = os.path.join(interm_dir, '%s.params' % motifName)
-    create_motevo_param_file(paramFilename, siteFilename, priorFilename, refinedWMFile, genome)
+    create_motevo_param_file(paramFilename, siteFilename, priorFilename, genome)
     cmd = ' '.join([
         motevo_path,
         sequences,

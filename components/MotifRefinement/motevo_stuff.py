@@ -53,13 +53,13 @@ def run_motevo(WM, sequences, refinedWMFile, interm_dir, genome):
             os.kill(proc.pid, signal.SIGKILL)
             os.waitpid(-1, os.WNOHANG)
             print '\nMotevo weight matrix refinement did not converge.\n'
-            return None, None
+            return None, None, None
     print proc.stderr.read()
     print proc.stdout.read()
     if proc.poll() > 0:
         print '\nMotevo weight matrix refinement not successful.\n'
-        return None, None
+        return None, None, None
     else:
         print '\nMotevo weight matrix refinement converged.\n'
-        return siteFilename, priorFilename
-    return (siteFilename, priorFilename)
+        return siteFilename, priorFilename, paramFilename
+    return (siteFilename, priorFilename, paramFilename)

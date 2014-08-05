@@ -18,6 +18,6 @@ def execute(cf):
     (siteFilename, priorFilename, paramFilename) = run_motevo(wmFile, inputSequences, \
                                                output_file, output_dir, genome)
     os.system( 'rm %s %s %s' % (siteFilename, priorFilename, paramFilename) )
-    
+    return 0
 
 component_skeleton.main.main(execute)
