@@ -125,7 +125,6 @@ def execute(cf):
     profile = cProfile.Profile()
     profile.enable()    
     # T1 = datetime.now()
-    
     os.mkdir(interm)
 
     ##Sort out 'N's to '-'

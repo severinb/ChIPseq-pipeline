@@ -5,7 +5,7 @@ def create_motevo_param_file(param_filename, site_filename, prior_filename, refi
     param_file.write('\n'.join([
         'refspecies %s' % genome,
         'TREE (%s: 1)' % genome,
-        'Mode TFBS',
+        'Mode WMREF',
         'EMprior 1',
         'priordiff %f' % priordiff,
         'markovorderBG 0',
@@ -27,11 +27,11 @@ def create_motevo_param_file(param_filename, site_filename, prior_filename, refi
     return 0
 
 
-def run_motevo(motevo_path, WM, sequences, refinedWMFile, interm_dir, genome):
+def run_motevo(WM, sequences, refinedWMFile, interm_dir, genome):
+    motevo_path = '/import/bc2/home/nimwegen/omidi/motevo_ver1.03/source/motevo'
     stime = datetime.datetime.now()
     motifName = os.path.basename(WM)
     print '\nrunnig Motevo for %s' % motifName
-    # siteFilename = '/scratch/%s.sites' % motifName
     siteFilename = os.path.join(interm_dir, '%s.sites' % motifName)
     priorFilename = os.path.join(interm_dir, '%s.priors' % motifName)
     paramFilename = os.path.join(interm_dir, '%s.params' % motifName)
@@ -41,7 +41,6 @@ def run_motevo(motevo_path, WM, sequences, refinedWMFile, interm_dir, genome):
         sequences,
         paramFilename,
         WM ])
-    print cmd
     proc = subprocess.Popen(cmd,
                             stdout=subprocess.PIPE,
                             stderr= subprocess.PIPE,
