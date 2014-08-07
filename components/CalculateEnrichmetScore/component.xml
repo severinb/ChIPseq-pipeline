@@ -13,6 +13,7 @@
         <argument name="file" value="CalculateEnrichmetScore.py" />
     </launcher>
     <requires>URL="http://www.python.org/not" type="manual">python</requires>
+
     <inputs>
         <input name="InputSequences" type="BinaryFile">
             <doc>A file that contains the REAL training sequences in a single species format</doc>
@@ -28,8 +29,8 @@
         </input>		
     </inputs>
     <outputs>
-        <output name="FittedParameters" type="BinaryFile">
-            <doc>Contains the value of the fitted beta and (background) prior..</doc>
+        <output name="EnrichmentScores" type="BinaryFile">
+            <doc>The enrichment score for each of the REAL (or foreground) regions</doc>
         </output>
     </outputs>
     <parameters>

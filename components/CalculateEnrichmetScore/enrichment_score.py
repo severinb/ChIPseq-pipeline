@@ -1,0 +1,41 @@
+import re, os
+import numpy as np
+
+def sum_of_posteriors_foreground_regions(fname):    
+    posteriors = {}
+    number_of_windows = {}
+    number_of_regions = {}
+    total_posterior = 0.
+    total_number_of_windows = 0.
+    with open(fname) as file_handler:
+        for line in file_handler:            
+            row = line.split()
+            posterior = float(row[2])
+            if re.search('_reg\d+', row[-1]):
+                posteriors.setdefault(row[-1].strip(), 0.0)
+                posteriors[row[-1].strip()] += posterior
+                number_of_windows.setdefault(row[-1].strip(), 0)
+                number_of_windows[row[-1].strip()] += 1
+            number_of_regions.setdefault(row[-1].strip(), 0)
+            total_posterior += posterior
+            total_number_of_windows += 1.
+    return posteriors, total_posterior, number_of_windows, total_number_of_windows, len(number_of_regions.keys())
+
+
+def calculate_enrichment_scores(siteFile, beta, res_filename):
+    sites, N, length, L, M = sum_of_posteriors_foreground_regions(siteFile)
+    denumerator = np.log( N + L*beta )
+    constant = len(sites.keys())*M
+    try:
+        with open(res_filename, 'w') as outfile:        
+            for region, sitecount in sites.items():
+                outfile.write('\t'.join([
+                    region,
+                    '%0.10f\n' % ( np.log( sitecount + length[region]*beta ) - denumerator ),
+                    ]))
+    except:
+        return -1
+    return 0 
+
+
+    
