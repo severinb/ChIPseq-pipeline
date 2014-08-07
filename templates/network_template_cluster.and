@@ -522,6 +522,48 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
 
          phylogibbs6 =  RunPhyloGibbs(infile = splitseqs.even_file, PhyloGibbsPATH="PHYLOGIBBS_PATH", mylogo_path="MYLOGO_PATH", markovorder=1, WindowLength=20, numberWindows=-1, numberColours=2, AlignmentOrder=0, genome="GENOME", information_cutoff=0.25, @host="long")
 
+	 //Refine the resulted WMs from Phylogibbs
+	 refinedMotifPG1_1 = MotifRefinement(InputSequences=splitseqs.odd_file, WM=phylogibbs1.WeightMatrix1, genome="GENOME", @host="long")
+	 refinedMotifPG1_2 = MotifRefinement(InputSequences=splitseqs.odd_file, WM=phylogibbs1.WeightMatrix2, genome="GENOME", @host="long")
+	 refinedMotifPG2_1 = MotifRefinement(InputSequences=splitseqs.odd_file, WM=phylogibbs2.WeightMatrix1, genome="GENOME", @host="long")
+	 refinedMotifPG2_2 = MotifRefinement(InputSequences=splitseqs.odd_file, WM=phylogibbs2.WeightMatrix2, genome="GENOME", @host="long")
+	 refinedMotifPG3_1 = MotifRefinement(InputSequences=splitseqs.odd_file, WM=phylogibbs3.WeightMatrix1, genome="GENOME", @host="long")
+	 refinedMotifPG3_2 = MotifRefinement(InputSequences=splitseqs.odd_file, WM=phylogibbs3.WeightMatrix2, genome="GENOME", @host="long")
+	 refinedMotifPG4_1 = MotifRefinement(InputSequences=splitseqs.odd_file, WM=phylogibbs4.WeightMatrix1, genome="GENOME", @host="long")
+	 refinedMotifPG4_2 = MotifRefinement(InputSequences=splitseqs.odd_file, WM=phylogibbs4.WeightMatrix2, genome="GENOME", @host="long")
+	 refinedMotifPG5_1 = MotifRefinement(InputSequences=splitseqs.odd_file, WM=phylogibbs5.WeightMatrix1, genome="GENOME", @host="long")
+	 refinedMotifPG5_2 = MotifRefinement(InputSequences=splitseqs.odd_file, WM=phylogibbs5.WeightMatrix2, genome="GENOME", @host="long")
+	 refinedMotifPG6_1 = MotifRefinement(InputSequences=splitseqs.odd_file, WM=phylogibbs6.WeightMatrix1, genome="GENOME", @host="long")
+	 refinedMotifPG6_2 = MotifRefinement(InputSequences=splitseqs.odd_file, WM=phylogibbs6.WeightMatrix2, genome="GENOME", @host="long")
+	 
+	 //Fitting the background prior and beta over the training pool
+	 fitPriorBetaPG1_1 = FitBackgroundPriorAndBeta(InputSequences=splitseqs.odd_file, DecoySequences=shuffledSeqs_test.outfile, WM=refinedMotifPG1_1.RefinedMotif, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
+	 fitPriorBetaPG1_2 = FitBackgroundPriorAndBeta(InputSequences=splitseqs.odd_file, DecoySequences=shuffledSeqs_test.outfile, WM=refinedMotifPG1_2.RefinedMotif, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
+	 fitPriorBetaPG2_1 = FitBackgroundPriorAndBeta(InputSequences=splitseqs.odd_file, DecoySequences=shuffledSeqs_test.outfile, WM=refinedMotifPG2_1.RefinedMotif, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
+	 fitPriorBetaPG2_2 = FitBackgroundPriorAndBeta(InputSequences=splitseqs.odd_file, DecoySequences=shuffledSeqs_test.outfile, WM=refinedMotifPG2_2.RefinedMotif, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
+	 fitPriorBetaPG3_1 = FitBackgroundPriorAndBeta(InputSequences=splitseqs.odd_file, DecoySequences=shuffledSeqs_test.outfile, WM=refinedMotifPG3_1.RefinedMotif, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
+	 fitPriorBetaPG3_2 = FitBackgroundPriorAndBeta(InputSequences=splitseqs.odd_file, DecoySequences=shuffledSeqs_test.outfile, WM=refinedMotifPG3_2.RefinedMotif, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
+	 fitPriorBetaPG4_1 = FitBackgroundPriorAndBeta(InputSequences=splitseqs.odd_file, DecoySequences=shuffledSeqs_test.outfile, WM=refinedMotifPG4_1.RefinedMotif, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
+	 fitPriorBetaPG4_2 = FitBackgroundPriorAndBeta(InputSequences=splitseqs.odd_file, DecoySequences=shuffledSeqs_test.outfile, WM=refinedMotifPG4_2.RefinedMotif, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
+	 fitPriorBetaPG5_1 = FitBackgroundPriorAndBeta(InputSequences=splitseqs.odd_file, DecoySequences=shuffledSeqs_test.outfile, WM=refinedMotifPG5_1.RefinedMotif, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
+	 fitPriorBetaPG5_2 = FitBackgroundPriorAndBeta(InputSequences=splitseqs.odd_file, DecoySequences=shuffledSeqs_test.outfile, WM=refinedMotifPG5_2.RefinedMotif, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
+	 fitPriorBetaPG6_1 = FitBackgroundPriorAndBeta(InputSequences=splitseqs.odd_file, DecoySequences=shuffledSeqs_test.outfile, WM=refinedMotifPG6_1.RefinedMotif, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
+	 fitPriorBetaPG6_2 = FitBackgroundPriorAndBeta(InputSequences=splitseqs.odd_file, DecoySequences=shuffledSeqs_test.outfile, WM=refinedMotifPG6_2.RefinedMotif, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
+
+	 //Calculating the enrichment scores over the test set by using the fitted paramters					    
+	 enrichmentScoresPG1_1 = CalculateEnrichmetScore(InputSequences=splitseqs.even_file, DecoySequences=shuffledSeqs_train.outfile, WM=refinedMotifPG1_1.RefinedMotif, FittedParams=fitPriorBetaPG1_1.FittedParameters, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
+	 enrichmentScoresPG1_2 = CalculateEnrichmetScore(InputSequences=splitseqs.even_file, DecoySequences=shuffledSeqs_train.outfile, WM=refinedMotifPG1_2.RefinedMotif, FittedParams=fitPriorBetaPG1_2.FittedParameters, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
+	 enrichmentScoresPG2_1 = CalculateEnrichmetScore(InputSequences=splitseqs.even_file, DecoySequences=shuffledSeqs_train.outfile, WM=refinedMotifPG2_1.RefinedMotif, FittedParams=fitPriorBetaPG2_1.FittedParameters, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
+	 enrichmentScoresPG2_2 = CalculateEnrichmetScore(InputSequences=splitseqs.even_file, DecoySequences=shuffledSeqs_train.outfile, WM=refinedMotifPG2_2.RefinedMotif, FittedParams=fitPriorBetaPG2_2.FittedParameters, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
+	 enrichmentScoresPG3_1 = CalculateEnrichmetScore(InputSequences=splitseqs.even_file, DecoySequences=shuffledSeqs_train.outfile, WM=refinedMotifPG3_1.RefinedMotif, FittedParams=fitPriorBetaPG3_1.FittedParameters, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
+	 enrichmentScoresPG3_2 = CalculateEnrichmetScore(InputSequences=splitseqs.even_file, DecoySequences=shuffledSeqs_train.outfile, WM=refinedMotifPG3_2.RefinedMotif, FittedParams=fitPriorBetaPG3_2.FittedParameters, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
+	 enrichmentScoresPG4_1 = CalculateEnrichmetScore(InputSequences=splitseqs.even_file, DecoySequences=shuffledSeqs_train.outfile, WM=refinedMotifPG4_1.RefinedMotif, FittedParams=fitPriorBetaPG4_1.FittedParameters, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
+	 enrichmentScoresPG4_2 = CalculateEnrichmetScore(InputSequences=splitseqs.even_file, DecoySequences=shuffledSeqs_train.outfile, WM=refinedMotifPG4_2.RefinedMotif, FittedParams=fitPriorBetaPG4_2.FittedParameters, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
+	 enrichmentScoresPG5_1 = CalculateEnrichmetScore(InputSequences=splitseqs.even_file, DecoySequences=shuffledSeqs_train.outfile, WM=refinedMotifPG5_1.RefinedMotif, FittedParams=fitPriorBetaPG5_1.FittedParameters, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
+	 enrichmentScoresPG5_2 = CalculateEnrichmetScore(InputSequences=splitseqs.even_file, DecoySequences=shuffledSeqs_train.outfile, WM=refinedMotifPG5_2.RefinedMotif, FittedParams=fitPriorBetaPG5_2.FittedParameters, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
+	 enrichmentScoresPG6_1 = CalculateEnrichmetScore(InputSequences=splitseqs.even_file, DecoySequences=shuffledSeqs_train.outfile, WM=refinedMotifPG6_1.RefinedMotif, FittedParams=fitPriorBetaPG6_1.FittedParameters, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
+	 enrichmentScoresPG6_2 = CalculateEnrichmetScore(InputSequences=splitseqs.even_file, DecoySequences=shuffledSeqs_train.outfile, WM=refinedMotifPG6_2.RefinedMotif, FittedParams=fitPriorBetaPG6_2.FittedParameters, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
+
 
          //Runs motevo for weight matrix refinement. Also produces sensitivity-positive predicitve value plots for the weight matrix 
          runmotevoPG1_1 = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = phylogibbs1.WeightMatrix1, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
