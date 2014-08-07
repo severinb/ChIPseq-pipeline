@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <component>
-    <name></name>
+    <name>CalculateEnrichmetScore</name>
     <!-- <version>0.1</version> -->
     <!-- <author>Saeed Omidi</author> -->
     <doc>
@@ -10,7 +10,7 @@
     will be used to calculate the enrichment score for the associated motif. 
     </doc>
     <launcher type="python">
-        <argument name="file" value="" />
+        <argument name="file" value="CalculateEnrichmetScore.py" />
     </launcher>
     <requires>URL="http://www.python.org/not" type="manual">python</requires>
     <inputs>
@@ -18,11 +18,14 @@
             <doc>A file that contains the REAL training sequences in a single species format</doc>
         </input>
         <input name="DecoySequences" type="BinaryFile">
-            <doc>File that contains the shuffled, or decoy sequences. Again simple sequences and NOT ALIGNMENTS.</doc>
+            <doc>File that contains the shuffled, or decoy sequences. Again simple sequences and NOT ALIGNMENTS</doc>
         </input>
         <input name="WM" type="BinaryFile">
-            <doc>Wm to refine: either old existing one or the one found by PhyloGibbs.</doc>
+            <doc>Wm to refine: either old existing one or the one found by PhyloGibbs</doc>	    
         </input>
+        <input name="FittedParams" type="BinaryFile">
+            <doc>Fitted parameters: Beta and background prior</doc>	    
+        </input>		
     </inputs>
     <outputs>
         <output name="FittedParameters" type="BinaryFile">
