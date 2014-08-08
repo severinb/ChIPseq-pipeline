@@ -30,6 +30,9 @@
           <parameter name="genome" type="string" default="">
               <doc>genome: hg19, mm9 ...</doc>
 	  </parameter>
+          <parameter name="weblogo_path" type="string" default="">
+              <doc>Path for weblogo</doc>
+	  </parameter>
     </parameters>
 </component>
 

@@ -564,36 +564,6 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
 	 enrichmentScoresPG6_1 = CalculateEnrichmetScore(InputSequences=splitseqs.even_file, DecoySequences=shuffledSeqs_train.outfile, WM=refinedMotifPG6_1.RefinedMotif, FittedParams=fitPriorBetaPG6_1.FittedParameters, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
 	 enrichmentScoresPG6_2 = CalculateEnrichmetScore(InputSequences=splitseqs.even_file, DecoySequences=shuffledSeqs_train.outfile, WM=refinedMotifPG6_2.RefinedMotif, FittedParams=fitPriorBetaPG6_2.FittedParameters, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
 
-
-         //Runs motevo for weight matrix refinement. Also produces sensitivity-positive predicitve value plots for the weight matrix 
-         runmotevoPG1_1 = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = phylogibbs1.WeightMatrix1, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
-
-         runmotevoPG1_2 = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = phylogibbs1.WeightMatrix2, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
-
-
-         runmotevoPG2_1 = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = phylogibbs2.WeightMatrix1, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
-
-         runmotevoPG2_2 = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = phylogibbs2.WeightMatrix2, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
-
-         runmotevoPG3_1 = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = phylogibbs3.WeightMatrix1, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
-
-         runmotevoPG3_2 = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = phylogibbs3.WeightMatrix2, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
-
-
-         //Refine all WMs on alignments
-         runmotevoPG4_1 = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = phylogibbs4.WeightMatrix1, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
-
-         runmotevoPG4_2 = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = phylogibbs4.WeightMatrix2, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
-
-         runmotevoPG5_1 = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = phylogibbs5.WeightMatrix1, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
-
-         runmotevoPG5_2 = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = phylogibbs5.WeightMatrix2, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
-
-         runmotevoPG6_1 = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = phylogibbs6.WeightMatrix1, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
-
-         runmotevoPG6_2 = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = phylogibbs6.WeightMatrix2, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
-
-
          //Report generation
 
          latexfrag1 = LatexFragmentizer(log1=bg_filter.log_file,
@@ -670,18 +640,18 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
                                          capt_plot12="Phylogibbs motif 12. Window length = 20, no alignments",
                                          sectionTitle="Logos of All Twelve de novo Motifs:") 
 
-         latexfragMot = LatexFragmentizer(plot1=runmotevoPG1_1.Logo,
-                                          plot2=runmotevoPG1_2.Logo,
-                                          plot3=runmotevoPG2_1.Logo,
-                                          plot4=runmotevoPG2_2.Logo,
-                                          plot5=runmotevoPG3_1.Logo,
-                                          plot6=runmotevoPG3_2.Logo,
-                                          plot7=runmotevoPG4_1.Logo,
-                                          plot8=runmotevoPG4_2.Logo,
-                                          plot9=runmotevoPG5_1.Logo,
-                                          plot10=runmotevoPG5_2.Logo,
-                                          plot11=runmotevoPG6_1.Logo,
-                                          plot12=runmotevoPG6_2.Logo,
+         latexfragMot = LatexFragmentizer(plot1=refinedMotifPG1_1.Logo,
+                                          plot2=refinedMotifPG1_2.Logo,
+                                          plot3=refinedMotifPG2_1.Logo,
+                                          plot4=refinedMotifPG2_2.Logo,
+                                          plot5=refinedMotifPG3_1.Logo,
+                                          plot6=refinedMotifPG3_2.Logo,
+                                          plot7=refinedMotifPG4_1.Logo,
+                                          plot8=refinedMotifPG4_2.Logo,
+                                          plot9=refinedMotifPG5_1.Logo,
+                                          plot10=refinedMotifPG5_2.Logo,
+                                          plot11=refinedMotifPG6_1.Logo,
+                                          plot12=refinedMotifPG6_2.Logo,
                                           capt_plot1="Refined logo for PhyloGibbs motif 1. Window length = 10, with alignments",
                                           capt_plot2="Refined logo for PhyloGibbs motif 2. Window length = 10, with alignments",
                                           capt_plot3="Refined logo for PhyloGibbs motif 3. Window length = 15, with alignments",
@@ -705,29 +675,29 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
             runmotevo = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = old_WM.in, shuffledPeaks = shuffledSeqs_test.outfile, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
 
             filterwms = FilterWMs(WM1 = phylogibbs1.WeightMatrix1,
-                                  WM2 = runmotevoPG1_1.refWM,
+                                  WM2 = refinedMotifPG1_1.refWM,
                                   WM3 = phylogibbs1.WeightMatrix2,
-                                  WM4 = runmotevoPG1_2.refWM,
+                                  WM4 = refinedMotifPG1_2.refWM,
                                   WM5 = phylogibbs2.WeightMatrix1,
-                                  WM6 = runmotevoPG2_1.refWM,
+                                  WM6 = refinedMotifPG2_1.refWM,
                                   WM7 = phylogibbs2.WeightMatrix2,
-                                  WM8 = runmotevoPG2_2.refWM,
+                                  WM8 = refinedMotifPG2_2.refWM,
                                   WM9 = phylogibbs3.WeightMatrix1,
-                                  WM10 = runmotevoPG3_1.refWM,
+                                  WM10 = refinedMotifPG3_1.refWM,
                                   WM11 = phylogibbs3.WeightMatrix2,
-                                  WM12 = runmotevoPG3_2.refWM,
+                                  WM12 = refinedMotifPG3_2.refWM,
                                   WM13 = phylogibbs4.WeightMatrix1,
-                                  WM14 = runmotevoPG4_1.refWM,
+                                  WM14 = refinedMotifPG4_1.refWM,
                                   WM15 = phylogibbs4.WeightMatrix2,
-                                  WM16 = runmotevoPG4_2.refWM,
+                                  WM16 = refinedMotifPG4_2.refWM,
                                   WM17 = phylogibbs5.WeightMatrix1,
-                                  WM18 = runmotevoPG5_1.refWM,
+                                  WM18 = refinedMotifPG5_1.refWM,
                                   WM19 = phylogibbs5.WeightMatrix2,
-                                  WM20 = runmotevoPG5_2.refWM,
+                                  WM20 = refinedMotifPG5_2.refWM,
                                   WM21 = phylogibbs6.WeightMatrix1,
-                                  WM22 = runmotevoPG6_1.refWM,
+                                  WM22 = refinedMotifPG6_1.refWM,
                                   WM23 = phylogibbs6.WeightMatrix2,
-                                  WM24 = runmotevoPG6_2.refWM,
+                                  WM24 = refinedMotifPG6_2.refWM,
                                   WM25 = runmotevo.refWM,
                                   @host="long")
 
@@ -836,29 +806,29 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
 
 
             filterwms = FilterWMs(WM1 = phylogibbs1.WeightMatrix1,
-                                  WM2 = runmotevoPG1_1.refWM,
+                                  WM2 = refinedMotifPG1_1.refWM,
                                   WM3 = phylogibbs1.WeightMatrix2,
-                                  WM4 = runmotevoPG1_2.refWM,
+                                  WM4 = refinedMotifPG1_2.refWM,
                                   WM5 = phylogibbs2.WeightMatrix1,
-                                  WM6 = runmotevoPG2_1.refWM,
+                                  WM6 = refinedMotifPG2_1.refWM,
                                   WM7 = phylogibbs2.WeightMatrix2,
-                                  WM8 = runmotevoPG2_2.refWM,
+                                  WM8 = refinedMotifPG2_2.refWM,
                                   WM9 = phylogibbs3.WeightMatrix1,
-                                  WM10 = runmotevoPG3_1.refWM,
+                                  WM10 = refinedMotifPG3_1.refWM,
                                   WM11 = phylogibbs3.WeightMatrix2,
-                                  WM12 = runmotevoPG3_2.refWM,
+                                  WM12 = refinedMotifPG3_2.refWM,
                                   WM13 = phylogibbs4.WeightMatrix1,
-                                  WM14 = runmotevoPG4_1.refWM,
+                                  WM14 = refinedMotifPG4_1.refWM,
                                   WM15 = phylogibbs4.WeightMatrix2,
-                                  WM16 = runmotevoPG4_2.refWM,
+                                  WM16 = refinedMotifPG4_2.refWM,
                                   WM17 = phylogibbs5.WeightMatrix1,
-                                  WM18 = runmotevoPG5_1.refWM,
+                                  WM18 = refinedMotifPG5_1.refWM,
                                   WM19 = phylogibbs5.WeightMatrix2,
-                                  WM20 = runmotevoPG5_2.refWM,
+                                  WM20 = refinedMotifPG5_2.refWM,
                                   WM21 = phylogibbs6.WeightMatrix1,
-                                  WM22 = runmotevoPG6_1.refWM,
+                                  WM22 = refinedMotifPG6_1.refWM,
                                   WM23 = phylogibbs6.WeightMatrix2,
-                                  WM24 = runmotevoPG6_2.refWM,
+                                  WM24 = refinedMotifPG6_2.refWM,
                                   @host="long")
 
             trimwm = TrimWM(WMdir = filterwms.WMdir,
