@@ -25,6 +25,9 @@
 	  <output name="RefinedMotif" type="BinaryFile">
             <doc>This is the refined WM/Motif.</doc>
 	  </output>
+        <output name="Logo" type="PDF">
+            <doc>Logo of the refined weight matrix.</doc>
+        </output>
     </outputs>
     <parameters>
           <parameter name="genome" type="string" default="">
