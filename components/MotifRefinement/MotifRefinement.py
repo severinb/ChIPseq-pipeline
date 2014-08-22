@@ -13,7 +13,7 @@ def execute(cf):
     """
     inputSequences = cf.get_input("InputSequences")
     wmFile = cf.get_input("WM")
-    output_file = cf.get_output("RefinedMotif")
+    output_file = cf.get_output("refWM")
     output_logo = cf.get_output("Logo")    
     genome = cf.get_parameter("genome", "string")
     weblogo_path = cf.get_parameter("weblogo_path", "string")
@@ -22,7 +22,7 @@ def execute(cf):
                                                output_file, output_dir, genome)
     desc = '%s refined' % os.path.basename(os.path.dirname(output_file))    
     generate_sequence_logo(output_file, output_logo, weblogo_path, desc)
-    os.system( 'rm %s %s %s' % (siteFilename, priorFilename, paramFilename) )
+    # os.system( 'rm %s %s %s' % (siteFilename, priorFilename, paramFilename) )
     return 0
 
 component_skeleton.main.main(execute)

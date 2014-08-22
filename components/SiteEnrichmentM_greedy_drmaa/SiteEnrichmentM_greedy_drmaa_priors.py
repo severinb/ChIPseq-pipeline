@@ -113,10 +113,14 @@ def execute(cf):
     if keepWM: #add keepWM. If keepWM gets thrown out because it's not contributing, it still gets added later on so that one can see in any case how this WM performs
         WMs.append(keepWM)
 
-    f = open(basefreqs)
-    ATfreq = f.readline().strip().split()[1]
-    GCfreq = f.readline().strip().split()[1]
-    f.close()
+    if basefreqs:
+        f = open(basefreqs)
+        ATfreq = f.readline().strip().split()[1]
+        GCfreq = f.readline().strip().split()[1]
+        f.close()
+    else:
+        ATfreq = '0.25'
+        GCfreq = '0.25'
 
     ## start greedy algorithm:
     final_wms_indxs = []
@@ -132,7 +136,8 @@ def execute(cf):
 
     final_set_prior_d = {} #just used in the first round
     final_set_prior_d['background'] = '0.99'
-    final_set_prior_d['UFEwm'] = '200'
+    # final_set_prior_d['UFEwm'] = '200'
+    final_set_prior_d['UFEwm'] = '0'
 
     j = 0
 

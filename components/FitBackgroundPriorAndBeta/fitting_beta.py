@@ -27,7 +27,7 @@ def likelihood_derivative_beta(normalized_sitecount, beta, N_over_L, B):
     return beta + N_over_L - B*np.power(np.sum(1.0 / (beta + normalized_sitecount)) , -1 )
 
 
-def fit_beta(siteFile, interm_dir, wmFile):    
+def fit_beta(siteFile, interm_dir, wmFile):
     binding_regions_sitecount, total_sitecount, number_of_windows, total_length, M = sum_of_posteriors_foreground_regions(siteFile)
     beta_min, beta_max = 1.0e-12, 1.0e+3
     step_size = 5.0

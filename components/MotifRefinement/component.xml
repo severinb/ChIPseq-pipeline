@@ -22,7 +22,7 @@
         </input>
     </inputs>
     <outputs>
-	  <output name="RefinedMotif" type="BinaryFile">
+	  <output name="refWM" type="BinaryFile">
             <doc>This is the refined WM/Motif.</doc>
 	  </output>
         <output name="Logo" type="PDF">

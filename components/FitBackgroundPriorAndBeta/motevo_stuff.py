@@ -1,6 +1,6 @@
 import subprocess, os, datetime, time
 
-def create_motevo_param_file(param_filename, site_filename, prior_filename, genome, priordiff=0.05, minposterior=0.0):
+def create_motevo_param_file(param_filename, site_filename, prior_filename, genome, priordiff=0.1, minposterior=0.0):
     param_file = open(param_filename, 'w')
     param_file.write('\n'.join([
         'refspecies %s' % genome,

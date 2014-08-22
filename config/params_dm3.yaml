@@ -86,3 +86,5 @@ MOTEVOUFE_PATH:
     /import/bc2/home/nimwegen/GROUP/software/motevo_ver1.03/bin/runUFE
 DRMAA_LIBRARY_PATH:
     /import/bc2/soft/app/SGE/6.1/Linux/lib/lx24-amd64/libdrmaa.so
+WEBLOGO_PATH:
+    /import/bc2/home/nimwegen/GROUP/software/weblogo-3.4/weblogo
