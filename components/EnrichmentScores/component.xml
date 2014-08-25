@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>EnrichmentScores</name>
+    <!--<version>1.0</version>-->
+    <!-- <author>Saeed Omidi</author> -->
+    <doc>
+    It receives two set of motifs: the de novo motifs, and the databse motifs.
+    For each of these motifs, it fits the parameters background prior and beta.
+    Using the fitted parameters, it calculates the average and sd enrichment scores
+    for each of the motifs.
+    Final result is a file that its line holds the value of prior, beta, mean
+    enrichment score, and standard deviation enrichment score for each motif. 
+    </doc>
+    <launcher type="python">
+        <argument name="file" value="EnrichmentScores.py" />
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+
+    <inputs>
+      <input name="TrainingSequences" type="BinaryFile">
+	<doc>The training sequences, only contains real binding sequences</doc>
+      </input>
+      <input name="TrainingDecoySequences" type="BinaryFile">
+	<doc>Shuffled version of the training sequences</doc>
+      </input>
+      <input name="TestSequences" type="BinaryFile">
+	<doc>The test sequences. Only contains real sequences</doc>
+      </input>
+      <input name="TestDecoySequences" type="BinaryFile">
+	<doc>The test decoy (shuffled) sequences</doc>
+      </input>
+      <input name="DenovoWMs" type="BinaryFile">
+	<doc>The directory that holds the de novo motifs</doc>
+      </input>
+      <input name="DatabaseWMs" type="BinaryFile">
+	<doc>The directory that holds the database motifs</doc>
+      </input>
+    </inputs>
+
+    <outputs>
+        <output name="EnrichmentScores" type="BinaryFile">
+            <doc>The enrichment value and the fitted parameters for each input WM</doc>
+        </output>
+    </outputs>
+
+    <parameters>
+      <parameter name="genome" type="string" default="">
+	<doc>genome: hg19, mm9 ...</doc>
+      </parameter>
+    </parameters>
+    
+</component>

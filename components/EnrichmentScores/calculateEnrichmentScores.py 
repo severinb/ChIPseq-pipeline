@@ -1,0 +1,18 @@
+import os
+
+class MotifEnrichmentScore:
+    def __init__(self, motifFilename, destDir):
+        """
+        
+        Arguments:
+        - `motifFilename`:
+        """
+        self.motifFilename = motifFilename
+        self.motifName = os.path.basename(motifFilename)
+        self.destDir = destDir
+
+    
+    
+
+    
+
