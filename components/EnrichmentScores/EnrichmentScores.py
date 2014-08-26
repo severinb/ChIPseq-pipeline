@@ -16,7 +16,7 @@ def createScratchDirectory(outfile):
 def listOfAllWMs(denovoWMs, databaseWMs, scratchDir):
     WmFilename = os.path.join(scratchDir, 'WMs')
     with open(WmFilename, 'w') as WMs:
-        for wm in os.listdir(denovoWMs):
+        for wm in os.listdir(u'%s' % denovoWMs):
             if re.search('^denovo_WM_\d+$', wm):  # to make sure to only include the denovo motifs
                 WMs.write(os.path.join(denovoWMs, wm) + '\n')
         for wm in os.listdir(databaseWMs):
@@ -135,7 +135,7 @@ def execute(cf):
     ## make the last result file, sorted by the average enrichment score
     concatenateResults(scratchDir, outfile)
     ## cleaning up the scratch directory
-    # cleaningUpTmpFiles(scratchDir)
+    cleaningUpTmpFiles(scratchDir)
     return 0
 
 

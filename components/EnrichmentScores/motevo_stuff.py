@@ -38,16 +38,16 @@ def run_motevo(WM, sequences, interm_dir, genome, prior=None, minposterior=.0):
     motevo_path = '/import/bc2/home/nimwegen/GROUP/software/motevo_ver1.03/bin/motevo'
     stime = datetime.datetime.now()
     motifName = os.path.basename(WM)
-    print '\nrunnig Motevo for %s' % motifName
+    # print '\nrunnig Motevo for %s' % motifName
     siteFilename = os.path.join(interm_dir, '%s.sites' % motifName)
     priorFilename = os.path.join(interm_dir, '%s.priors' % motifName)
     paramFilename = os.path.join(interm_dir, '%s.params' % motifName)
     create_motevo_param_file(paramFilename, siteFilename, priorFilename, genome, minposterior=minposterior, prior=prior)
     cmd = ' '.join([
         motevo_path,
-        sequences,
-        paramFilename,
-        WM ])
+        "\'%s\'" % sequences,
+        "\'%s\'" % paramFilename,
+        "\'%s\'" % WM ])
     # print cmd
     proc = subprocess.Popen(cmd,
                             stdout=subprocess.PIPE,
@@ -65,10 +65,10 @@ def run_motevo(WM, sequences, interm_dir, genome, prior=None, minposterior=.0):
     # print proc.stderr.read()
     # print proc.stdout.read()
     if proc.poll() > 0:
-        print '\nMotevo weight matrix refinement not successful.\n'
+        # print '\nMotevo weight matrix refinement not successful.\n'
         return None, None
     else:
-        print '\nMotevo weight matrix refinement converged.\n'
+        # print '\nMotevo weight matrix refinement converged.\n'
         return siteFilename, priorFilename
     return (siteFilename, priorFilename)
 
