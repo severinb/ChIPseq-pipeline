@@ -34,7 +34,11 @@ def fit_beta(siteFile, interm_dir, wmFile):
     motifName = os.path.basename(wmFile)    
     # res_file = open(os.path.join(interm_dir, '%s.beta' % motifName), 'w')    
     beta_lower_bound, beta_upper_bound = beta_min, beta_min+step_size
-    N_over_L = total_sitecount / float(total_length)
+    try:
+        N_over_L = total_sitecount / float(total_length)
+    except ZeroDivisionError:
+        print wmFile
+        exit()
     B = len(binding_regions_sitecount.keys())
     tmp = [] # it's defined to speed up the analysis
     # instead of calculating \sum_{r \in B} \frac{l_r}{beta*l_r + n_r}

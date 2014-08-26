@@ -48,6 +48,7 @@ def run_motevo(WM, sequences, interm_dir, genome, prior=None, minposterior=.0):
         sequences,
         paramFilename,
         WM ])
+    # print cmd
     proc = subprocess.Popen(cmd,
                             stdout=subprocess.PIPE,
                             stderr= subprocess.PIPE,

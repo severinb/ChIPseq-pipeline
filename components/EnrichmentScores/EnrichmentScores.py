@@ -5,9 +5,7 @@ import os
 import subprocess
 import re 
 import drmaa
-from time import sleep
 
-OPATH=":"+drmaa.JobTemplate.HOME_DIRECTORY+'/DRMAA_JOB_OUT'
 
 def createScratchDirectory(outfile):
     scratch_dir = os.path.join(os.path.dirname(outfile), "scratch")
@@ -43,49 +41,67 @@ def createJobTemplate(TrainingPool, TestSequences, WMs, scratchDir, genome):
     jobFileContent = '\n'.join([
         '#! /bin/bash',
         'WMFILE=%s' % WMs,
-        'WM=$(awk "NR==$SGE_TASK_ID" $SEEDFILE)',
+        'WM=$(sed -n -e "$SGE_TASK_ID p" $WMFILE)',
         'python {prog} -w $WM \\'.format(prog=prog),
-        # 'python {prog} -w {WM} \\'.format(prog=prog, WM='/import/bc2/home/nimwegen/omidi/Projects/ChIPseq-pipeline/example/OUTPUT/CTCF_FgBg-filterwms/WMdir/denovo_WM_1'),        
         '-t {trainseq} \\'.format(trainseq=TrainingPool),
         '-s {testseq} \\'.format(testseq=TestSequences),        
         '-o {scratch} -g {genome} '.format(scratch=scratchDir, genome=genome),
         ])
     shellFilename = os.path.join(scratchDir, 'command.sh')
-    shellFile = open(shellFilename, 'w')
-    shellFile.write(jobFileContent)
-    shellFile.close()
+    with open(shellFilename, 'w') as outf:
+        outf.write(jobFileContent)
     return shellFilename
 
 
 
 def init_job_template(jt, path, args, as_bulk_job, scratchDir):
-    stderr = os.path.join(scratchDir, 'stderr.$SGE_TASK_ID')
-    print stderr
-    JOB_PARAM = '-q fs_long -P project_nimwegen -e %s' % stderr
+    stderr = os.path.join(scratchDir, 'stderr')
+    stdout = os.path.join(scratchDir, 'stdout')    
+    JOB_PARAM = '-q fs_long -P project_nimwegen -e %s -o %s -b y' % (stderr, stdout)
+    env = {'PATH': '/bin:usr/bin:/import/bc2/home/nimwegen/GROUP/local/bin'}
     jt.workingDirectory = drmaa.JobTemplate.HOME_DIRECTORY
-    jt.remoteCommand = path
+    jt.remoteCommand = '/bin/bash'
+    jt.args = [path]
+    jt.jobEnvironment = env
     jt.nativeSpecification = JOB_PARAM
-    jt.args = args
-    jt.joinFiles=True
-    if as_bulk_job:
-        jt.outputPath=OPATH+'.'+drmaa.JobTemplate.PARAMETRIC_INDEX
-    else:
-        jt.outputPath=OPATH
     return jt
 
 
-def runningDrmaaJob(job_path, scratchDir, JOB_CHUNK=5, NBULKS=1):
+def runningDrmaaJob(job_path, scratchDir, NUMBER_OF_JOBS=1):
     s=drmaa.Session()
     s.initialize()
-    # submit bulk jobs
     jt=init_job_template(s.createJobTemplate(), job_path, [], True, scratchDir)
     all_jobids = []
-    for i in range(NBULKS):
-        all_jobids += s.runBulkJobs(jt, 1, JOB_CHUNK, 1)
-        sleep(1)
-    print all_jobids
+    if NUMBER_OF_JOBS > 1:
+        all_jobids = s.runBulkJobs(jt, 1, NUMBER_OF_JOBS, 1)
+        s.synchronize(all_jobids, drmaa.Session.TIMEOUT_WAIT_FOREVER, False)
+    else:
+        all_jobids = s.runJob(jt)
+        retval = s.wait(all_jobids, drmaa.Session.TIMEOUT_WAIT_FOREVER)
+    s.deleteJobTemplate(jt)        
+    s.exit()    
     return all_jobids
     
+
+def concatenateResults(scratchDir, resFilename):
+    cmd = ' '.join([
+        'cat',
+        os.path.join(scratchDir, '*.results'),
+        '|',
+        'sort -gr -k 2'
+        ])
+    proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+    with open(resFilename, 'w') as outf:
+        for line in proc.stdout:
+            outf.write(line)
+    return resFilename
+
+
+def cleaningUpTmpFiles(scratchDir):
+    cmd = 'rm -fr %s' % scratchDir
+    os.system(cmd)
+    return 0
+            
 
 def execute(cf):
     """
@@ -115,7 +131,12 @@ def execute(cf):
                                   scratchDir, 'testPool')
     ## createJobTemplate for the array job (runs for every motif the fitting and enrichment score program)
     shellCommand = createJobTemplate(trainingPool, testPool, WMs, scratchDir, GENOME)
-    runningDrmaaJob(shellCommand, scratchDir)
+    runningDrmaaJob(shellCommand, scratchDir, NUMBER_OF_JOBS=len(WMs))
+    ## make the last result file, sorted by the average enrichment score
+    concatenateResults(scratchDir, outfile)
+    ## cleaning up the scratch directory
+    # cleaningUpTmpFiles(scratchDir)
     return 0
+
 
 component_skeleton.main.main(execute)

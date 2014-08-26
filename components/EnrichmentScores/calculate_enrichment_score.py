@@ -36,7 +36,7 @@ def fittingParameters(WM, trainingPool, outdir, genome):
 def calculateEnrichmetScores(WM, testPool, params, outdir, genome):
     siteFilename, priorFilename = run_motevo(WM, testPool, outdir, \
                                              genome, prior=params['prior'], \
-                                             minposterior=0.00001)
+                                             minposterior=0.0)
     motifName = os.path.basename(WM)
     enrichmentFile = os.path.join(outdir, motifName + '.enrichment_score')
     scores = calculate_enrichment_scores(siteFilename, params['beta'], enrichmentFile)
