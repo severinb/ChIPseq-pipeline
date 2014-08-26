@@ -667,7 +667,6 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
                                           sectionTitle="Logos for All Twelve Refined de novo Motifs.")
 
 
-
          if wm_defined == 1 {
 
 
@@ -705,6 +704,14 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
             trimwm = TrimWM(WMdir = filterwms.WMdir,
                             information_cutoff=0.25,
                             @host="long")
+
+	    enrichmentScores = EnrichmentScores(TrainingSequences=splitseqs.odd_file,
+						TrainingDecoySequences=shuffledSeqs_train.outfile, 
+						TestSequences=splitseqs.even_file, 
+						TestDecoySequences=shuffledSeqs_test.outfile, 
+						DenovoWMs=filterwms.WMdir, 
+						DatabaseWMs=WMlib.in, 
+						genome="GENOME")
 
 
             WMlibrary = "WMLIBRARY"
@@ -834,6 +841,17 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
             trimwm = TrimWM(WMdir = filterwms.WMdir,
                             information_cutoff=0.25,
                             @host="long")
+	
+	    
+	    enrichmentScores = EnrichmentScores(TrainingSequences=splitseqs.odd_file,
+						TrainingDecoySequences=shuffledSeqs_train.outfile, 
+						TestSequences=splitseqs.even_file, 
+						TestDecoySequences=shuffledSeqs_test.outfile, 
+						DenovoWMs=filterwms.WMdir, 
+						DatabaseWMs=WMlib.in, 
+						genome="GENOME")
+
+
 
             WMlibrary = "WMLIBRARY"
             WMlib = INPUT(path = WMlibrary)

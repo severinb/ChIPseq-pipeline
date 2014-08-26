@@ -120,10 +120,14 @@ def execute(cf):
     DatabaseWMs = cf.get_input("DatabaseWMs")
     GENOME = cf.get_parameter('genome', 'string')
     outfile = cf.get_output("EnrichmentScores")
+    print "Calculating Enrichment Scores for: "
+    print DenovoWMs
+    print DatabaseWMs    
     ## The scratch directory serves as a temporary space for holding files
     scratchDir = createScratchDirectory(outfile)
     ## create a file that lists all the input WMs    
     WMs = listOfAllWMs(DenovoWMs, DatabaseWMs, scratchDir)
+    print "Enrichment Scores: There are in total %d WMs" % len(WMs)
     ## create the training pool that contains both real and decoy (shuffled) sequences
     trainingPool = createSequencePool(TrainingInputSequences, TrainingDecoySequences, \
                                       scratchDir, 'trainingPool')
