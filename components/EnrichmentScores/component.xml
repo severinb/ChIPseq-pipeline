@@ -29,11 +29,8 @@
       <input name="TestDecoySequences" type="BinaryFile">
 	<doc>The test decoy (shuffled) sequences</doc>
       </input>
-      <input name="DenovoWMs" type="BinaryFile">
+      <input name="DenovoWMs" type="BinaryFolder">
 	<doc>The directory that holds the de novo motifs</doc>
-      </input>
-      <input name="DatabaseWMs" type="BinaryFile">
-	<doc>The directory that holds the database motifs</doc>
       </input>
     </inputs>
 
@@ -44,6 +41,9 @@
     </outputs>
 
     <parameters>
+      <parameter name="DatabaseWMs" type="string" default="">
+	<doc>The directory that holds the database motifs</doc>
+      </parameter>
       <parameter name="genome" type="string" default="">
 	<doc>genome: hg19, mm9 ...</doc>
       </parameter>

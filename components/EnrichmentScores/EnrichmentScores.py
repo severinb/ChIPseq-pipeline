@@ -54,10 +54,11 @@ def createJobTemplate(TrainingPool, TestSequences, WMs, scratchDir, genome):
 
 
 
-def init_job_template(jt, path, args, as_bulk_job, scratchDir):
+def init_job_template(jt, path, args, as_bulk_job, scratchDir, jobName):
     stderr = os.path.join(scratchDir, 'stderr')
     stdout = os.path.join(scratchDir, 'stdout')    
-    JOB_PARAM = '-q fs_long -P project_nimwegen -e %s -o %s -b y' % (stderr, stdout)
+    JOB_PARAM = '-q fs_long -P project_nimwegen -e %s -o %s -b y ' % (stderr, stdout)
+    JOB_PARAM += '-N %s' % jobName
     env = {'PATH': '/bin:usr/bin:/import/bc2/home/nimwegen/GROUP/local/bin'}
     jt.workingDirectory = drmaa.JobTemplate.HOME_DIRECTORY
     jt.remoteCommand = '/bin/bash'
@@ -67,10 +68,10 @@ def init_job_template(jt, path, args, as_bulk_job, scratchDir):
     return jt
 
 
-def runningDrmaaJob(job_path, scratchDir, NUMBER_OF_JOBS=1):
+def runningDrmaaJob(job_path, scratchDir, jobName, NUMBER_OF_JOBS=1):
     s=drmaa.Session()
     s.initialize()
-    jt=init_job_template(s.createJobTemplate(), job_path, [], True, scratchDir)
+    jt=init_job_template(s.createJobTemplate(), job_path, [], True, scratchDir, jobName)
     all_jobids = []
     if NUMBER_OF_JOBS > 1:
         all_jobids = s.runBulkJobs(jt, 1, NUMBER_OF_JOBS, 1)
@@ -117,12 +118,12 @@ def execute(cf):
     TestSequences = cf.get_input("TestSequences")
     TestDecoySequences = cf.get_input("TestDecoySequences")
     DenovoWMs = cf.get_input("DenovoWMs")    
-    DatabaseWMs = cf.get_input("DatabaseWMs")
+    DatabaseWMs = cf.get_parameter("DatabaseWMs")
     GENOME = cf.get_parameter('genome', 'string')
     outfile = cf.get_output("EnrichmentScores")
     print "Calculating Enrichment Scores for: "
     print DenovoWMs
-    print DatabaseWMs    
+    print DatabaseWMs
     ## The scratch directory serves as a temporary space for holding files
     scratchDir = createScratchDirectory(outfile)
     ## create a file that lists all the input WMs    
@@ -134,12 +135,13 @@ def execute(cf):
     testPool = createSequencePool(TestSequences, TestDecoySequences, \
                                   scratchDir, 'testPool')
     ## createJobTemplate for the array job (runs for every motif the fitting and enrichment score program)
+    jobName = os.path.basename(os.path.dirname(outfile))
     shellCommand = createJobTemplate(trainingPool, testPool, WMs, scratchDir, GENOME)
-    runningDrmaaJob(shellCommand, scratchDir, NUMBER_OF_JOBS=len(WMs))
+    runningDrmaaJob(shellCommand, scratchDir, jobName, NUMBER_OF_JOBS=len(WMs))
     ## make the last result file, sorted by the average enrichment score
     concatenateResults(scratchDir, outfile)
     ## cleaning up the scratch directory
-    cleaningUpTmpFiles(scratchDir)
+    # cleaningUpTmpFiles(scratchDir)
     return 0
 
 

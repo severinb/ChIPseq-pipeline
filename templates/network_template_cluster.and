@@ -705,17 +705,20 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
                             information_cutoff=0.25,
                             @host="long")
 
-	    enrichmentScores = EnrichmentScores(TrainingSequences=splitseqs.odd_file,
+
+	    enrichmentScores_for_all = EnrichmentScores(TrainingSequences=splitseqs.odd_file,
 						TrainingDecoySequences=shuffledSeqs_train.outfile, 
 						TestSequences=splitseqs.even_file, 
 						TestDecoySequences=shuffledSeqs_test.outfile, 
 						DenovoWMs=filterwms.WMdir, 
-						DatabaseWMs=WMlib.in, 
+						DatabaseWMs="WMLIBRARY", 
 						genome="GENOME")
+
 
 
             WMlibrary = "WMLIBRARY"
             WMlib = INPUT(path = WMlibrary)
+
 
             site_enrichment_slim = SiteEnrichmentM_greedy_drmaa(train_set = training_forreturn,
                                                                 test_set = test_forreturn,
@@ -843,14 +846,13 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
                             @host="long")
 	
 	    
-	    enrichmentScores = EnrichmentScores(TrainingSequences=splitseqs.odd_file,
+	    enrichmentScores_for_all = EnrichmentScores(TrainingSequences=splitseqs.odd_file,
 						TrainingDecoySequences=shuffledSeqs_train.outfile, 
 						TestSequences=splitseqs.even_file, 
 						TestDecoySequences=shuffledSeqs_test.outfile, 
 						DenovoWMs=filterwms.WMdir, 
-						DatabaseWMs=WMlib.in, 
+						DatabaseWMs="WMLIBRARY", 
 						genome="GENOME")
-
 
 
             WMlibrary = "WMLIBRARY"

@@ -45,10 +45,10 @@ def run_motevo(WM, sequences, interm_dir, genome, prior=None, minposterior=.0):
     create_motevo_param_file(paramFilename, siteFilename, priorFilename, genome, minposterior=minposterior, prior=prior)
     cmd = ' '.join([
         motevo_path,
-        "\'%s\'" % sequences,
-        "\'%s\'" % paramFilename,
+        "%s" % sequences,
+        "%s" % paramFilename,
         "\'%s\'" % WM ])
-    # print cmd
+    print cmd
     proc = subprocess.Popen(cmd,
                             stdout=subprocess.PIPE,
                             stderr= subprocess.PIPE,
