@@ -329,14 +329,7 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
 
          //This thing will submit array jobs itself
 	 //quene_name="long", here long stands for the actual queue name and nor for the alias from hosts.conf used by anduril!
-         selectpeaks = SelectPeaksMM(in_dir = regioncoverage.out_dir, FGfiles_string=IPstring, FragmentLength=-1, files_per_job=50, order=4, widthFactor=1, project_leader="PROJECTLEADER", RMSD_cutoff=100, topPeaks=1000, queue_name="long")
-
-
-
-         selectpeaks_testing = SelectPeaksMM_testing(in_dir = regioncoverage.out_dir, FGfiles_string=IPstring, FragmentLength=-1, files_per_job=50, order=4, widthFactor=1, project_leader="PROJECTLEADER", RMSD_cutoff=0.09, topPeaks=1000)
-
-         recompz_testing = RecomputeZscores(peakfile = selectpeaks_testing.allpeaks, peakstats = selectpeaks_testing.peakstats, binned_reads = bg_filter.outfile, fit_log = peakcall_newnoise.log_file, Z_cutoff_file = peakmerge.z_cutoff_file, read_files=IPstring, FGwinsize=500, Z_cutoff=-1, topPeaks=1000, @host="long_hm")
-
+         selectpeaks = SelectPeaksMM(in_dir = regioncoverage.out_dir, FGfiles_string=IPstring, FragmentLength=-1, files_per_job=50, order=4, widthFactor=1, project_leader="PROJECTLEADER", RMSD_cutoff=100, topPeaks=1000, queue_name="fs_long")
 
 
          //Recompute Z-scores for refined peaks
@@ -371,21 +364,13 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
          shuffledSeqs_train = ShuffleAlignments(infile = splitseqs.odd_file, mode="phil", iterations=10, perlPATH="PERL_PATH", pythonPATH="PYTHON_PATH", @host="long")
 
 
-         if "GENOME" == "dm3"{
-            shuffled_test_forreturn = shuffledSeqs_test.outfile
-            shuffled_train_forreturn = shuffledSeqs_train.outfile
-            test_forreturn = splitseqs.odd_file
-            training_forreturn = splitseqs.even_file
-            aligned_bool = "false"
-         }
+         //this is not really neccessary to assign outports to variables... it is an ancient thing. 
+         shuffled_test_forreturn = shuffledSeqs_test.outfile
+         shuffled_train_forreturn = shuffledSeqs_train.outfile
+         test_forreturn = splitseqs.odd_file
+         training_forreturn = splitseqs.even_file
+         aligned_bool = "false"
 
-         else {
-            shuffled_test_forreturn = shuffledAlns_test.outfile
-            shuffled_train_forreturn = shuffledAlns_train.outfile
-            test_forreturn = splitalignments.odd_file
-            training_forreturn = splitalignments.even_file
-            aligned_bool = "true"
-         }
 
          buildufe = BuildUFEmodel(Sequences = getseqs.Sequences, genome="GENOME", motevoUFE_path="MOTEVOUFE_PATH", @host="long")
 
@@ -450,32 +435,30 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
                   if wm_defined == 1 {
 
                      //Run motevo for refinement of existing weight matrix
-                     runmotevo = RunMotevo(odd_file = splitalignments.odd_file, even_file = splitalignments.even_file, WM = old_WM.in, shuffledPeaks = shuffledAlns_test.outfile, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="true", @host="long")
+                     runmotevo = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = old_WM.in, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
 
 
-                     latexfragRef = LatexFragmentizer(plot1=runmotevo.sens_ppv,
-                                                      plot2=runmotevo.Logo,
-                                                      capt_plot1="Sensitivity - positive predictive value plot for WM refinement, with alignments.",
-                                                      capt_plot2="Refined weight matrix logo.",
+                     latexfragRef = LatexFragmentizer(plot1=runmotevo.Logo,
+                                                      capt_plot1="Refined weight matrix logo.",
                                                       sectionTitle="Refining Given Motif:")
 
 
 
-                     wmqual = WMQuality(peaks = test_forreturn,
-                                        shuffledPeaks = shuffled_test_forreturn,
+                     wmqual = WMQuality(train_set = splitseqs.even_file,
+                                        bg_train_set = shuffledSeqs_train.outfile,
+                                        test_set = splitseqs.odd_file,
+                                        bg_test_set = shuffledSeqs_test.outfile,
                                         WM1 = old_WM.in,
                                         WM2 = runmotevo.refWM,
-                                        UFEmodel = buildufe.UFEmodel,
-                                        BaseFrequencies = buildufe.BaseFrequencies,
-                                        aligned=aligned_bool, genome="GENOME",
+                                        aligned="false", genome="GENOME",
                                         motevo_path="MOTEVO_PATH",
                                         @host="long")
 
 
-                     site_enrichment_slim = SiteEnrichmentM_greedy_drmaa(train_set = training_forreturn,
-                                                                         test_set = test_forreturn,
-                                                                         bg_train_set = shuffled_train_forreturn,
-                                                                         background_set = shuffled_test_forreturn,
+                     site_enrichment_slim = SiteEnrichmentM_greedy_drmaa(train_set = splitseqs.even_file,
+                                                                         test_set = splitseqs.odd_file,
+                                                                         bg_train_set = shuffledSeqs_train.outfile,
+                                                                         background_set = shuffledSeqs_test.outfile,
                                                                          BaseFrequencies = buildufe.BaseFrequencies,
                                                                          WM1 = old_WM.in,
                                                                          WM2 = runmotevo.refWM,
@@ -487,7 +470,7 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
                                                                          site_enrichment_cutoff=4.6,
                                                                          pseudocount=0.05,
                                                                          project_leader="PROJECTLEADER",
-                                                                         queue_name="long")
+                                                                         queue_name="fs_long")
 
 
                      stetsOld = GetWMStats(Sequences = getseqs2.Sequences, RegionCoverage = regioncoverage.out_dir, PeakStats = pstats, CandWM = old_WM.in, PeakCallDir = peakcall_newnoise.out_dir,  LLog = site_enrichment_slim.loglik_all_motifs, AUCLog = wmqual.log_file, IP_string=IPstring)
@@ -505,7 +488,7 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
                      OUTPUT(combine2.pdfreport)
 
                      //All these outports are dummies. (LLog and AUCLog ports could be used for TFBSstats of given and refined WM respectively.)
-                     return record(Sequences = getseqs2.Sequences, RegionCoverageDir = regioncoverage.out_dir, PeakStats = pstats, PeakCallDir = peakcall_newnoise.out_dir, LLog = stetsOld.TFBSstats, LLog_tops = stetsOld.TFBSstats, AUCLog = stetsRef.TFBSstats, AUCLog_tops = stetsRef.TFBSstats, Peaks = annotpeaks.peakAnnotations, ShuffledTestSet = shuffled_test_forreturn, ShuffledTrainSet = shuffled_train_forreturn, TestSet = test_forreturn, TrainingSet = training_forreturn, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies)
+                     return record(Sequences = getseqs2.Sequences, RegionCoverageDir = regioncoverage.out_dir, PeakStats = pstats, PeakCallDir = peakcall_newnoise.out_dir, LLog = stetsOld.TFBSstats, LLog_tops = stetsOld.TFBSstats, AUCLog = stetsRef.TFBSstats, AUCLog_tops = stetsRef.TFBSstats, Peaks = annotpeaks.peakAnnotations, ShuffledTestSet = shuffledSeqs_test.outfile, ShuffledTrainSet = shuffledSeqs_train.outfile, TestSet = splitseqs.odd_file, TrainingSet = splitseqs.even_file, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies)
 
                      }
 
@@ -517,7 +500,7 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
                         OUTPUT(annotpeaks.peakAnnotations)
 
 			//All outports are dummy ports:
-                        return record(Sequences = getseqs2.Sequences, RegionCoverageDir = regioncoverage.out_dir, PeakStats = pstats, PeakCallDir = peakcall_newnoise.out_dir, LLog = pstats, LLog_tops = pstats, AUCLog = pstats, AUCLog_tops = pstats, Peaks = annotpeaks.peakAnnotations, ShuffledTestSet = shuffled_test_forreturn, ShuffledTrainSet = shuffled_train_forreturn, TestSet = test_forreturn, TrainingSet = training_forreturn, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies)
+                        return record(Sequences = getseqs2.Sequences, RegionCoverageDir = regioncoverage.out_dir, PeakStats = pstats, PeakCallDir = peakcall_newnoise.out_dir, LLog = pstats, LLog_tops = pstats, AUCLog = pstats, AUCLog_tops = pstats, Peaks = annotpeaks.peakAnnotations, ShuffledTestSet = shuffledSeqs_test.outfile, ShuffledTrainSet = shuffledSeqs_train.outfile, TestSet = splitseqs.odd_file, TrainingSet = splitseqs.even_file, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies)
 
                       }
            }
@@ -539,35 +522,34 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
 
          phylogibbs6 =  RunPhyloGibbs(infile = splitseqs.even_file, PhyloGibbsPATH="PHYLOGIBBS_PATH", mylogo_path="MYLOGO_PATH", markovorder=1, WindowLength=20, numberWindows=-1, numberColours=2, AlignmentOrder=0, genome="GENOME", @host="long")
 
-         
+
          //Runs motevo for weight matrix refinement. Also produces sensitivity-positive predicitve value plots for the weight matrix 
-         runmotevoPG1_1 = RunMotevo(odd_file = splitalignments.odd_file, even_file = splitalignments.even_file, WM = phylogibbs1.WeightMatrix1, shuffledPeaks = shuffledAlns_test.outfile, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="true", @host="long")
+         runmotevoPG1_1 = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = phylogibbs1.WeightMatrix1, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
 
-         runmotevoPG1_2 = RunMotevo(odd_file = splitalignments.odd_file, even_file = splitalignments.even_file, WM = phylogibbs1.WeightMatrix2, shuffledPeaks = shuffledAlns_test.outfile, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="true", @host="long")
+         runmotevoPG1_2 = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = phylogibbs1.WeightMatrix2, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
 
 
-         runmotevoPG2_1 = RunMotevo(odd_file = splitalignments.odd_file, even_file = splitalignments.even_file, WM = phylogibbs2.WeightMatrix1, shuffledPeaks = shuffledAlns_test.outfile, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="true", @host="long")
+         runmotevoPG2_1 = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = phylogibbs2.WeightMatrix1, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
 
-         runmotevoPG2_2 = RunMotevo(odd_file = splitalignments.odd_file, even_file = splitalignments.even_file, WM = phylogibbs2.WeightMatrix2, shuffledPeaks = shuffledAlns_test.outfile, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="true", @host="long")
+         runmotevoPG2_2 = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = phylogibbs2.WeightMatrix2, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
 
-         runmotevoPG3_1 = RunMotevo(odd_file = splitalignments.odd_file, even_file = splitalignments.even_file, WM = phylogibbs3.WeightMatrix1, shuffledPeaks = shuffledAlns_test.outfile, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="true", @host="long")
+         runmotevoPG3_1 = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = phylogibbs3.WeightMatrix1, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
 
-         runmotevoPG3_2 = RunMotevo(odd_file = splitalignments.odd_file, even_file = splitalignments.even_file, WM = phylogibbs3.WeightMatrix2, shuffledPeaks = shuffledAlns_test.outfile, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="true", @host="long")
+         runmotevoPG3_2 = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = phylogibbs3.WeightMatrix2, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
 
 
          //Refine all WMs on alignments
-         runmotevoPG4_1 = RunMotevo(odd_file = splitalignments.odd_file, even_file = splitalignments.even_file, WM = phylogibbs4.WeightMatrix1, shuffledPeaks = shuffledAlns_test.outfile, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="true", @host="long")
+         runmotevoPG4_1 = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = phylogibbs4.WeightMatrix1, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
 
-         runmotevoPG4_2 = RunMotevo(odd_file = splitalignments.odd_file, even_file = splitalignments.even_file, WM = phylogibbs4.WeightMatrix2, shuffledPeaks = shuffledAlns_test.outfile, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="true", @host="long")
+         runmotevoPG4_2 = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = phylogibbs4.WeightMatrix2, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
 
+         runmotevoPG5_1 = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = phylogibbs5.WeightMatrix1, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
 
-         runmotevoPG5_1 = RunMotevo(odd_file = splitalignments.odd_file, even_file = splitalignments.even_file, WM = phylogibbs5.WeightMatrix1, shuffledPeaks = shuffledAlns_test.outfile, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="true", @host="long")
+         runmotevoPG5_2 = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = phylogibbs5.WeightMatrix2, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
 
-         runmotevoPG5_2 = RunMotevo(odd_file = splitalignments.odd_file, even_file = splitalignments.even_file, WM = phylogibbs5.WeightMatrix2, shuffledPeaks = shuffledAlns_test.outfile, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="true", @host="long")
+         runmotevoPG6_1 = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = phylogibbs6.WeightMatrix1, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
 
-         runmotevoPG6_1 = RunMotevo(odd_file = splitalignments.odd_file, even_file = splitalignments.even_file, WM = phylogibbs6.WeightMatrix1, shuffledPeaks = shuffledAlns_test.outfile, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="true", @host="long")
-
-         runmotevoPG6_2 = RunMotevo(odd_file = splitalignments.odd_file, even_file = splitalignments.even_file, WM = phylogibbs6.WeightMatrix2, shuffledPeaks = shuffledAlns_test.outfile, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="true", @host="long")
+         runmotevoPG6_2 = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = phylogibbs6.WeightMatrix2, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
 
 
          //Report generation
@@ -646,59 +628,31 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
                                          capt_plot12="Phylogibbs motif 12. Window length = 20, no alignments",
                                          sectionTitle="Logos of All Twelve de novo Motifs:") 
 
-                               
-         latexfragMot = LatexFragmentizer(plot1=runmotevoPG1_1.sens_ppv,
-                                          plot2=runmotevoPG1_2.sens_ppv,
-                                          plot3=runmotevoPG2_1.sens_ppv,
-                                          plot4=runmotevoPG2_2.sens_ppv,
-                                          plot5=runmotevoPG3_1.sens_ppv,
-                                          plot6=runmotevoPG3_2.sens_ppv,
-                                          plot7=runmotevoPG4_1.sens_ppv,
-                                          plot8=runmotevoPG4_2.sens_ppv,
-                                          plot9=runmotevoPG5_1.sens_ppv,
-                                          plot10=runmotevoPG5_2.sens_ppv,
-                                          plot11=runmotevoPG6_1.sens_ppv,
-                                          plot12=runmotevoPG6_2.sens_ppv,
-                                          capt_plot1="sensitivity - ppv plot for PhyloGibbs motif 1. Window length = 10, with alignments",
-                                          capt_plot2="sensitivity - ppv plot for PhyloGibbs motif 2. Window length = 10, with alignments",
-                                          capt_plot3="sensitivity - ppv plot for PhyloGibbs motif 3. Window length = 15, with alignments",
-                                          capt_plot4="sensitivity - ppv plot for PhyloGibbs motif 4. Window length = 15, with alignments",
-                                          capt_plot5="sensitivity - ppv plot for PhyloGibbs motif 5. Window length = 20, with alignments",
-                                          capt_plot6="sensitivity - ppv plot for PhyloGibbs motif 6. Window length = 20, with alignments",
-                                          capt_plot7="sensitivity - ppv plot for PhyloGibbs motif 7. Window length = 10, no alignments",
-                                          capt_plot8="sensitivity - ppv plot for PhyloGibbs motif 8. Window length = 10, no alignments",
-                                          capt_plot9="sensitivity - ppv plot for PhyloGibbs motif 9. Window length = 15, no alignments",
-                                          capt_plot10="sensitivity - ppv plot for PhyloGibbs motif 10. Window length = 15, no alignments",
-                                          capt_plot11="sensitivity - ppv plot for PhyloGibbs motif 11. Window length = 20, no alignments",
-                                          capt_plot12="sensitivity - ppv plot for PhyloGibbs motif 12. Window length = 20, no alignments",
-                                          sectionTitle="Precision and Recall Plots for All Twelve de novo Motifs and Their Refined Version:")
-
-
-         latexfragMot2 = LatexFragmentizer(plot1=runmotevoPG1_1.Logo,
-                                           plot2=runmotevoPG1_2.Logo,
-                                           plot3=runmotevoPG2_1.Logo,
-                                           plot4=runmotevoPG2_2.Logo,
-                                           plot5=runmotevoPG3_1.Logo,
-                                           plot6=runmotevoPG3_2.Logo,
-                                           plot7=runmotevoPG4_1.Logo,
-                                           plot8=runmotevoPG4_2.Logo,
-                                           plot9=runmotevoPG5_1.Logo,
-                                           plot10=runmotevoPG5_2.Logo,
-                                           plot11=runmotevoPG6_1.Logo,
-                                           plot12=runmotevoPG6_2.Logo,
-                                           capt_plot1="Refined logo for PhyloGibbs motif 1. Window length = 10, with alignments",
-                                           capt_plot2="Refined logo for PhyloGibbs motif 2. Window length = 10, with alignments",
-                                           capt_plot3="Refined logo for PhyloGibbs motif 3. Window length = 15, with alignments",
-                                           capt_plot4="Refined logo for PhyloGibbs motif 4. Window length = 15, with alignments",
-                                           capt_plot5="Refined logo for PhyloGibbs motif 5. Window length = 20, with alignments",
-                                           capt_plot6="Refined logo for PhyloGibbs motif 6. Window length = 20, with alignments",
-                                           capt_plot7="Refined logo for PhyloGibbs motif 7. Window length = 10, no alignments",
-                                           capt_plot8="Refined logo for PhyloGibbs motif 8. Window length = 10, no alignments",
-                                           capt_plot9="Refined logo for PhyloGibbs motif 9. Window length = 15, no alignments",
-                                           capt_plot10="Refined logo for PhyloGibbs motif 10. Window length = 15, no alignments",
-                                           capt_plot11="Refined logo for PhyloGibbs motif 11. Window length = 20, no alignments",
-                                           capt_plot12="Refined logo for PhyloGibbs motif 12. Window length = 20, no alignments",
-                                           sectionTitle="Logos for All Twelve Refined de novo Motifs.")
+         latexfragMot = LatexFragmentizer(plot1=runmotevoPG1_1.Logo,
+                                          plot2=runmotevoPG1_2.Logo,
+                                          plot3=runmotevoPG2_1.Logo,
+                                          plot4=runmotevoPG2_2.Logo,
+                                          plot5=runmotevoPG3_1.Logo,
+                                          plot6=runmotevoPG3_2.Logo,
+                                          plot7=runmotevoPG4_1.Logo,
+                                          plot8=runmotevoPG4_2.Logo,
+                                          plot9=runmotevoPG5_1.Logo,
+                                          plot10=runmotevoPG5_2.Logo,
+                                          plot11=runmotevoPG6_1.Logo,
+                                          plot12=runmotevoPG6_2.Logo,
+                                          capt_plot1="Refined logo for PhyloGibbs motif 1. Window length = 10, with alignments",
+                                          capt_plot2="Refined logo for PhyloGibbs motif 2. Window length = 10, with alignments",
+                                          capt_plot3="Refined logo for PhyloGibbs motif 3. Window length = 15, with alignments",
+                                          capt_plot4="Refined logo for PhyloGibbs motif 4. Window length = 15, with alignments",
+                                          capt_plot5="Refined logo for PhyloGibbs motif 5. Window length = 20, with alignments",
+                                          capt_plot6="Refined logo for PhyloGibbs motif 6. Window length = 20, with alignments",
+                                          capt_plot7="Refined logo for PhyloGibbs motif 7. Window length = 10, no alignments",
+                                          capt_plot8="Refined logo for PhyloGibbs motif 8. Window length = 10, no alignments",
+                                          capt_plot9="Refined logo for PhyloGibbs motif 9. Window length = 15, no alignments",
+                                          capt_plot10="Refined logo for PhyloGibbs motif 10. Window length = 15, no alignments",
+                                          capt_plot11="Refined logo for PhyloGibbs motif 11. Window length = 20, no alignments",
+                                          capt_plot12="Refined logo for PhyloGibbs motif 12. Window length = 20, no alignments",
+                                          sectionTitle="Logos for All Twelve Refined de novo Motifs.")
 
 
 
@@ -706,7 +660,7 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
 
 
             //Run motevo for refinement of existing weight matrix
-            runmotevo = RunMotevo(odd_file = splitalignments.odd_file, even_file = splitalignments.even_file, WM = old_WM.in, shuffledPeaks = shuffledAlns_test.outfile, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="true", @host="long")
+            runmotevo = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = old_WM.in, shuffledPeaks = shuffledSeqs_test.outfile, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
 
             filterwms = FilterWMs(WM1 = phylogibbs1.WeightMatrix1,
                                   WM2 = runmotevoPG1_1.refWM,
@@ -760,17 +714,17 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
                                                                 site_enrichment_cutoff=4.6,
                                                                 pseudocount=0.05,
                                                                 project_leader="PROJECTLEADER",
-                                                                queue_name="long",
+                                                                queue_name="fs_long",
 								top_motifs=10)
 
 
             //take one set of alignments and background alignments to test all WMs we have. Also gives the best WM.
-            wmqual_tops = WMQuality(peaks = test_forreturn,
-                                    shuffledPeaks = shuffled_test_forreturn,
+            wmqual_tops = WMQuality(train_set = splitseqs.even_file,
+                                    bg_train_set = shuffledSeqs_train.outfile,
+                                    test_set = splitseqs.odd_file,
+                                    bg_test_set = shuffledSeqs_test.outfile,
                                     WMlist = site_enrichment_slim.loglik_top_motifs,
-                                    UFEmodel = buildufe.UFEmodel,
-                               	    BaseFrequencies = buildufe.BaseFrequencies,
-                                    aligned=aligned_bool, genome="GENOME",
+                                    aligned="false", genome="GENOME",
                                     motevo_path="MOTEVO_PATH",
                                     @host="long")
 
@@ -796,26 +750,24 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
                                                            site_enrichment_cutoff=4.6,
                                                            pseudocount=0.05,
                                                            project_leader="PROJECTLEADER",
-                                                           queue_name="long")
+                                                           queue_name="fs_long")
 
 
 
             //take one set of alignments and background alignments to test all WMs we have. Also gives the best WM.
-            wmqual = WMQuality(peaks = test_forreturn,
-                               shuffledPeaks = shuffled_test_forreturn,
+            wmqual = WMQuality(train_set = splitseqs.even_file,
+                               bg_train_set = shuffledSeqs_train.outfile,
+                               test_set = splitseqs.odd_file,
+                               bg_test_set = shuffledSeqs_test.outfile,
                                WMlist = site_enrichment.loglik_contributing_motifs,
-                               UFEmodel = buildufe.UFEmodel,
-                               BaseFrequencies = buildufe.BaseFrequencies,
-                               aligned=aligned_bool, genome="GENOME",
+                               aligned="false", genome="GENOME",
                                motevo_path="MOTEVO_PATH",
                                @host="long")
 
 
 
-            latexfrag7 = LatexFragmentizer(plot1=runmotevo.sens_ppv,
-                                           plot2=runmotevo.Logo,
-                                           capt_plot1="Sensitivity - positive predictive value plot for WM refinement, with alignments.",
-                                           capt_plot2="Refined weight matrix logo.",
+            latexfrag7 = LatexFragmentizer(plot1=runmotevo.Logo,
+                                           capt_plot1="Refined weight matrix logo.",
                                            sectionTitle="Log for Refinement of Known Motif:")
 
             latexfrag8 = LatexFragmentizer(plot1=wmqual.sens_ppv,
@@ -831,7 +783,7 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
 
 
 
-            combine2 = CombineLatex(latex1=latexfrag1.fragment, latex2=latexfrag2.fragment, latex3=latexfrag3.fragment, latex4=latexfrag4.fragment, latex5=latexfrag5.fragment, latex6=latexfrag6.fragment, latex7=latexfragPG.fragment, latex8=latexfragMot.fragment, latex9=latexfragMot2.fragment, latex10=latexfrag7.fragment, latex11=latexfrag8.fragment, latex12=latexfrag9.fragment)
+            combine2 = CombineLatex(latex1=latexfrag1.fragment, latex2=latexfrag2.fragment, latex3=latexfrag3.fragment, latex4=latexfrag4.fragment, latex5=latexfrag5.fragment, latex6=latexfrag6.fragment, latex7=latexfragPG.fragment, latex8=latexfragMot.fragment, latex9=latexfrag7.fragment, latex10=latexfrag8.fragment, latex11=latexfrag9.fragment)
             OUTPUT(combine2.pdfreport)
 
 
@@ -890,19 +842,18 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
                                                                 site_enrichment_cutoff=4.6,
                                                                 pseudocount=0.05,
                                                                 project_leader="PROJECTLEADER",
-                                                                queue_name="long",
+                                                                queue_name="fs_long",
 								top_motifs=10)
 
             //take one set of alignments and background alignments to test all WMs we have. Also gives the best WM.
-            wmqual_tops = WMQuality(peaks = test_forreturn,
-                                    shuffledPeaks = shuffled_test_forreturn,
-                               	    WMlist = site_enrichment_slim.loglik_top_motifs,
-                               	    UFEmodel = buildufe.UFEmodel,
-                               	    BaseFrequencies = buildufe.BaseFrequencies,
-                               	    aligned=aligned_bool, genome="GENOME",
+            wmqual_tops = WMQuality(train_set = splitseqs.even_file,
+                                    bg_train_set = shuffledSeqs_train.outfile,
+                                    test_set = splitseqs.odd_file,
+                                    bg_test_set = shuffledSeqs_test.outfile,
+                                    WMlist = site_enrichment_slim.loglik_top_motifs,
+                               	    aligned="false", genome="GENOME",
                                	    motevo_path="MOTEVO_PATH",
                                	    @host="long")
-
 
             reducewms = ReduceWMs(infile = site_enrichment_slim.loglik_all_motifs,
                                   distance_cutoff=0.2,
@@ -923,17 +874,17 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
                                                            site_enrichment_cutoff=4.6,
                                                            pseudocount=0.05,
                                                            project_leader="PROJECTLEADER",
-                                                           queue_name="long")
+                                                           queue_name="fs_long")
 
 
 
             //take one set of alignments and background alignments to test all WMs we have. Also gives the best WM.
-            wmqual = WMQuality(peaks = test_forreturn,
-                               shuffledPeaks = shuffled_test_forreturn,
+            wmqual = WMQuality(train_set = splitseqs.even_file,
+                               bg_train_set = shuffledSeqs_train.outfile,
+                               test_set = splitseqs.odd_file,
+                               bg_test_set = shuffledSeqs_test.outfile,
                                WMlist = site_enrichment.loglik_contributing_motifs,
-                               UFEmodel = buildufe.UFEmodel,
-                               BaseFrequencies = buildufe.BaseFrequencies,
-                               aligned=aligned_bool, genome="GENOME",
+                               aligned="false", genome="GENOME",
                                motevo_path="MOTEVO_PATH",
                                @host="long")
 
@@ -951,7 +902,7 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
 
 
 
-            combine2 = CombineLatex(latex1=latexfrag1.fragment, latex2=latexfrag2.fragment, latex3=latexfrag3.fragment, latex4=latexfrag4.fragment, latex5=latexfrag5.fragment, latex6=latexfrag6.fragment, latex7=latexfragPG.fragment, latex8=latexfragMot.fragment, latex9=latexfragMot2.fragment, latex10=latexfrag8.fragment, latex11=latexfrag9.fragment)
+            combine2 = CombineLatex(latex1=latexfrag1.fragment, latex2=latexfrag2.fragment, latex3=latexfrag3.fragment, latex4=latexfrag4.fragment, latex5=latexfrag5.fragment, latex6=latexfrag6.fragment, latex7=latexfragPG.fragment, latex8=latexfragMot.fragment, latex9=latexfrag8.fragment, latex10=latexfrag9.fragment)
             OUTPUT(combine2.pdfreport)
 
 
@@ -959,7 +910,7 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
          }
 
 
-         return record(Sequences = getseqs2.Sequences, RegionCoverageDir = regioncoverage.out_dir, PeakStats = pstats, PeakCallDir = peakcall_newnoise.out_dir, LLog = site_enrichment.loglik_contributing_motifs, LLog_tops = site_enrichment_slim.loglik_top_motifs, AUCLog = wmqual.log_file, AUCLog_tops = wmqual_tops.log_file, Peaks = annotpeaks.peakAnnotations, ShuffledTestSet = shuffled_test_forreturn, ShuffledTrainSet = shuffled_train_forreturn, TestSet = test_forreturn, TrainingSet = training_forreturn, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies)
+         return record(Sequences = getseqs2.Sequences, RegionCoverageDir = regioncoverage.out_dir, PeakStats = pstats, PeakCallDir = peakcall_newnoise.out_dir, LLog = site_enrichment.loglik_contributing_motifs, LLog_tops = site_enrichment_slim.loglik_top_motifs, AUCLog = wmqual.log_file, AUCLog_tops = wmqual_tops.log_file, Peaks = annotpeaks.peakAnnotations, ShuffledTestSet = shuffledSeqs_test.outfile, ShuffledTrainSet = shuffledSeqs_train.outfile, TestSet = splitseqs.odd_file, TrainingSet = splitseqs.even_file, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies)
 
 
 }
@@ -971,7 +922,7 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
 
 
 
-function GetWMStats(BinaryFile Sequences, BinaryFolder RegionCoverage, BinaryFile PeakStats, BinaryFile CandWM, BinaryFolder PeakCallDir, BinaryFile LLog, BinaryFile AUCLog, string IP_string) -> (BinaryFile Peakstats, BinaryFile TFBSstats) {
+function GetWMStats(BinaryFile Sequences, BinaryFile TrainingSet, BinaryFile ShuffledTrainSet, BinaryFolder RegionCoverage, BinaryFile PeakStats, BinaryFile CandWM, BinaryFolder PeakCallDir, BinaryFile LLog, BinaryFile AUCLog, string IP_string) -> (BinaryFile Peakstats, BinaryFile TFBSstats) {
 
 
              WMlibrary = "WMLIBRARY"
@@ -980,12 +931,16 @@ function GetWMStats(BinaryFile Sequences, BinaryFolder RegionCoverage, BinaryFil
 
              createlogo = CreateLogo(WM = CandWM, llog = LLog, auclog = AUCLog, mylogo_path="MYLOGO_PATH")
 
-             getpeakposts = GetPeakPosteriors(regions = Sequences, RegCov_dir = RegionCoverage,
-                                             statsfile = PeakStats, WM = CandWM,
-                                             minposterior=0.2, motevo_path="MOTEVO_PATH", genome="GENOME", project_leader="PROJECTLEADER", files_per_job=1000,
-                                             read_files=IP_string,
-                                             queue_name_motevo="long",
-                                             queue_name="long")
+             getpeakposts = GetPeakPosteriors(regions = Sequences, 
+                                              train_set = TrainingSet,
+                                              bg_train_set = ShuffledTrainSet,
+                                              RegCov_dir = RegionCoverage,
+                                              statsfile = PeakStats,
+                                              WM = CandWM,
+                                              minposterior=0.2, motevo_path="MOTEVO_PATH", genome="GENOME", project_leader="PROJECTLEADER", files_per_job=1000,
+                                              read_files=IP_string,
+                                              queue_name_motevo="fs_long@@x3755",
+                                              queue_name="fs_long@@x3755")
 
 
              getstats = GetStatistics(peakstats = getpeakposts.peakstats, TFBSstats = getpeakposts.TFBSstats, RegCov_dir = RegionCoverage, minposterior=0.2, @host="long")
@@ -1023,42 +978,6 @@ function GetWMStats(BinaryFile Sequences, BinaryFolder RegionCoverage, BinaryFil
                                             capt_plot9="Histograms of coverage at sites and in total regions",
                                             sectionTitle="Statistics for TFBS - Peak Centering and Peak Posterior - Peak Height Correlation:")
 
-
-             //make hd5f_chromdir a variable in yaml file
-             //uncomment following 3 components to predict sites genome wide, bin them in 500bp windows and then merge windows...
-
-             //computewmscores = ComputeWMScores(WM = CandWM, chrominfo="CHROMINFOFILE_PATH", WMscore_cutoff=2, hd5f_chromdir="HD5F_CHROMDIR", bg_frequencies="0.25,0.25,0.25,0.25,0.25", project_leader="PROJECTLEADER")
-
-             //binwmscores = BinReads(read_file = computewmscores.WMscores, chrominfo="CHROMINFOFILE_PATH", perlPATH="PERL_PATH", FGwinsize=FG_WINSIZE, BGwinsize=BG_WINSIZE, stepsize=STEPSIZE, FMIpath="FMI_PATH", @host="long_hm")
-
-             //mergescores = WMscoreCutOff(infile = binwmscores.out_file, perlPATH="PERL_PATH", wmscore_cutoff=10, @host="long") //use a hardcoded cut-off because it is really difficult to find one automatically or even by eye
-
-             //annotpredpeaks = AnnotatePeaks(peaks = mergescores.outfile, genome="GENOME", annotationFile="ANNOTATION_FILE", @host="long")
-
-
-             //latexfrag3 = LatexFragmentizer(log1=annotpredpeaks.log_file,
-             //                               plot1=mergescores.plotfile,
-             //                               capt_log1="",
-             //                               capt_plot1="Reverse Cumulative Distribution of Predicted Peak Scores",
-             //                               sectionTitle="Predicted Peaks Log:")
-
-
-             //gwcorr = GenomeWideCorrelation(indir = PeakCallDir, binnedWMscores = binwmscores.out_file, @host="long")
-
-             //mutinf = ComputeMutualInformation(infile = gwcorr.datafile)
-
-
-             // latexfrag4 = LatexFragmentizer(log1=gwcorr.log_file,
-             //                                log2=mutinf.log_file,
-             //                                plot1=gwcorr.correlation_scatter,
-             //                                plot2=gwcorr.correlation_violin,
-             //                                plot3=mutinf.contourplot,
-             //                                capt_log1="Log for genome wide correlation of Z scores and WM scores",
-             //                                capt_log2="Log for mutual information of ChIP signal (Z-score) and predicted sites (WM-score)",
-             //                                capt_plot1="Scatter plot of region Z scores versus region WM scores",
-             //                                capt_plot2="Violin- and boxplots of region Z scores versus region WM scores, stratified by region Z scores",
-             //                                capt_plot3="Contour plot of mutual information at different Z-score and WM-score cut-offs",
-             //                                sectionTitle="Log for Genome Wide Correlation of ChIP Signal (Window Z-scores) and Predicted Binding:")
 
 
              combineWM = CombineLatex(latex1=latexfrag1.fragment, latex2=latexfrag2.fragment) //, latex4=latexfrag4.fragment)
@@ -1194,14 +1113,8 @@ std.echo(std.recordToString(FGBGOUT))
 
 pipeFlag = "PIPEFLAG"
 
-
-//Use non aligned stuff for statistics when using dm3, because it takes too long otherwise.
-if "GENOME" == "dm3" {
-        aligned_flag = "false"
-   }
-   else {
-        aligned_flag = "true"
-   }
+//always use non aligned peaks, i.e. sequences
+aligned_flag = "false"
 
 
 /*-------3.2 Now get statistics for candidate WMs (de novo motifs) if requested---------*/
@@ -1223,7 +1136,8 @@ if pipeFlag != "JUSTPEAKS" {
                 CandWM = INPUT(path=candwm.WM_path, @name=TF+"_WM_"+wmiter)
                 CandWM_i = std.lookup(TF+"_WM_"+wmiter)
 
-                stets = GetWMStats(outvals.Sequences, outvals.RegionCoverageDir, outvals.PeakStats, CandWM_i.in, outvals.PeakCallDir, outvals.LLog, outvals.AUCLog, IP_string = TFrecordStrings[TF], @name=TF+"_WMstats_"+wmiter)
+
+                stets = GetWMStats(outvals.Sequences, outvals.TrainingSet, outvals.ShuffledTrainSet, outvals.RegionCoverageDir, outvals.PeakStats, CandWM_i.in, outvals.PeakCallDir, outvals.LLog, outvals.AUCLog, IP_string = TFrecordStrings[TF], @name=TF+"_WMstats_"+wmiter)
                 stets_i = std.lookup(TF+"_WMstats_"+wmiter)
 
                 Peak_stats_record[candwm.WM_path] = stets_i.Peakstats
@@ -1278,7 +1192,7 @@ if pipeFlag != "JUSTPEAKS" {
                   CandWM_i = std.lookup(TF+"_WM_tops_"+wmiter)
 
 		  outvals = FGBGOUT[TF]
-                  stets = GetWMStats(outvals.Sequences, outvals.RegionCoverageDir, outvals.PeakStats, CandWM_i.in, outvals.PeakCallDir, outvals.LLog_tops, outvals.AUCLog_tops, IP_string = TFrecordStrings[TF], @name=TF+"_WM_tops_stats_"+wmiter)
+                  stets = GetWMStats(outvals.Sequences, outvals.TrainingSet, outvals.ShuffledTrainSet, outvals.RegionCoverageDir, outvals.PeakStats, CandWM_i.in, outvals.PeakCallDir, outvals.LLog_tops, outvals.AUCLog_tops, IP_string = TFrecordStrings[TF], @name=TF+"_WM_tops_stats_"+wmiter)
                   stets_i = std.lookup(TF+"_WM_tops_stats_"+wmiter)
 
 

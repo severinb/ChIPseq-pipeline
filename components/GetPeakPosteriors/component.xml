@@ -14,12 +14,18 @@
     </doc>
     <author email="severin.berger@stud.unibas.ch">Severin</author>
     <launcher type="python">
-        <argument name="file" value="GetPeakPosteriors.py" />
+        <argument name="file" value="GetPeakPosteriors_updated.py" />
     </launcher>
     <requires>URL="http://www.python.org/not" type="manual">python</requires>
     <inputs>
         <input name="regions" type="BinaryFile">
             <doc>Region sequences (Output from GetSequences).</doc>
+        </input>
+        <input name="train_set" type="BinaryFile">
+            <doc>Typically one half of top 1000 peak sequences. train_set and bg_train_set are pooled and then used by MotEvo to estimate a prior for the given WM. This prior is then used to predict sites on regions.</doc>
+        </input>
+        <input name="bg_train_set" type="BinaryFile">
+            <doc>Shuffled training set..</doc>
         </input>
         <input name="RegCov_dir" type="BinaryFolder">
             <doc>Region coverage files (Output from RegionCoverage).</doc>

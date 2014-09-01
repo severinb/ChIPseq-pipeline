@@ -1,7 +1,0 @@
-input_WM2	YES	YES	INPUT OUT in P path=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/TESTRUN/RAD21/OUTPUT/RAD21_FgBg-runmotevoPG1_1/refWM TS in=1365064966000 
-input_WM1	YES	YES	INPUT OUT in P path=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/TESTRUN/RAD21/OUTPUT/RAD21_FgBg-phylogibbs1/WeightMatrix1 TS in=1365035281000 
-input_WM6	YES	YES	INPUT OUT in P path=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/TESTRUN/RAD21/OUTPUT/RAD21_FgBg-runmotevoPG2_1/refWM TS in=1365064987000 
-input_WM5	YES	YES	INPUT OUT in P path=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/TESTRUN/RAD21/OUTPUT/RAD21_FgBg-phylogibbs2/WeightMatrix1 TS in=1365035876000 
-input_WM4	YES	YES	INPUT OUT in P path=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/TESTRUN/RAD21/OUTPUT/RAD21_FgBg-runmotevoPG1_2/refWM TS in=1365065000000 
-FilterWMs	YES	YES	ReduceWMs IN WM1=input_WM1:in IN WM2=input_WM2:in IN WM3=input_WM3:in IN WM4=input_WM4:in IN WM5=input_WM5:in IN WM6=input_WM6:in OUT WMdir OUT log_file 
-input_WM3	YES	YES	INPUT OUT in P path=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/TESTRUN/RAD21/OUTPUT/RAD21_FgBg-phylogibbs1/WeightMatrix2 TS in=1365035282000 

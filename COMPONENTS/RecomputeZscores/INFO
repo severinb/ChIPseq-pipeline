@@ -1,4 +1,0 @@
-I now write all peak statistics to the peakstats outfile. I.e. there are also statistics of the peaks that are below the Z-score cut-off. Although it is maybe interesting to see for me how throwing out untrustworthy peaks helps correlation and stuff, it is not good to have them in the statistics for the user on the webserver for example. SO then I should take it out I guess.
---now I'm only putting above cut-off peaks in peakstats file. A file with everything in it is allpeaks_allstats
-
-This component should also work without background sample...

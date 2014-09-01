@@ -1,7 +1,0 @@
-metadata.instanceName=MotifCorrelation
-metadata.Anduril=Engine 1.2.5
-output._errors=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/MotifCorrelation/execute/MotifCorrelation/_errors
-output._log=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/MotifCorrelation/execute/MotifCorrelation/_log
-output._tempdir=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/MotifCorrelation/execute/MotifCorrelation/_tempdir
-output.correlation_plot=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/MotifCorrelation/execute/MotifCorrelation/correlation_plot.pdf
-parameter.peakstats_string=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/TESTRUN/USF2_newlog_newWMselection/OUTPUT/USF2_WMstats_1-getpeakposts/peakstats /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/TESTRUN/USF2_newlog_newWMselection/OUTPUT/USF2_WMstats_2-getpeakposts/peakstats /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/TESTRUN/USF2_newlog_newWMselection/OUTPUT/USF2_WMstats_3-getpeakposts/peakstats /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/TESTRUN/USF2_newlog_newWMselection/OUTPUT/USF2_WMstats_4-getpeakposts/peakstats

@@ -1,6 +1,0 @@
-input_train_set	YES	YES	INPUT OUT in P path=/import/bc2/home/nimwegen/GROUP/Mario/caudal/adult/OUTPUT/caudal_FgBg-splitseqs/even_file TS in=1368792460000 
-ComputeLikelihoodM_greedy	YES	YES	ComputeLikelihoodM_greedy IN BaseFrequencies=input_BaseFrequencies:in IN UFEmodel=input_UFEmodel:in IN WMdir=input_WMdir:in IN test_set=input_test_set:in IN train_set=input_train_set:in OUT loglik_all_motifs OUT loglik_contributing_motifs OUT loglik_combined OUT loglik_plot OUT intermediate OUT WMoutdir P aligned=false P genome=dm3 P loglik_cutoff=20 P motevo_path=/import/bc2/home/nimwegen/GROUP/software/motevo_ver1.03/bin/motevo P slim=false 
-input_BaseFrequencies	YES	YES	INPUT OUT in P path=/import/bc2/home/nimwegen/GROUP/Mario/caudal/adult/OUTPUT/caudal_FgBg-buildufe/BaseFrequencies TS in=1368792461000 
-input_UFEmodel	YES	YES	INPUT OUT in P path=/import/bc2/home/nimwegen/GROUP/Mario/caudal/adult/OUTPUT/caudal_FgBg-buildufe/UFEmodel TS in=1368792470000 
-input_test_set	YES	YES	INPUT OUT in P path=/import/bc2/home/nimwegen/GROUP/Mario/caudal/adult/OUTPUT/caudal_FgBg-splitseqs/odd_file TS in=1368792460000 
-input_WMdir	YES	YES	INPUT OUT in P path=/import/bc2/home/nimwegen/kelley/all_wms/WM-dir TS in=1367833194000 

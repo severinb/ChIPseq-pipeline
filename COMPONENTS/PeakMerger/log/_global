@@ -1,9 +1,0 @@
-Warning: all outports are unconnected: PeakMerger
-Executing input_in_dir (INPUT)
-Component input_in_dir finished with success; READY queue: PeakMerger 
-Executing PeakMerger (PeakMerger)
-Clearing directory /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/PeakMerger/execute/PeakMerger
-[STDOUT PeakMerger] 3.23090975516
-Component PeakMerger finished with success; READY queue is empty.
-Done. No errors occurred.
-Log closed on 2013-05-28 12:05:28; user bergerse00

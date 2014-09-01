@@ -60,7 +60,7 @@ def createJobFiles(indir, interm, fpj):
 
 def submitJobs(count, infileroot, outfileroot, plotdir, fraglen, order, project_leader, width, instance_name, queue_name):
 
-    JOB_PARAM = '-q %s -e %s/job.stderr -o %s/job.stdout -j n -w n -N %s -cwd -V -b y' %(queue_name, os.path.split(plotdir)[0], os.path.split(plotdir)[0], instance_name)
+    JOB_PARAM = '-q %s -P %s -e %s/job.stderr -o %s/job.stdout -j n -w n -N %s -cwd -V -b y' %(queue_name, project_leader, os.path.split(plotdir)[0], os.path.split(plotdir)[0], instance_name)
     
     s = drmaa.Session()
     s.initialize()

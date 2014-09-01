@@ -1,4 +1,0 @@
-input_WM1	YES	YES	INPUT OUT in P path=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-phylogibbs1/WeightMatrix1 TS in=1355935668000 
-input_train_sequences	YES	YES	INPUT OUT in P path=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-splitseqs/even_file TS in=1355927567000 
-input_test_sequences	YES	YES	INPUT OUT in P path=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineBAM/TESTRUN/nfinalpipetest_CTCF/OUTPUT/CTCF_FgBg-splitseqs/odd_file TS in=1355927567000 
-ComputeLikelihood	YES	YES	ComputeLikelihood IN WM1=input_WM1:in IN test_sequences=input_test_sequences:in IN train_sequences=input_train_sequences:in OUT BestWM OUT log_file P max_prior=0.1 

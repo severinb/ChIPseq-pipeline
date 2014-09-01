@@ -130,7 +130,7 @@ def runMotevo(motevo_path, seqs, params, WM, interm, project_leader, pickled_sit
     """
 
     #here call motevo with drmaa
-    JOB_PARAM = '-q %s -e %s/motevo_job.stderr -o %s/motevo_job.stdout -j n -w n -N %s-predSites -cwd -V -b y' %(queue_name, os.path.split(interm)[0], os.path.split(interm)[0], instance_name)
+    JOB_PARAM = '-q %s -P %s -e %s/motevo_job.stderr -o %s/motevo_job.stdout -j n -w n -N %s-predSites -cwd -V -b y' %(queue_name, project_leader, os.path.split(interm)[0], os.path.split(interm)[0], instance_name)
 
     s = drmaa.Session()
     s.initialize()
@@ -188,7 +188,7 @@ def splitRegCovs(regcov_dir, interm, fpj):
 
 def submitJobs(regcov_root, pickled_sd, pickled_ids, pickled_idc, plotdir, fraglen, minpost, peakstats_root, tfbsstats_root, count, project_leader, instance_name, queue_name):
 
-    JOB_PARAM = '-q %s -e %s/job.stderr -o %s/job.stdout -j n -w n -N %s-combPost -cwd -V -b y' %(queue_name, os.path.split(plotdir)[0], os.path.split(plotdir)[0], instance_name)
+    JOB_PARAM = '-q %s -P %s -e %s/job.stderr -o %s/job.stdout -j n -w n -N %s-combPost -cwd -V -b y' %(queue_name, project_leader, os.path.split(plotdir)[0], os.path.split(plotdir)[0], instance_name)
 
     s = drmaa.Session()
     s.initialize()

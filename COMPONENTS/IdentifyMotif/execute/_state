@@ -1,3 +1,0 @@
-input_WM	YES	YES	INPUT OUT in P path=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/IdentifyMotif/../../../../../../../WMs/Mammals/CurrentWMs/SREBF1,2.p2 TS in=1301407815000 
-input_WMlibrary	YES	YES	INPUT OUT in P path=/import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/IdentifyMotif/../../../../../../../WMs/Mammals/CurrentWMs TS in=1359624764000 
-IdentifyMotif	YES	YES	IdentifyMotif IN WM=input_WM:in IN WMlibrary=input_WMlibrary:in OUT top_motifs P ntop=10 
