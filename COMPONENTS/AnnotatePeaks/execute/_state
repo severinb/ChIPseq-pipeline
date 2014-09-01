@@ -1,2 +1,0 @@
-AnnotatePeaks	YES	YES	AnnotatePeaks IN peaks=input_peaks:in OUT peakAnnotations OUT log_file P annotationFile=/import/bc2/home/nimwegen/GROUP/4severin/Drosophila_melanogaster.BDGP5.66.genes.bed P genome=dm3 
-input_peaks	YES	YES	INPUT OUT in P path=/import/bc2/home/nimwegen/GROUP/Mario/OUTPUT/CTCF_FgBg-recompz/allpeaks TS in=1367959372000 

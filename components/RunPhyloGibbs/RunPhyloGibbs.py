@@ -4,6 +4,54 @@ import subprocess
 import os, re
 from string import *
 from datetime import datetime
+from pylab import *
+import time
+import cProfile, pstats 
+
+
+def informCont(wmLine):
+    pseudo_count = 0.001  ## maybe we need to change/adjust this value
+    try:
+        wmValues = map(float, wmLine.split()[1:5]) # the first element is the index of the WM column, so we skip it
+    except IndexError:
+        print t
+        print cols
+        print i
+        print wmfile
+        return .0
+    totalInformation = sum(wmValues) + 4*pseudo_count
+    return 2.0 - sum([(-(i+pseudo_count)/totalInformation) * log2((i+pseudo_count)/totalInformation) for i in wmValues])
+
+
+def trimWM(lines, cutoff):
+    """
+    This function trims the input WM, which is represented by a list that each of its entries
+    is corresponded to each line of the input WM.
+    """    
+    header = lines[:3]
+    footer = lines[-1]
+    cols = lines[3:-1]
+    start, stop = 0, len(cols)
+    for i in arange(len(cols)):
+        if informCont(cols[i]) < cutoff:
+            start = i + 1
+            continue
+        else:
+            break
+
+    for i in arange(len(cols))[::-1]:
+        if informCont(cols[i]) < cutoff:            
+            stop = i 
+            continue
+        else:
+            break
+
+    convertToString = lambda i,j: '\t'.join([str(i+1).zfill(2)] + j.split()[1:]) + '\n'
+    newWM = ''.join(header + 
+                    [convertToString(i, counts) for i,counts in enumerate(cols[start:(stop)])] + 
+                    [footer])
+    return newWM
+
 
 def prepareInputAlns(alns, wmlen, tmpfile):
     """
@@ -48,8 +96,6 @@ def prepareInputAlns(alns, wmlen, tmpfile):
                     continue
             else:
                 continue
-
-
     return tooshort, goodalns
 
 
@@ -64,7 +110,7 @@ def execute(cf):
     logo1 = cf.get_output("Logo1")
     weightMat2 = cf.get_output("WeightMatrix2")
     logo2 = cf.get_output("Logo2")
-    logfile = cf.get_output("log_file") 
+    logfile = cf.get_output("log_file")
 
     PGpath = cf.get_parameter("PhyloGibbsPATH", "string")
     mylogo_path = cf.get_parameter("mylogo_path", "string")
@@ -74,9 +120,11 @@ def execute(cf):
     numberMotives = cf.get_parameter("numberColours", "int")
     alignOrder = cf.get_parameter("AlignmentOrder", "int")
     genome = cf.get_parameter("genome", "string")
+    cutoff = cf.get_parameter("information_cutoff", "float")
 
-    T1 = datetime.now()
-
+    profile = cProfile.Profile()
+    profile.enable()    
+    # T1 = datetime.now()
     os.mkdir(interm)
 
     ##Sort out 'N's to '-'
@@ -153,17 +201,18 @@ def execute(cf):
     for i in [0,1]:
         #sometimes phylogibbs gives just one WM without complaining. For this case I just give a WM with 1 everywhere to not get problems
         try:
-            WM = lines[indices[i]+1:indices[i]+int(wmlen)+5]
+            WM = trimWM(lines[indices[i]+1:indices[i]+int(wmlen)+5], cutoff).split('\n')
         except IndexError:
-            WM = ['//\n', 'NA\n', 'PO\tA\tC\tG\tT\tcons\tinf\n', '01\t1\t1\t1\t1\tN\t0.001\n', '02\t1\t1\t1\t1\tN\t0.001\n', '03\t1\t1\t1\t1\tN\t0.001\n', '04\t1\t1\t1\t1\tN\t0.001\n', '//\n']
+            WM = ['//', 'NA', 'PO\tA\tC\tG\tT\tcons\tinf', '01\t1\t1\t1\t1\tN\t0.001', '02\t1\t1\t1\t1\tN\t0.001', '03\t1\t1\t1\t1\tN\t0.001', '04\t1\t1\t1\t1\tN\t0.001', '//']
 
         logo_dir, logo_name = os.path.split(logopaths[i])
-        WM[1] = 'NA ' + re.sub('.pdf','',logo_name) + '\n'
+        WM_header = 'NA ' + re.sub('.pdf','',logo_name)
+        WM[1] = WM_header
 
         wm = open(wmpaths[i], 'w')
 
         for line in WM:
-            wm.write(line)
+            wm.write(line + '\n')
 
         wm.close()
 
@@ -184,20 +233,29 @@ def execute(cf):
 
         os.chdir(pwd)
 
+    # os.system('tar -zcvf %s %s' % (interm +'.tar.gz', interm) )
+    # os.system('rm -fr %s' % interm )
+    # os.system('gzip %s %s' % (report, out_file) )
 
-    T2 = datetime.now()
-    time = 'Running time for PhyloGibbs: ' + str(T2-T1) + '\n'
-    text = '\n'.join(['PhyloGibbs parameters:',
+    profile.disable()
+    log_file = open(logfile, 'w')
+    ps = pstats.Stats(profile, stream=log_file).sort_stats('cumulative')
+    ps.print_stats()
+    log_file.close()
+    # T2 = datetime.now()
+    # time = 'Running time for PhyloGibbs: ' + str(T2-T1) + '\n'
+    text = '\n'.join(['\n',
+                      'PhyloGibbs parameters:',
                       '\t-number of used input alignments/sequences: %s' %numalns,
                       '\t-number of too short input alignments/sequences: %s' %tooshort,
                       '\t-alignment order: %s' %alignOrder,
                       '\t-window length: %s' %wmlen,
                       '\t-number of windows: %s' %numberTFBS,
                       '\t-number of colours: %s' %numberMotives,
-                      '\t-markov order: %s' %markovorder])
+                      '\t-markov order: %s' %markovorder])    
 
-    lf = open(logfile, 'w')
-    lf.write(time)
+    lf = open(logfile, 'a')
+    # lf.write(time)
     lf.write(text)
     lf.close
                         

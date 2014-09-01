@@ -28,6 +28,7 @@ if __name__ == '__main__':
     component_wrapper = sys.argv[2] #this one doesn't have to be executable
     commandfile = sys.argv[3]
 
+    project_leader = 'PROJECTLEADER'
     queue_type = 'QUEUE_TYPE' #'fs_long'
 
 
@@ -44,7 +45,7 @@ if __name__ == '__main__':
 
 
     #-w n is something that I added because there were these comlib errors (comlib error: got read error)
-    JOB_PARAM = '-q %s -e %s -o %s -j n -w n -N %s -cwd -V -b y ADDITIONAL_PARAMETERS' %(queue_type, stderrpath, stdoutpath, jobname)
+    JOB_PARAM = '-q %s -P %s -e %s -o %s -j n -w n -N %s -cwd -V -b y ADDITIONAL_PARAMETERS' %(queue_type, project_leader, stderrpath, stdoutpath, jobname)
     timestats = '-f \\nReal: %E\\nUser: %U\\nSystem: %S\\nCPU: %P\\nMax memory: %M\\nAvg memory: %t\\nAvg total memory: %K\\n'
     
     s = drmaa.Session()

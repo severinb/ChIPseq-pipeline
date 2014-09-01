@@ -1,0 +1,43 @@
+#!/usr/bin/env python
+
+import component_skeleton.main
+import os, re
+
+def createScratchDirectory(outfile):
+    scratch_dir = os.path.join(os.path.dirname(outfile), "scratch")
+    os.system('mkdir %s' % scratch_dir)
+    return 0
+
+
+def listOfAllWMs(denovoWMs, databaseWMs, scratchDir):
+    WmFilename = os.path.join(scratchDir, 'WMs')
+    WMs = open(WmFilename, 'w')
+    for wm in os.listdir(denovoWMs):
+        if re.search('^denovo_WM_\d+$', wm):  # to make sure to only include the denovo motifs
+            WMs.append(os.path.join(denovoWMs, wm))
+    for wm in os.listdir(databaseWMs):
+        WMs.append(os.path.join(databaseWMs, wm))
+    WMs.close()
+    return WmFilename
+    
+
+def execute(cf):
+    """
+    It receives two set of motifs: the de novo motifs, and the databse motifs.
+    For each of these motifs, it fits the parameters background prior and beta.
+    Using the fitted parameters, it calculates the average and sd enrichment scores
+    for each of the motifs.
+    Final result is a file that its line holds the value of prior, beta, mean
+    enrichment score, and standard deviation enrichment score for each motif. 
+    """
+    TrainingInputSequences = cf.get_input("InputSequences")
+    TrainingDecoySequences = cf.get_input("DecoySequences")
+    DenovoWMs = cf.get_input("DenovoWMs")    
+    DatabaseWMs = cf.get_input("DatabaseWMs")
+    outfile = cf.get_output("EnrichmentScores")
+    createScratchDirectory(outfile)
+    WMs = listOfAllWMs(DenovoWMs, DatabaseWMs)
+    
+    return 0
+
+component_skeleton.main.main(execute)

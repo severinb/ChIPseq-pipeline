@@ -35,7 +35,7 @@ def giveMotevoParamFile(genome, inter_dir, tag, aligned, ufemodel_path, ATfreq, 
                                    'Mode TFBS',
                                    'EMprior %s' %emprior,
                                    'priordiff %s' %0.05,
-                                   'UFEwmprior %s' %UFEwmprior,
+                                   'UFEwmprior %s' %UFEwmprior, 
                                    'UFEwmfile %s' %ufemodel_path,
                                    'UFEwmlen 10', #keep this constant, for several WMs it gets difficult anyway.
                                    'UFEprint %s' %0,

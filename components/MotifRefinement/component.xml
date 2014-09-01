@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>FitBackgroundPriorAndBeta</name>
+    <!-- <version>0.1</version> -->
+    <!-- <author>Saeed Omidi</author> -->
+    <doc>
+    This component receives a weight matrix and set of sequences (non aligned)
+    and by running MotEvo in WMREF mode, refines the input motif to explain the
+    sequence data better.
+    As output, it generates a new version (refined) motif. 
+    </doc>
+    <launcher type="python">
+        <argument name="file" value="MotifRefinement.py" />
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <inputs>
+        <input name="InputSequences" type="BinaryFile">
+            <doc>A file that contains the sequences in a single species format</doc>
+        </input>	
+        <input name="WM" type="BinaryFile">
+            <doc>WM the need to be refined</doc>
+        </input>
+    </inputs>
+    <outputs>
+	  <output name="refWM" type="BinaryFile">
+            <doc>This is the refined WM/Motif.</doc>
+	  </output>
+        <output name="Logo" type="PDF">
+            <doc>Logo of the refined weight matrix.</doc>
+        </output>
+    </outputs>
+    <parameters>
+          <parameter name="genome" type="string" default="">
+              <doc>genome: hg19, mm9 ...</doc>
+	  </parameter>
+          <parameter name="weblogo_path" type="string" default="">
+              <doc>Path for weblogo</doc>
+	  </parameter>
+    </parameters>
+</component>
+
+

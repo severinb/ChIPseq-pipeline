@@ -67,5 +67,8 @@
         <parameter name="genome" type="string" default="">
             <doc>Genome.</doc>
         </parameter>
+        <parameter name="information_cutoff" type="float" default="">
+            <doc>The information score cutoff for trimming the resulted WMs.</doc>
+        </parameter>	
     </parameters>
  </component>

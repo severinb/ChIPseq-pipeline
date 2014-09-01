@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>EnrichmentScores</name>
+    <!--<version>1.0</version>-->
+    <doc>
+    This component tries to find for all input WMs the prior (pi) which maximizes Likelihood of the training set.
+    With this prior it then computes the log likelihhod of the test set.
+    This is done with the help of motevo. To optimize the prior, EM prior updating is used on the training set.
+    </doc>
+    <launcher type="python">
+        <argument name="file" value="SiteEnrichmentM_greedy_drmaa_priors.py" />
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+    <inputs>

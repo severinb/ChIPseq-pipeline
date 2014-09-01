@@ -3,14 +3,18 @@
 import component_skeleton.main
 import sys, os
 from string import *
+import re
+import cProfile, pstats 
+
 
 def execute(cf):
-
+    
     infile = cf.get_input("in_file") #format: chr start end strand (refined_peaks)
     genome = cf.get_parameter("genome", "string")
     genome_path = cf.get_parameter("genome_path", "string")
     outfile = cf.get_output("Sequences") #format genome_chr_start_end_strand \n sequence
-
+    log_file = cf.get_output("log_file")
+    
     if genome == "hg18":
         genomeDB = "/import/bc2/data/databases/UCSC/hg18/"
     if genome == "hg19":
@@ -23,6 +27,8 @@ def execute(cf):
     if genome_path:
         genomeDB = genome_path
 
+    profile = cProfile.Profile()
+    profile.enable()
     SequenceDict = {}  #chr: [chr, start,end,strand,sequence]
 
     #parse sequences
@@ -52,12 +58,19 @@ def execute(cf):
             ID = '_'.join([genome] + peak)
             start = int(peak[1])
             end = int(peak[2])
-            o.write('>>' + ID + '\n')
-            o.write(''.join(bases[start-1:end]).upper() + '\n')
+            seq = ''.join(bases[start-1:end]).upper()
+            if not re.search('^(N)+$', seq):
+                o.write('>>%s\n' % ID)
+                o.write('%s\n' % seq)
             
         c.close()
 
     o.close()
+    profile.disable()
+    log_file = open(log_file, 'w')
+    ps = pstats.Stats(profile, stream=log_file).sort_stats('cumulative')
+    ps.print_stats()
+    log_file.close()
 
     return 0
 

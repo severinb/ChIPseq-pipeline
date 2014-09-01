@@ -1,0 +1,153 @@
+#!/usr/bin/env python
+
+import os, re
+import yaml
+import component_skeleton.main
+import subprocess
+from datetime import datetime
+import tarfile
+from string import *
+
+def combineAln(align_dir, outfile, IDdict):
+
+    o = open(outfile, 'w')
+    t = tarfile.open(align_dir+'.tar.gz', 'r:gz')
+    names = t.getnames()
+    for name in names[1:]:
+        f = t.extractfile(name)
+        firstline = f.readline().strip()
+        tmp = firstline.split('_')
+        ID = '_'.join(tmp[1:])
+        newfirstline = '>' + tmp[0] + '_' + IDdict[ID] + '\n'
+        ftext = f.read()
+
+        o.write(newfirstline)
+        o.write(ftext)
+        f.close()
+
+    o.close()
+
+
+def combineRefSeqs(seqs_dir, seqsfile, IDdict):
+
+    s = open(seqsfile, 'w')
+    t = tarfile.open(seqs_dir+'.tar.gz', 'r:gz')
+    names = t.getnames()
+    for name in names:
+        #check for the ending of .log because log files are written into a directory inside the sequences dir and .getnames() method searches directories recursively.
+        if os.path.split(name)[1].startswith('chr') and not os.path.split(name)[1].endswith('log'):
+            f = t.extractfile(name)
+            firstline = f.readline().strip()
+            tmp = firstline.split('_')
+            ID = '_'.join(tmp[1:])
+            newfirstline = '>' + tmp[0] + '_' + IDdict[ID] + '\n'
+
+            s.write(newfirstline)  #ID of ref Species
+            s.write(f.readline())  #sequence of ref Species
+            f.close()
+
+    s.close()
+
+
+def formatInfile(infile, outfile):
+    """
+    from: chr2    86668500        86668564        reg1000008.p4   5.324   +       
+    to: chr2    86668500        86668564          +
+    """
+
+    locIDdict = {}
+
+    o = open(outfile, 'w')
+    for line in open(infile):
+        t = line.strip().split()
+        o.write('%s\t%s\t%s\t+\n' %(t[0], t[1], t[2]))
+        locIDdict['%s_%s_%s_+' %(t[0], t[1], t[2])] = '_'.join(t)
+
+    o.close()
+
+    return locIDdict
+
+
+def execute(cf):
+    infile = cf.get_input("in_file")
+    outfile = cf.get_output("AlignedPeaks")
+    seqsfile = cf.get_output("Sequences")
+    intermediate = cf.get_output("intermediate")
+    logfile = cf.get_output("log_file")
+    genome = cf.get_parameter("genome", "string")
+    AlignPipe = cf.get_parameter("AlignPipePath", "string") 
+
+    T1 = datetime.now()
+
+    os.mkdir(intermediate)
+    os.chdir(intermediate)
+
+    ##remove .tar.gz from filename
+    seqs_dir = os.path.join(intermediate, 'seqs_dir')
+    align_dir = os.path.join(intermediate, 'align_dir')
+
+    formattedfile = os.path.join(intermediate, 'tmpfile')
+    IDdict = formatInfile(infile, formattedfile)
+
+
+    ##select right mapping genomes
+    if genome == "hg18":
+        organisms = ['mm9', 'rheMac2', 'canFam2', 'bosTau3', 'equCab1', 'monDom4']
+    elif genome == "hg19":
+        organisms = ['mm9', 'rheMac2', 'canFam2', 'bosTau6', 'equCab2', 'monDom5']
+    elif genome == "dm3":
+        organisms = ['droSim1', 'droYak2', 'droEre2', 'droAna3', 'dp4', 'droWil1', 'droVir3', 'droMoj3', 'droGri2']
+    elif genome == "mm9":
+        organisms = ['hg19', 'rheMac2', 'canFam2', 'bosTau7', 'equCab2', 'monDom5']
+    else:
+        print "Alignment species not known!\n"
+        return 1
+
+    config = {'ROOT_ORGANISM': genome,
+              'ORGANISMS': organisms, 
+              'QUEUE': 'long',
+              'NUM_FILES_PER_RUN': 10,        #100,
+              'REGIONS_FILE': formattedfile,
+              'SEQS_OUT_DIR': seqs_dir,
+              'ALIGN_METHOD': 'tcoffee', 
+              'ALIGN_OUT_DIR': align_dir,
+              'MOTEVOC_DIR': 'ResMotEvo', 
+              'MOTEVOC_PARAMS': 'none', 
+              'MOTEVOC_PATH': '',   #'/import/bc2/home/nimwegen/GROUP/MotEvoC/motevo', 
+              'WM_DIR': ''          #'/import/bc2/home/nimwegen/GROUP/WMs/p1/P1s'
+              }
+
+    configfile = os.path.join(intermediate,'align.config')
+    conf = open(configfile,'w')
+    yaml.dump(config, conf)
+    conf.close()
+
+    log = os.path.join(intermediate, 'align.log')
+    l = open(log,'w')
+    l.close()
+    
+    proc = subprocess.Popen (AlignPipe + ' ' + configfile + ' &> ' + log,
+                             stdout=subprocess.PIPE,
+                             stderr= subprocess.PIPE,
+                             shell=True
+                             )
+    stdout_value, stderr_value = proc.communicate()
+    print stdout_value
+    print stderr_value
+
+    if proc.poll() > 0:
+        print '\tstderr:', repr(stderr_value.rstrip())
+        return -1
+
+    combineAln(align_dir, outfile, IDdict)
+    combineRefSeqs(seqs_dir, seqsfile, IDdict)
+
+    T2 = datetime.now()
+    time = 'Running time for alignment: ' + str(T2-T1) + '\n'
+    lf = open(logfile,'w')
+    lf.write(time)
+    lf.close()
+
+    return 0
+
+component_skeleton.main.main(execute)

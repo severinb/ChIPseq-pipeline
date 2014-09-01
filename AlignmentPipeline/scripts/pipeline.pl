@@ -1,0 +1,476 @@
+#!/import/bc2/soft/app/perl/5.10.1/Linux/bin/perl
+
+#use lib '/import/bc2/home/nimwegen/pachko/local/lib/';
+
+use strict;
+use warnings;
+use Cwd;
+
+use YAML::Any;
+
+# read private variables
+
+my $config_file = '/import/bc2/home/nimwegen/bergerse00/Projects/ChIPseq-pipeline/AlignmentPipeline/conf/global_pipeline.conf';
+my $config      = YAML::Any::LoadFile($config_file);
+
+my $PERL              = $config->{PERL};
+my $SCRIPTS_PATH      = $config->{SCRIPTS_PATH};
+my $MULTIZ_INPUT      = $config->{MULTIZ_INPUT}; 
+my $MULTIZ_SEARCH     = $SCRIPTS_PATH .'/'. $config->{MULTIZ_SEARCH};
+my $FIND_SYNTHETIC    = $SCRIPTS_PATH .'/'. $config->{FIND_SYNTHETIC};
+my $EXTRACT_SEQS      = $SCRIPTS_PATH .'/'. $config->{EXTRACT_SEQS};
+my $PUT_SEQS_TOGETHER = $SCRIPTS_PATH .'/'. $config->{PUT_SEQS_TOGETHER};
+my $REFSEQ2REGIONS    = $SCRIPTS_PATH .'/'. $config->{REFSEQ2REGIONS};
+
+my $PAIRWISE_ALN_DIR  = $config->{PAIRWISE_ALN_DIR};
+my $NUM_FILES_PER_RUN = $config->{NUM_FILES_PER_RUN};
+my $QUEUE             = $config->{QUEUE};
+my %DB_DIR            = %{$config->{DB_DIR}};
+# set variables
+
+my $DEBUG = 1;
+
+$config_file = shift || "pipeline.conf";
+$config = YAML::Any::LoadFile($config_file);
+
+my $SEQS_OUT_DIR   = $config->{SEQS_OUT_DIR};
+my $ALIGN_METHOD   = $config->{ALIGN_METHOD};
+my $ALIGN_OUT_DIR  = $config->{ALIGN_OUT_DIR};
+my $ROOT_ORGANISM  = $config->{ROOT_ORGANISM};
+my $REGIONS_FILE   = $config->{REGIONS_FILE};
+my $MOTEVOC_DIR    = $config->{MOTEVOC_DIR};
+my $MOTEVOC_PARAMS = $config->{MOTEVOC_PARAMS};
+my $MOTEVOC_PATH   = $config->{MOTEVOC_PATH} || '';
+my $WM_DIR         = $config->{WM_DIR};
+my @ORGANISMS      = defined($config->{ORGANISMS}) ? @{$config->{ORGANISMS}} : ();
+
+if (defined($config->{NUM_FILES_PER_RUN})) {
+    $NUM_FILES_PER_RUN = $config->{NUM_FILES_PER_RUN};
+}
+if (defined($config->{QUEUE})) {
+    $QUEUE = $config->{QUEUE};
+}
+
+my $REGION_FORMAT = 'legacy';
+if (defined($config->{REGION_FORMAT})) {
+    if ($config->{REGION_FORMAT} =~ /\A BED \Z/xi) {
+        $REGION_FORMAT = 'BED';
+    }
+}
+
+# check that root organism is not present in organisms
+
+my @matches = grep {/^$ROOT_ORGANISM$/} @ORGANISMS;
+if (@matches) {
+    die 'Root organism is present in organisms list! Please remove it from the list.';
+}
+
+# add root organism to the start of organisms
+
+unshift @ORGANISMS, $ROOT_ORGANISM;
+
+for my $organism (@ORGANISMS) {
+    if (!defined($DB_DIR{$organism})) {
+        die "No data directory exists for $organism";
+    }
+}
+
+# make regions file out of refseqs
+if (defined($config->{'REFSEQ_FILE'})) {
+    system("$REFSEQ2REGIONS $config_file");
+}
+
+# read clustes and make multiz input file
+make_multiz_input($REGIONS_FILE, $MULTIZ_INPUT, $REGION_FORMAT);
+
+# get orthologs blocks for each sequence
+my ($cmd, $fin, $fout);
+for my $organism (@ORGANISMS) {
+    my $dir = "$PAIRWISE_ALN_DIR/$ROOT_ORGANISM\_to_$organism/"; #"/import/bc2/home/zavolan/GROUP/DB/alignments_ucsc/$ROOT_ORGANISM\_to_$organism/";
+    my $syn_out = "$ROOT_ORGANISM\_to_$organism.out.syn";
+    my $sum_out = "$ROOT_ORGANISM\_to_$organism.summary";
+    my $out = "$ROOT_ORGANISM\_to_$organism.out";
+    print "Working on organism [$organism]\n";
+    if (opendir(TMP,$dir) && $organism ne $ROOT_ORGANISM) {
+        close(TMP);
+        $cmd = join(" ",$PERL, $MULTIZ_SEARCH, $dir, $MULTIZ_INPUT, ">", $out);
+        system($cmd) == 0 or die "system $cmd failed: $?";
+        print "done $ROOT_ORGANISM to $organism segments\n";
+        $cmd = join(" ", $PERL, $FIND_SYNTHETIC, $out, ">", $syn_out);
+        system($cmd) == 0 or die "system $cmd failed: $?";
+        print "done finding best syntenic set for $ROOT_ORGANISM\_to_$organism\n";
+        open($fin, '<', $syn_out) || die "Can not open file $syn_out\n";
+        open($fout, '>',  $sum_out) || die "Can not open file $sum_out\n";
+        while (<$fin>) {
+            $_ =~ s/\s+$//g;
+            print $fout "$_\t0\n";
+        }
+        close($fin);
+        close($fout);
+        print "done adding zeros to $syn_out, saved to $sum_out\n";
+        #    $cmd = join(" ","rm",$syn_out);
+        #    system($cmd) == 0 or die "system $cmd failed: $?";
+        #    print "removed file $syn_out\n";
+    } elsif ($organism eq "$ROOT_ORGANISM") {
+        open($fin, '<', $MULTIZ_INPUT) || die "Can not open file $MULTIZ_INPUT\n";
+        open($fout, '>', "$ROOT_ORGANISM\_to_$ROOT_ORGANISM\.summary") || die "Can not open file hg18_to_hg18.summary";
+        while (<$fin>) {
+            my @s = split(/\s+/, $_);
+            print $fout "$s[4]\t$s[0]\t$s[3]\t$s[1]\t$s[2]\t0\n";
+        }
+        print "done $ROOT_ORGANISM\_to_$ROOT_ORGANISM.summary\n";
+        close($fin);
+        close($fout);
+    }
+    
+    # get sequences
+    my $seq_out = "$ROOT_ORGANISM\_to_$organism.seq";
+    if ($organism =~ /bosTau2/) {
+        # scaffold
+        $cmd = join(" ","grep","scaffold",$sum_out,">","bos1");
+        system($cmd);           # == 0 or die "system $cmd failed: $?";
+        # not in scaffold
+        $cmd = join(" ","grep","-v scaffold",$sum_out,">","bos2");
+        system($cmd);           # == 0 or die "system $cmd failed: $?";
+        $cmd = join(" ", $PERL, $EXTRACT_SEQS, "-l", "bos2",
+                    "-d",$DB_DIR{$organism},
+                    " -chrfileext fa -windowleft 0 -windowright 0",
+                    " >", $seq_out);
+        system($cmd) == 0 or die "system $cmd failed: $?";
+        $cmd = join(" ", $PERL, $EXTRACT_SEQS, "-l", "bos1",
+                    "-d",$DB_DIR{"$organism\_scaffold"},
+                    " -chrfileext fa -windowleft 0 -windowright 0",
+                    " >>", $seq_out);
+        system($cmd) == 0 or die "system $cmd failed: $?";
+    } elsif ($organism =~ /bosTau3/) {
+        # scaffold
+        $cmd = join(" ","grep","-P \"\\s+chrUn\.\"",$sum_out,">","bos1");
+        system($cmd);           # == 0 or die "system $cmd failed: $?";
+        # not in scaffold
+        $cmd = join(" ","grep","-v -P \"\\s+chrUn\.\"",$sum_out,">","bos2");
+        system($cmd);           # == 0 or die "system $cmd failed: $?";
+        $cmd = join(" ", $PERL, $EXTRACT_SEQS, "-l", "bos2",
+                    "-d",$DB_DIR{$organism},
+                    " -chrfileext fa -windowleft 0 -windowright 0",
+                    " >", $seq_out);
+        system($cmd) == 0 or die "system $cmd failed: $?";
+        $cmd = join(' ', $PERL, $EXTRACT_SEQS, '-l bos1',
+                    '-d', $DB_DIR{"$organism\_scaffold"},
+                    ' -chrfileext fa -windowleft 0 -windowright 0',
+                    '>>', $seq_out);
+        system($cmd) == 0 or die "system $cmd failed: $?";
+    } else {
+        $cmd = join(' ', $PERL, $EXTRACT_SEQS, '-l', $sum_out,
+                    '-d', $DB_DIR{$organism},
+                    ' -chrfileext fa -windowleft 0 -windowright 0',
+                    ' >', $seq_out);
+        print STDERR "$cmd\n" if $DEBUG;
+        system($cmd) == 0 or die "system $cmd failed: $?";
+        print "done extracting sequences in $seq_out\n";
+    }
+    # make final fasta files
+    if (opendir(TMP,$SEQS_OUT_DIR)) {
+        close(TMP);
+    } else {
+        mkdir $SEQS_OUT_DIR;
+        system("chmod -R a+rw $SEQS_OUT_DIR");
+    }
+    my $cmd = join(' ', $PERL, $PUT_SEQS_TOGETHER,
+                   $seq_out, $SEQS_OUT_DIR, $organism);
+    system($cmd) == 0 or die "system $cmd failed: $?";
+}
+
+# in the case we do not need alignment
+if ($ALIGN_METHOD eq 'none') {
+    exit;
+}
+
+# generate filelist
+opendir(TMP,$SEQS_OUT_DIR) || die "Can not open dir $SEQS_OUT_DIR\n";
+my @list = grep { /\.fna/ } readdir(TMP);
+closedir(TMP);
+
+open($fout, '>', "$SEQS_OUT_DIR/filelist") || die "Can not opend file $SEQS_OUT_DIR/filelist\n";
+print $fout join("\n", @list) ."\n";
+close($fout);
+
+my $num_files = scalar(@list);
+
+# calculate number of jobs to run
+my $num_jobs = (($num_files - ($num_files % $NUM_FILES_PER_RUN)) / $NUM_FILES_PER_RUN) + 1;
+
+
+# make alignment output directory
+
+if (opendir(TMP,$ALIGN_OUT_DIR)) {
+    close(TMP);
+} else {
+    mkdir $ALIGN_OUT_DIR;
+    system("chmod -R a+rw $ALIGN_OUT_DIR");
+}
+
+# get the group name of the user
+my $gid = get_usergroup();
+
+# generate random job name
+my @chars = ( "A" .. "Z", "a" .. "z", 0 .. 9 );
+my $job_name = 'ALN-'. join("", @chars[ map { rand @chars } ( 1 .. 4 ) ]);
+
+# make script for the cluster
+open($fout, '>', "$SEQS_OUT_DIR/alignment_script.sh") || die "Can not open file $SEQS_OUT_DIR/alignment_script.sh";
+print $fout join("\n",
+                "#!/bin/bash",
+                "#\$ -S /bin/bash",
+                "#\$ -q $QUEUE",
+                #"#\$ -P project_$gid",
+                "#\$ -e $SEQS_OUT_DIR/alignments.err",
+                "#\$ -o $SEQS_OUT_DIR/alignments.sge",
+                "#\$ -j n",
+                "#\$ -cwd",
+                "#\$ -t 1-$num_jobs",
+                "#\$ -N $job_name",
+                "$SCRIPTS_PATH/alignment_wrapper.pl $ALIGN_METHOD $SEQS_OUT_DIR $ALIGN_OUT_DIR $NUM_FILES_PER_RUN"
+               );
+close($fout);
+
+# submit job
+$cmd = join(" ","qsub","$SEQS_OUT_DIR/alignment_script.sh");
+system($cmd) == 0 or die "system $cmd failed: $?";
+
+
+# wait until alignment jobs are finished
+my $wait_flag = 1;
+
+#get current time
+my $start_time = time();
+my $mail_flag = 1;
+
+print STDERR "pipeline.pl: starting wait loop\n" if $DEBUG;
+while ($wait_flag) {
+    # check content of ALIGN_OUT_DIR
+
+    open(my $pipe, "ls $ALIGN_OUT_DIR | wc -l |") || die "Can not open pipe to list dir $ALIGN_OUT_DIR\n";
+    my $num_aln_files = <$pipe>;
+    chomp $num_aln_files;
+    close($pipe);
+
+    # check how many jobs on the cluster  
+    open($pipe, "qstat | grep -P \"\\s+$job_name\\s+\" | wc -l |") || die "Can not open pipe to qstat\n";
+    $num_jobs = <$pipe>;
+    chomp $num_jobs;
+    close($pipe);
+
+    # check time
+    if (check_time($start_time) && $mail_flag) {
+        send_mail("Warrning!\nYour pipeline tast is running for 24 hours.\nCheck if everything correct.\n");
+        --$mail_flag;
+    } 
+
+    print STDERR join("\n",
+		      "pipeline.pl:",
+		      "num_jobs: $num_jobs",
+		      "num_files: $num_files",
+		      "num_aln_files: $num_aln_files",
+		      "check_time: ". check_time($start_time),
+		     ) ."\n" if $DEBUG;
+
+    # conditions to sleep
+    if ($num_jobs && $num_aln_files != $num_files) {
+        sleep 120;
+    }
+    elsif (!$num_jobs && $num_aln_files != $num_files) {
+        if (-d "MISSING_SEQS") {
+            system('rm -rf MISSING_SEQS');
+        }
+        system("python $SCRIPTS_PATH/compare_seqs2aln.py -s $SEQS_OUT_DIR -a $ALIGN_OUT_DIR");
+        # missing files num
+        open(my $lfh, '<', "MISSING_SEQS/filelist") || die "Can not open file MISSING_SEQS/filelist\n";
+        my @filelist = <$lfh>;
+        my $num_files = scalar(@filelist);
+
+        # calculate number of jobs to run
+        my $num_jobs = sprintf("%d", (($num_files - ($num_files % $NUM_FILES_PER_RUN)) / $NUM_FILES_PER_RUN) + 1);
+        close($lfh);
+
+        open(my $script, '>', 'MISSING_SEQS/alignment_script.sh') || die "Can not open file MISSING_SEQS/alignment_script.sh";
+        print $script join("\n",
+                           '#!/bin/bash',
+                           '#$ -S /bin/bash',
+                           "#\$ -q $QUEUE",
+                           #"#\$ -P project_$gid",
+                           '#$ -e MISSING_SEQS/alignments.err',
+                           '#$ -o MISSING_SEQS/alignments.sge',
+                           '#$ -j n',
+                           '#$ -cwd',
+                           "#\$ -t 1-$num_jobs",
+                           "#\$ -N $job_name",
+                           "$SCRIPTS_PATH/alignment_wrapper.pl $ALIGN_METHOD MISSING_SEQS $ALIGN_OUT_DIR $NUM_FILES_PER_RUN"
+		 );
+        close($script);
+        $cmd = join(' ','qsub','MISSING_SEQS/alignment_script.sh');
+        system($cmd) == 0 or die "system $cmd failed: $?";
+    }
+    else {
+        --$wait_flag;
+    }
+}
+
+# Merge all alignments into one file
+system("$PERL  $SCRIPTS_PATH/merge_alignments.pl $ALIGN_OUT_DIR final_out.aln") == 0 or die "Failed to merge alignments.\n";
+
+# compress alignments and sequences directories
+system("tar cfz $SEQS_OUT_DIR\.tar.gz $SEQS_OUT_DIR && rm -rf $SEQS_OUT_DIR");
+system("tar cfz $ALIGN_OUT_DIR\.tar.gz $ALIGN_OUT_DIR && rm -rf $ALIGN_OUT_DIR");
+
+# remove MISSING_SEQS
+if (-d "MISSING_SEQS") {
+    system('rm -rf MISSING_SEQS');
+}
+
+# Run Motevoc
+
+# check if we nedd to run motevoc
+
+if ($MOTEVOC_PARAMS =~ /none/i) {
+    exit;
+}
+
+# create motevoc directory
+
+system("mkdir $MOTEVOC_DIR") == 0 || die "Can not create $MOTEVOC_DIR dir\n";
+
+
+#### MOTEVOC PART ####
+
+# create necessary files
+# copy motevoc parameters
+
+system("cp  $MOTEVOC_PARAMS $MOTEVOC_DIR") == 0 || die "Can not copy $MOTEVOC_PARAMS file to $MOTEVOC_DIR\n";
+
+# what is number of matrices to work with
+opendir(my $wm_dir_h, $WM_DIR) ||die "Can not open dir $WM_DIR.\n";
+my @wm_list =  sort grep {$_ !~ /^\.+/} readdir($wm_dir_h);
+my $wm_number = scalar(@wm_list);
+
+# make run script
+my $username = get_username();
+my $curr_wd = cwd();
+
+open(my $script, '>', "$MOTEVOC_DIR/motevoc_run.sh") || die "Can not open file $MOTEVOC_DIR/motevoc_run.sh\n";
+print $script join("\n",
+                   "#!/bin/bash",
+                   "#\$ -S /bin/bash",
+                   "#\$ -q fs_short",
+                   #"#\$ -P project_$gid",
+                   "#\$ -e $MOTEVOC_DIR/motevoc_run.err",
+                   "#\$ -o $MOTEVOC_DIR/motevoc_run.sge",
+                   "#\$ -j n",
+                   "#\$ -cwd",
+                   "#\$ -t 1-$wm_number",
+                   "mkdir /data/$username",
+                   "$SCRIPTS_PATH/motevoc_wrapper.pl --alignments $curr_wd/final_out.aln --wm_dir $WM_DIR --working_dir $MOTEVOC_DIR --motevo_path $MOTEVOC_PATH"
+                  );
+
+close($script);
+
+# submit jobs to cluster
+
+system("qsub $MOTEVOC_DIR/motevoc_run.sh");
+
+
+
+
+#####################################
+########  SUBs  #####################
+#####################################
+
+sub check_time {
+    my $start_time = shift;
+    my $current_time = time();
+    # 86400 seconds is 24 hours
+    if (($current_time - $start_time) > 86400) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+
+sub send_mail{
+    my $message = shift;
+
+    open(my $pipe, "id -u --name |") || die "Can not open pipe to id\n";
+    my $username = <$pipe>;
+    close($pipe);
+    
+    open(my $mail, "| mail -s \"pipeline message\" $username") || die "Can not open pipe to mail\n";
+    print $mail $message;
+    close($mail);
+
+    return 1;
+}
+
+sub get_username {
+    return id("u");
+}
+
+sub get_usergroup {
+    return id("g")
+}
+
+sub  id {
+    my $type = shift;
+    open(my $pipe, "id -$type --name |") || die "Can not open pipe to id\n";
+    my $out = <$pipe>;
+    chomp $out;
+    close($pipe);
+
+    return $out;
+}
+
+# translate regions file into multiz format
+sub make_multiz_input {
+    my $region_file = shift;
+    my $multiz_file = shift;
+    my $format = shift;
+
+    open(my $fin, '<', $region_file) || die "Can not open file $region_file\n";
+    open(my $fout, '>', $multiz_file) || die "Can not open file $multiz_file\n";
+
+    while (<$fin>) {
+	chomp;
+        if ($_ =~ /\A \#/x) {
+            next;
+        }
+        my ($chr, $start, $end, $strand) = parse_region_line($_, $format);
+        print $fout "$chr\t$start\t$end\t$strand\tctc-$chr-$start-$end-$strand\n";
+    }
+
+    close($fin);
+    close($fout);
+}
+
+#parse line from region file
+sub parse_region_line {
+    my $line = shift;
+    my $format = shift;
+    my ($chr, $start, $end, $strand);
+    if ($format eq 'legacy') {
+        my @data = split(/\s+/, $line);
+        ($chr, $start, $end, $strand) = @data[0..3];
+    }
+    elsif ($format eq 'BED') {
+        my @data = split(/\t/, $line);
+        ($chr, $start, $end) = @data[0..2];
+        if (defined($data[5])) {
+            $strand = $data[5]
+        }
+        else {
+            $strand = '+';
+        }
+    }
+    if ($start > $end) {
+        ($start, $end) = ($end, $start)
+    }
+    return ($chr, $start, $end, $strand);
+}

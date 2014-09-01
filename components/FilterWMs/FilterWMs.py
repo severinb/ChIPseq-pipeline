@@ -8,13 +8,13 @@ from pylab import *
 def rename_and_copy_WM(wm, outwm, wmname):
 
     wmlines = open(wm).readlines()
-
     #NA Logo
     wmlines[1] = 'NA %s\n' %wmname
 
     o = open(outwm, 'w')
     for i in wmlines:
         o.write(i)
+    return 0
 
 
 def filterQuarterWMs(wms):
@@ -32,8 +32,6 @@ def filterQuarterWMs(wms):
             badwms.append(wm)
         else:
             goodwms.append(wm)
-
-
     return goodwms, badwms
 
 
@@ -108,13 +106,16 @@ def execute(cf):
 
     os.mkdir(outdir)
 
-    wms = [i for i in [WM1, WM2, WM3, WM4, WM5, WM6, WM7, WM8, WM9, WM10, WM11, WM12, WM13, WM14, WM15, WM16, WM17, WM18, WM19, WM20, WM21, WM22, WM23, WM24, WM25, WM26, WM27, WM28, WM29, WM30] if i]
+    wms = [i for i in [WM1, WM2, WM3, WM4, WM5, WM6, WM7, WM8, WM9, \
+                       WM10, WM11, WM12, WM13, WM14, WM15, WM16, WM17, \
+                       WM18, WM19, WM20, WM21, WM22, WM23, WM24, WM25, \
+                       WM26, WM27, WM28, WM29, WM30] if i]
 
     goodwms, badwms = filterQuarterWMs(wms)
 
 
     for i, wm in enumerate(goodwms):
-        rename_and_copy_WM(wm, '%s/denovo_WM_%i' %(outdir, i+1), 'denovo_WM_%i' %(i+1))
+        rename_and_copy_WM(wm, os.path.join(outdir, 'denovo_WM_%i' % (i+1)), 'denovo_WM_%i' %(i+1))
 
 
     print badwms

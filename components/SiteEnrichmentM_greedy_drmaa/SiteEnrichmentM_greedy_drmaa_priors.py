@@ -113,10 +113,14 @@ def execute(cf):
     if keepWM: #add keepWM. If keepWM gets thrown out because it's not contributing, it still gets added later on so that one can see in any case how this WM performs
         WMs.append(keepWM)
 
-    f = open(basefreqs)
-    ATfreq = f.readline().strip().split()[1]
-    GCfreq = f.readline().strip().split()[1]
-    f.close()
+    if basefreqs:
+        f = open(basefreqs)
+        ATfreq = f.readline().strip().split()[1]
+        GCfreq = f.readline().strip().split()[1]
+        f.close()
+    else:
+        ATfreq = '0.25'
+        GCfreq = '0.25'
 
     ## start greedy algorithm:
     final_wms_indxs = []
@@ -132,7 +136,8 @@ def execute(cf):
 
     final_set_prior_d = {} #just used in the first round
     final_set_prior_d['background'] = '0.99'
-    final_set_prior_d['UFEwm'] = '200'
+    # final_set_prior_d['UFEwm'] = '200'
+    final_set_prior_d['UFEwm'] = '0'
 
     j = 0
 
@@ -196,7 +201,7 @@ def execute(cf):
         tf.close()
 
 
-        JOB_PARAM = '-q %s -e %s/job.stderr -o %s/job.stdout -j n -w n -N %s-CSE.%i -cwd -V -b y' %(queue_name, os.path.split(interm)[0], os.path.split(interm)[0], instance_name, j)
+        JOB_PARAM = '-q %s -P %s -e %s/job.stderr -o %s/job.stdout -j n -w n -N %s-CSE.%i -cwd -V -b y' %(queue_name, project_leader, os.path.split(interm)[0], os.path.split(interm)[0], instance_name, j)
 
         s = drmaa.Session()
         s.initialize()
@@ -335,7 +340,7 @@ def execute(cf):
             os.system('cat %s > %s' %(' '.join(goodwmpaths + [keepWM]), tmpwm_tag))
 
 
-            JOB_PARAM = '-q %s -e %s/job.stderr -o %s/job.stdout -j n -w n -N %s-CSE_keepWM -cwd -V -b y' %(queue_name, os.path.split(interm)[0], os.path.split(interm)[0], instance_name)
+            JOB_PARAM = '-q %s -P %s -e %s/job.stderr -o %s/job.stdout -j n -w n -N %s-CSE_keepWM -cwd -V -b y' %(queue_name, project_leader, os.path.split(interm)[0], os.path.split(interm)[0], instance_name)
     
             s = drmaa.Session()
             s.initialize()

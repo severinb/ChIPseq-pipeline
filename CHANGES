@@ -1,0 +1,28 @@
+The changes I made in this pipe-line compared to the web-server installation:
+
+TODO: 
+      - WMQuality motevo
+      - GetPeakPosts motevo
+      - SiteEnrichment algorithm
+      - RunMotevo reduction
+      - Clean Up the components
+
+NOTE: Wherever I run MotEvo (i.e. in all WMQuality, GetPeakPosts, SiteEnrichment and RunMotevo) I need to check which parameters I use (markovorder, bg_prior, ATCG frequencies ...) and eventually implement these parameters as arguments.
+
+DONE:
+WMQuality:  (WMQuality_updated.py)
+           - now script is fitting priors on pooled training and shuffled training sets. Then it predicts sites on testing and shuffled testing set. 
+           - It should run without alignments, for running with alignments it wasnt tested yet.
+           - It's using uniform background base frequencies 
+           - Needs testing (with and without alignments).
+
+
+RunMotevo:  (RunMotevo_updated.py)
+           - The precision - recall analysis is removed. Now it's only doing Wm refinement.
+           - Needs testing for running it with and without alignments.
+
+
+GetPeakPosteriors: (GetPeakPosteriors_updated.py and runmotevo_updated.py)
+           - Adapted site predictions, i.e. prior is fitted on pooled training set and bg training set.
+           - site predictions run onlz with sequences, not alignments.
+           - should work now. Gets activated by using the right component.xml file.

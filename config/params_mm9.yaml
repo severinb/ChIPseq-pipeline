@@ -11,18 +11,18 @@ OUT_DIR: OUTPUT
 ADAPTOR:
 ANNOTATION_TYPE: mm9-none-aln2.3
 GENOME: mm9
-GENDIR_PATH: /import/wnz/home/crunch/data/mm9/genome
-CHROMOSOME_INFO: /import/wnz/home/crunch/data/mm9/chrominfo.txt
-REPEAT_PATH:     /import/wnz/home/crunch/data/mm9/repeatmask
-ANNOTATION_FILE: /import/wnz/home/crunch/data/mm9/clusters_150_gene_associations
-WMLIBRARY: /import/wnz/home/crunch/data/mm9/WMs
+GENDIR_PATH: /import/bc2/data/databases/UCSC/mm9
+CHROMOSOME_INFO: /import/bc2/home/nimwegen/GROUP/hseq_pipeline/general/chromInfo/chromInfo.mm9.txt
+REPEAT_PATH:     /import/bc2/home/nimwegen/GROUP/hseq_pipeline/general/repeatMask/mm9
+ANNOTATION_FILE: /import/bc2/home/nimwegen/GROUP/software/mara_data/mm9/clusters_150_gene_associations
+WMLIBRARY: /import/bc2/home/nimwegen/bergerse00/Projects/ChIPseq-pipeline/WMs/WMs_human_mouse
 FDR: 0.1
 WINDOW: 500
 BACKGROUND_WINDOW: 2000
 STEP: 250
 DO_MOTIF_FINDING: TRUE
 USER:
-PROJECTLEADER:
+PROJECTLEADER: project_nimwegen
 RENAME_TAG:
 IP_FASTQ_DESCRIPTION:
 BG_FASTQ_DESCRIPTION:
@@ -46,42 +46,44 @@ TO_FMI_REPOSITORY:
     #- latexfrag
     #- pdfreport
 FMI_PATH:
-    /import/wnz/home/crunch/PipeLine/fmitools
+    /import/bc2/home/nimwegen/bergerse00/Projects/ChIPseq-pipeline/fmitools
 ANDURIL_COMPONENTS_PATH:
-    /import/wnz/home/crunch/PipeLine/components
+    /import/bc2/home/nimwegen/bergerse00/Projects/ChIPseq-pipeline/components
 ANDURIL_TEMPLATES_PATH:
-    /import/wnz/home/crunch/PipeLine/templates
+    /import/bc2/home/nimwegen/bergerse00/Projects/ChIPseq-pipeline/templates
 ANDURIL_HOME:
-    /import/wnz/home/crunch/soft/anduril-1.2.5
+    /import/bc2/soft/app/anduril/1.2.5/Linux
 PERL_PATH:
     /import/bc2/soft/app/perl/5.10.1/Linux/bin/perl
 PYTHON_PATH:
-    /import/bc2/soft/app/Python/2.7.5/Linux/bin/python
+    /import/bc2/home/nimwegen/GROUP/local/bin/python
 R_PATH:
-    /import/bc2/soft/app/R/current/Linux/bin/R
+    /import/bc2/soft/Linux/bin/R
 R_LIBS_USER:
-    /import/wnz/home/crunch/local/Rlibs
+    /import/bc2/home/nimwegen/GROUP/local/lib/R
 SORT_TMPDIR:
     /import/bc2/scratch/tmp/
 USE_CLUSTER:
     TRUE
 QUEUE_NAMES:
-    long=long
-    verylong=very_long
-    long_hm=long
-    verylong_hm=very_long
-    sjpn_long_hm=long
+    long=fs_long
+    verylong=fs_very_long
+    long_hm=fs_long@@x3755
+    verylong_hm=fs_very_long_hm
+    sjpn_long_hm=fs_long@@x3755
 ALIGN_PIPE_PATH:
-    /import/wnz/home/crunch/AlignmentPipeline/scripts/pipeline.pl
+    /import/bc2/home/nimwegen/GROUP/AlignmentPipeline/scripts/pipeline.pl
 BEDTOOLS_PATH:
-    /import/wnz/home/crunch/PipeLine/fmitools/soft/bedtools
+    /import/bc2/home/nimwegen/bergerse00/Projects/ChIPseq-pipeline/fmitools/soft/bedtools
 PHYLOGIBBS_PATH:
-    /import/wnz/home/crunch/soft/phylogibbs-1.2/src/phylogibbs
+    /import/bc2/home/nimwegen/GROUP/software/phylogibbs-1.2/src/phylogibbs
 MYLOGO_PATH:
-    /import/wnz/home/crunch/soft/weblogo/mylogo
+    /import/bc2/home/nimwegen/GROUP/Scripts/weblogo/mylogo
 MOTEVO_PATH:
-    /import/wnz/home/crunch/soft/motevo_ver1.03/bin/motevo
+    /import/bc2/home/nimwegen/GROUP/software/motevo_ver1.03/bin/motevo
 MOTEVOUFE_PATH:
-    /import/wnz/home/crunch/soft/motevo_ver1.03/bin/runUFE
+    /import/bc2/home/nimwegen/GROUP/software/motevo_ver1.03/bin/runUFE
 DRMAA_LIBRARY_PATH:
-    /import/bc2/soft/app/SGE/6.2/Linux/lib/lx24-amd64/libdrmaa.so
+    /import/bc2/soft/app/SGE/6.1/Linux/lib/lx24-amd64/libdrmaa.so
+WEBLOGO_PATH:
+    /import/bc2/home/nimwegen/GROUP/software/weblogo-3.4/weblogo

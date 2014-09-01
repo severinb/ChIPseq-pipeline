@@ -1,0 +1,129 @@
+Warning: all outports are unconnected: RunMotevo
+Executing input_WM (INPUT)
+Executing input_odd_file (INPUT)
+Component input_WM finished with success; READY queue: input_even_file 
+Executing input_even_file (INPUT)
+Component input_odd_file finished with success; READY queue is empty.
+Component input_even_file finished with success; READY queue: RunMotevo 
+Executing RunMotevo (RunMotevo)
+Clearing directory /import/bc2/home/nimwegen/bergerse00/Projects/ChIPseq-pipeline/components/RunMotevo/execute/RunMotevo
+[STDOUT RunMotevo] 
+[STDOUT RunMotevo] Running motevo WM refinement with wmdiff = 0.0075
+[STDOUT RunMotevo] 
+[STDOUT RunMotevo] Create motevo parameter file wmRef
+[STDOUT RunMotevo] aligned  False
+[STDOUT RunMotevo] 
+[STDOUT RunMotevo] run Motevo wmRef
+[STDOUT RunMotevo] 2014-07-15 13:50:16.151084
+[STDOUT RunMotevo] None
+[STDOUT RunMotevo] 
+[STDOUT RunMotevo] Running in WMREF mode
+[STDOUT RunMotevo] node 0 name hg19 qval 0.367879 parent hg19_
+[STDOUT RunMotevo] node 1 name hg19_ qval 0 parent (null)
+[STDOUT RunMotevo] //
+[STDOUT RunMotevo] NA ENCODE.UA1
+[STDOUT RunMotevo] PW 0.000000
+[STDOUT RunMotevo] PO         A          C          G          T       cons         inf
+[STDOUT RunMotevo] 00      0.16       0.34       0.21       0.29          N       -1.09
+[STDOUT RunMotevo] 01      0.01       0.14       0.04       0.80          T       -0.47
+[STDOUT RunMotevo] 02      0.14       0.82       0.03       0.02          C       -0.44
+[STDOUT RunMotevo] 03      0.02       0.08       0.02       0.89          T       -0.29
+[STDOUT RunMotevo] 04      0.00       1.00       0.00       0.00          C        0.00
+[STDOUT RunMotevo] 05      0.02       0.00       0.98       0.00          G       -0.07
+[STDOUT RunMotevo] 06      0.00       1.00       0.00       0.00          C       -0.01
+[STDOUT RunMotevo] 07      0.00       0.00       1.00       0.00          G        0.00
+[STDOUT RunMotevo] 08      0.77       0.06       0.12       0.04          A       -0.55
+[STDOUT RunMotevo] 09      0.01       0.06       0.73       0.20          G       -0.59
+[STDOUT RunMotevo] 10      0.73       0.04       0.16       0.07          A       -0.64
+[STDOUT RunMotevo] 11      0.17       0.28       0.21       0.33          N       -1.10
+[STDOUT RunMotevo] 12      0.01       0.37       0.07       0.55          T       -0.77
+[STDOUT RunMotevo] 13      0.11       0.19       0.12       0.58          T       -0.89
+[STDOUT RunMotevo] 14      0.07       0.34       0.46       0.13          S       -0.95
+[STDOUT RunMotevo] //
+[STDOUT RunMotevo] final prior ENCODE.UA1 is 0.010000 0.010000
+[STDOUT RunMotevo] UFE wm prior 0.000000 0.000000
+[STDOUT RunMotevo] bg prior 0.990000 0.990000
+[STDOUT RunMotevo] ref species is hg19
+[STDOUT RunMotevo] treestring is (hg19: 1)
+[STDOUT RunMotevo] em_prior is 1
+[STDOUT RunMotevo] em_wm is 1
+[STDOUT RunMotevo] do_segment is 0
+[STDOUT RunMotevo] seglen is 0
+[STDOUT RunMotevo] bg[0] = 0.250000
+[STDOUT RunMotevo] bg[1] = 0.250000
+[STDOUT RunMotevo] bg[2] = 0.250000
+[STDOUT RunMotevo] bg[3] = 0.250000
+[STDOUT RunMotevo] allocated memory
+[STDOUT RunMotevo] read sequences
+[STDOUT RunMotevo] parsed sequences
+[STDOUT RunMotevo] mybgfile is set to 
+[STDOUT RunMotevo] Calculating background frequencies from input sequence
+[STDOUT RunMotevo] Calculating background model (markov order = 1) ... 
+[STDOUT RunMotevo] AA: 0 = 0.229252
+[STDOUT RunMotevo] CA: 1 = 0.146178
+[STDOUT RunMotevo] GA: 2 = 0.243354
+[STDOUT RunMotevo] TA: 3 = 0.112245
+[STDOUT RunMotevo] AC: 4 = 0.227211
+[STDOUT RunMotevo] CC: 5 = 0.304571
+[STDOUT RunMotevo] GC: 6 = 0.347239
+[STDOUT RunMotevo] TC: 7 = 0.397279
+[STDOUT RunMotevo] AG: 8 = 0.400000
+[STDOUT RunMotevo] CG: 9 = 0.323089
+[STDOUT RunMotevo] GG: 10 = 0.278528
+[STDOUT RunMotevo] TG: 11 = 0.239456
+[STDOUT RunMotevo] AT: 12 = 0.143537
+[STDOUT RunMotevo] CT: 13 = 0.226162
+[STDOUT RunMotevo] GT: 14 = 0.130879
+[STDOUT RunMotevo] TT: 15 = 0.251020
+[STDOUT RunMotevo] done
+[STDOUT RunMotevo] wmdiff 2.333446
+[STDOUT RunMotevo] total prior dif 0.006001
+[STDOUT RunMotevo] wmdiff 0.079469
+[STDOUT RunMotevo] total prior dif 0.002828
+[STDOUT RunMotevo] wmdiff 0.010767
+[STDOUT RunMotevo] total prior dif 0.000076
+[STDOUT RunMotevo] wmdiff 0.006946
+[STDOUT RunMotevo] total prior dif 0.000000
+[STDOUT RunMotevo] 
+[STDOUT RunMotevo] 
+[STDOUT RunMotevo] Motevo weight matrix refinement converged.
+[STDOUT RunMotevo] 
+[STDOUT RunMotevo] create updated Logo
+[STDOUT RunMotevo] 
+[STDOUT RunMotevo] Name "main::desc_r" used only once: possible typo at /import/bc2/home/nimwegen/GROUP/Scripts/weblogo/mylogo line 244.
+[STDOUT RunMotevo] parse_tracked_out: Logo 0.00932841998798963	0.0179983075339627	0.011957812112588	0.0191862716334998
+[STDOUT RunMotevo] parse_tracked_out: Logo -1.94150727082565	0.0584708112680402
+[STDOUT RunMotevo] parse_tracked_out: Logo 0.0227869638047696	0.0901038309810113	0.0116355744793279	1.36939666147867
+[STDOUT RunMotevo] parse_tracked_out: Logo -0.506055051349919	1.49392303074377
+[STDOUT RunMotevo] parse_tracked_out: Logo 0.182166177090638	1.17346913393435	0.0111855210190163	0
+[STDOUT RunMotevo] parse_tracked_out: Logo -0.633157250049691	1.366820832044
+[STDOUT RunMotevo] parse_tracked_out: Logo 0.0530519716714525	0.0708939460059151	0	1.38558907453614
+[STDOUT RunMotevo] parse_tracked_out: Logo -0.490443090102174	1.50953499221351
+[STDOUT RunMotevo] parse_tracked_out: Logo 0	1.86674605855949	0.00892272946046096	0.0148584507753599
+[STDOUT RunMotevo] parse_tracked_out: Logo -0.109450843520374	1.89052723879531
+[STDOUT RunMotevo] parse_tracked_out: Logo 0.0694022632834725	0.00627759165378143	1.64601940713068	0
+[STDOUT RunMotevo] parse_tracked_out: Logo -0.27827882002576	1.72169926206793
+[STDOUT RunMotevo] parse_tracked_out: Logo 0.027196009500081	1.48171913098855	0.0219389665356118	0.0468020633523721
+[STDOUT RunMotevo] parse_tracked_out: Logo -0.422321911717079	1.57765617037661
+[STDOUT RunMotevo] parse_tracked_out: Logo 0	0.0297848109076094	1.85291270519477	0
+[STDOUT RunMotevo] parse_tracked_out: Logo -0.117280565991317	1.88269751610238
+[STDOUT RunMotevo] parse_tracked_out: Logo 0.766278370073197	0.0366504374254125	0.15657465784462	0.0251716201528548
+[STDOUT RunMotevo] parse_tracked_out: Logo -1.0153029968196	0.984675085496083
+[STDOUT RunMotevo] parse_tracked_out: Logo 0.00463372730823513	0.0751480560042377	0.579424264577423	0.163647247166376
+[STDOUT RunMotevo] parse_tracked_out: Logo -1.17712478703742	0.822853295056272
+[STDOUT RunMotevo] parse_tracked_out: Logo 0.521460517638337	0.0563363528246114	0.131095387795555	0.0287172709531635
+[STDOUT RunMotevo] parse_tracked_out: Logo -1.26236855288203	0.737609529211667
+[STDOUT RunMotevo] parse_tracked_out: Logo 0.0263180096221451	0.0232646881772761	0.0273063926702047	0.0635238762456487
+[STDOUT RunMotevo] parse_tracked_out: Logo -1.85956511537842	0.140412966715275
+[STDOUT RunMotevo] parse_tracked_out: Logo 0.0143464968679134	0.16124937607698	0.0510569079082784	0.205203018462853
+[STDOUT RunMotevo] parse_tracked_out: Logo -1.56812228277767	0.431855799316025
+[STDOUT RunMotevo] parse_tracked_out: Logo 0.0298288134365134	0.108081939389122	0.0498695342462268	0.275507123002184
+[STDOUT RunMotevo] parse_tracked_out: Logo -1.53669067201965	0.463287410074046
+[STDOUT RunMotevo] parse_tracked_out: Logo 0.0403250001026442	0.0814490310063746	0.140617840834635	0.0234498169883996
+[STDOUT RunMotevo] parse_tracked_out: Logo -1.71413639338363	0.285841688932054
+[STDOUT RunMotevo] Starting work on Logo
+[STDOUT RunMotevo] GPL Ghostscript 9.01: Set UseCIEColor for UseDeviceIndependentColor to work properly.
+[STDOUT RunMotevo] 
+Component RunMotevo finished with success; READY queue is empty.
+Done. No errors occurred.
+Log closed on 2014-07-15 13:50:27; user bergerse00

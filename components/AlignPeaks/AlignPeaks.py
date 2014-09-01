@@ -105,7 +105,7 @@ def execute(cf):
 
     config = {'ROOT_ORGANISM': genome,
               'ORGANISMS': organisms, 
-              'QUEUE': 'long',
+              'QUEUE': 'fs_long',
               'NUM_FILES_PER_RUN': 10,        #100,
               'REGIONS_FILE': formattedfile,
               'SEQS_OUT_DIR': seqs_dir,

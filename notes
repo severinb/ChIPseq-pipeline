@@ -1,0 +1,5 @@
+./scripts/run_Pipeline.py
+
+source ../config/crunch.env 
+
+nohup anduril run /import/bc2/home/nimwegen/omidi/Projects/ChIPseq-pipeline/example/network.and -c /import/bc2/home/nimwegen/omidi/Projects/ChIPseq-pipeline/components -d OUTPUT --hosts /import/bc2/home/nimwegen/omidi/Projects/ChIPseq-pipeline/example/PipelineFiles/hosts.conf --perl-exec /import/bc2/soft/app/perl/5.10.1/Linux/bin/perl --python-exec /import/bc2/home/nimwegen/GROUP/local/bin/python --threads 8 &

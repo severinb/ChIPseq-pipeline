@@ -1,4 +1,4 @@
-#!/import/wnz/home/mara/local/bin/python
+#!/import/bc2/home/nimwegen/GROUP/local/bin/python
 #/usr/bin/env python
 
 import sys, os

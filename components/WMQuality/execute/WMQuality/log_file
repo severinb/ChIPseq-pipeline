@@ -1,0 +1,5 @@
+WM_name	WM_path	AUC
+WM_1	/import/bc2/home/nimwegen/bergerse00/Projects/ChIPseq-pipeline/components/WMQuality/WMs/ARID5B.p2	0.0000
+WM_2	/import/bc2/home/nimwegen/bergerse00/Projects/ChIPseq-pipeline/components/WMQuality/WMs/ARNT_ARNT2_BHLHB2_MAX_MYC_USF1.p2	0.0865
+WM_3	/import/bc2/home/nimwegen/bergerse00/Projects/ChIPseq-pipeline/components/WMQuality/WMs/AR.p2	0.0000
+WM_4	/import/bc2/home/nimwegen/bergerse00/Projects/ChIPseq-pipeline/components/WMQuality/WMs/ENCODE.UA1	0.7210

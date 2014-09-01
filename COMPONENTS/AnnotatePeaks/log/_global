@@ -1,9 +1,0 @@
-Warning: all outports are unconnected: AnnotatePeaks
-Executing input_peaks (INPUT)
-Component input_peaks finished with success; READY queue: AnnotatePeaks 
-Executing AnnotatePeaks (AnnotatePeaks)
-Clearing directory /import/bc2/home/nimwegen/GROUP/hseq_pipeline/severin/Anduril/Pipeline/PipeLineSource/COMPONENTS/AnnotatePeaks/execute/AnnotatePeaks
-[STDOUT AnnotatePeaks] 215
-Component AnnotatePeaks finished with success; READY queue is empty.
-Done. No errors occurred.
-Log closed on 2013-05-13 15:52:23; user bergerse00

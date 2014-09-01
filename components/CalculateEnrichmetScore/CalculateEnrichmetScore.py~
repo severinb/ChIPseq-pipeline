@@ -1,0 +1,13 @@
+#!/usr/bin/env python
+
+import component_skeleton.main
+
+component_skeleton.main.main(execute)
+
+def execute(cf):
+    """
+    
+    """
+    return 0
+
+component_skeleton.main.main(execute)

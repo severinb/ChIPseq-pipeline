@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>CalculateEnrichmetScore</name>
+    <!-- <version>0.1</version> -->
+    <!-- <author>Saeed Omidi</author> -->
+    <doc>
+    This component runs MotEvo (with single sequences, uniform background model, 
+    no UFE and no evolutionary tree), and as a result gives the refined Motif/WM, 
+    background prior value fitted by MotEvo, and finally the fitted Beta value that 
+    will be used to calculate the enrichment score for the associated motif. 
+    </doc>
+    <launcher type="python">
+        <argument name="file" value="CalculateEnrichmetScore.py" />
+    </launcher>
+    <requires>URL="http://www.python.org/not" type="manual">python</requires>
+
+    <inputs>
+        <input name="InputSequences" type="BinaryFile">
+            <doc>A file that contains the REAL training sequences in a single species format</doc>
+        </input>
+        <input name="DecoySequences" type="BinaryFile">
+            <doc>File that contains the shuffled, or decoy sequences. Again simple sequences and NOT ALIGNMENTS</doc>
+        </input>
+        <input name="WM" type="BinaryFile">
+            <doc>Wm to refine: either old existing one or the one found by PhyloGibbs</doc>	    
+        </input>
+        <input name="FittedParams" type="BinaryFile">
+            <doc>Fitted parameters: Beta and background prior</doc>	    
+        </input>		
+    </inputs>
+    <outputs>
+        <output name="EnrichmentScores" type="BinaryFile">
+            <doc>The enrichment score for each of the REAL (or foreground) regions</doc>
+        </output>
+    </outputs>
+    <parameters>
+        <parameter name="genome" type="string" default="">
+            <doc>genome: hg19, mm9 ...</doc>
+        </parameter>
+        <parameter name="motevo_path" type="string" default="">
+            <doc>Path to motevo executable.</doc>
+        </parameter>
+    </parameters>
+ </component>
