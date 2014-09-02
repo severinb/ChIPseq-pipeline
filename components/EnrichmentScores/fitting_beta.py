@@ -31,7 +31,8 @@ def fit_beta(siteFile, interm_dir, wmFile):
     binding_regions_sitecount, total_sitecount, number_of_windows, total_length, M = sum_of_posteriors_foreground_regions(siteFile)
     beta_min, beta_max = 1.0e-12, 1.0e+3
     step_size = 5.0
-    motifName = os.path.basename(wmFile)    
+    
+    # motifName = os.path.basename(wmFile)    
     # res_file = open(os.path.join(interm_dir, '%s.beta' % motifName), 'w')    
     beta_lower_bound, beta_upper_bound = beta_min, beta_min+step_size
     try:

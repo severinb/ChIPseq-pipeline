@@ -24,17 +24,17 @@ def sum_of_posteriors_foreground_regions(fname):
 
 def calculate_enrichment_scores(siteFile, beta, res_filename):
     sites, N, length, L, M = sum_of_posteriors_foreground_regions(siteFile)
-    denumerator = np.log( N + L*beta )
-    constant = len(sites.keys())*M
+    denumerator = np.log( N + L*beta ) - np.log(M)  
     enrichmentScores = []
     try:
         with open(res_filename, 'w') as outfile:        
             for region, sitecount in sites.items():
                 outfile.write('\t'.join([
                     region,
-                    '%0.10f\n' % ( np.log( sitecount + length[region]*beta ) - denumerator ),
+                    '%0.10f\n' % ( np.log( sitecount + length[region]*beta )  - denumerator),
                     ]))
                 enrichmentScores.append((np.log( sitecount + length[region]*beta ) - denumerator))
     except:
-        return -1, -1
-    return {'mean':np.mean(enrichmentScores), 'std':np.std(enrichmentScores)}
+        return {}
+    return {'mean':np.mean(enrichmentScores),
+            'std':np.std(enrichmentScores)} 

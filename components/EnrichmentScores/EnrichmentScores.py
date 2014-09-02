@@ -80,7 +80,7 @@ def runningDrmaaJob(job_path, scratchDir, jobName, NUMBER_OF_JOBS=1):
         all_jobids = s.runJob(jt)
         retval = s.wait(all_jobids, drmaa.Session.TIMEOUT_WAIT_FOREVER)
     s.deleteJobTemplate(jt)        
-    s.exit()    
+    s.exit()
     return all_jobids
     
 
