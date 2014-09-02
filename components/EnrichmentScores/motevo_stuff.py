@@ -3,11 +3,11 @@ import os
 import datetime
 import time
 import re
+from concatenate_motifs import concatenate
 
-def create_motevo_param_file(param_filename, site_filename, prior_filename, genome, priordiff=0.05, minposterior=0.0, prior=None):
-    
+def create_motevo_param_file(param_filename, site_filename, prior_filename, genome, priordiff=0.05, minposterior=0.0, prior=None):    
     if not prior:
-        prior=0.99
+        prior = '0.99'
         EMprior = 1
     else:
         EMprior = 0
@@ -19,7 +19,7 @@ def create_motevo_param_file(param_filename, site_filename, prior_filename, geno
         'EMprior %d' % EMprior,
         'priordiff %f' % priordiff,
         'markovorderBG 0',
-        'bgprior %f' % prior,  # as an initial value for fitting the prior
+        'bgprior %s' % prior,  # as an initial value for fitting the prior
         'bg A 0.25',
         'bg T 0.25',
         'bg G 0.25',
@@ -34,15 +34,40 @@ def create_motevo_param_file(param_filename, site_filename, prior_filename, geno
     return 0
 
 
-def run_motevo(WM, sequences, interm_dir, genome, prior=None, minposterior=.0):
+def concatenate_motifs(WMs, outdir, priors=None):
+    motifNames = map(os.path.basename, WMs)
+    newMotifName = '_'.join(motifNames)
+    fname = os.path.join(outdir, newMotifName)  # the name of the new 'super' motif
+    with open(fname, 'w') as outf:
+        concatenate(WMs, priors, outf)  # from concatenate_motifs.py
+    return fname
+
+
+def loadAllPriors(priorFile):
+    priors = {}
+    if priorFile:
+        priors = dict([(line.split()[0], \
+                        line.split()[1]) for line in open(priorFile)])
+    return priors
+
+
+def run_motevo(WM, sequences, interm_dir, genome, priorFile=None, minposterior=.0):
     motevo_path = '/import/bc2/home/nimwegen/GROUP/software/motevo_ver1.03/bin/motevo'
+    priors = loadAllPriors(priorFile)
     stime = datetime.datetime.now()
+
+    if len(WM) > 1:
+        WM = concatenate_motifs(WM, interm_dir, priors=priors)
+    else:
+        WM = WM[0]
+    
     motifName = os.path.basename(WM)
     # print '\nrunnig Motevo for %s' % motifName
     siteFilename = os.path.join(interm_dir, '%s.sites' % motifName)
     priorFilename = os.path.join(interm_dir, '%s.priors' % motifName)
     paramFilename = os.path.join(interm_dir, '%s.params' % motifName)
-    create_motevo_param_file(paramFilename, siteFilename, priorFilename, genome, minposterior=minposterior, prior=prior)
+    create_motevo_param_file(paramFilename, siteFilename, priorFilename, genome, minposterior=minposterior, prior=priors.get('background'))
+        
     cmd = ' '.join([
         motevo_path,
         "%s" % sequences,
@@ -52,7 +77,7 @@ def run_motevo(WM, sequences, interm_dir, genome, prior=None, minposterior=.0):
     proc = subprocess.Popen(cmd,
                             stdout=subprocess.PIPE,
                             stderr= subprocess.PIPE,
-                            shell=True)    
+                            shell=True)
     while proc.poll() == None:
         # print proc.poll()
         time.sleep(10)
@@ -60,17 +85,17 @@ def run_motevo(WM, sequences, interm_dir, genome, prior=None, minposterior=.0):
         if (now - stime).seconds > 600:
             os.kill(proc.pid, signal.SIGKILL)
             os.waitpid(-1, os.WNOHANG)
-            print '\nMotevo weight matrix refinement did not converge.\n'
-            return None, None
-    # print proc.stderr.read()
-    # print proc.stdout.read()
+            # print '\nMotevo weight matrix refinement did not converge.\n'
+            return None, None, None
+    print proc.stderr.read()
+    print proc.stdout.read()
     if proc.poll() > 0:
         # print '\nMotevo weight matrix refinement not successful.\n'
-        return None, None
+        return None, None, None
     else:
         # print '\nMotevo weight matrix refinement converged.\n'
-        return siteFilename, priorFilename
-    return (siteFilename, priorFilename)
+        return siteFilename, priorFilename, WM 
+    return siteFilename, priorFilename, WM
 
 
 def extract_priors(prior_file):

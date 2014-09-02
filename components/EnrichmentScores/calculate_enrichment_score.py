@@ -1,13 +1,14 @@
 from motevo_stuff import *
 from fitting_beta import *
-from enrichment_score import calculate_enrichment_scores 
+from enrichment_score import calculate_enrichment_scores
+from concatenate_motifs import concatenate
 
 
 def arguments():
     import argparse
     parser = argparse.ArgumentParser(description='Fits beta and prior, and also run calculate the enrichment scores')
     parser.add_argument('-w', '--wm',
-                    action="store", dest="WM", type=str
+                    action="store", dest="WM", type=str, nargs='+'
                     )    
     parser.add_argument('-t', '--trainseq',
                     action="store", dest="trainSeq", type=str
@@ -26,30 +27,28 @@ def arguments():
 
 
 def fittingParameters(WM, trainingPool, outdir, genome):
-    (siteFilename, priorFilename) = run_motevo(WM, trainingPool, outdir, genome)
+    siteFilename, priorFilename, motifName = run_motevo(WM, trainingPool, outdir, genome)
     prior = extract_priors(priorFilename)
     beta = fit_beta(siteFilename, outdir, WM)
-    os.system('rm %s %s' % (siteFilename, priorFilename))
-    return {'prior': prior, 'beta':beta}
+    return {'prior': prior, 'beta':beta}, priorFilename
 
 
-def calculateEnrichmetScores(WM, testPool, params, outdir, genome):
-    siteFilename, priorFilename = run_motevo(WM, testPool, outdir, \
-                                             genome, prior=params['prior'], \
+def calculateEnrichmetScores(WM, testPool, params, outdir, genome, priorFile):
+    siteFilename, priorFilename, WM = run_motevo(WM, testPool, outdir, \
+                                             genome, priorFile=priorFile, \
                                              minposterior=0.0)
     motifName = os.path.basename(WM)
     enrichmentFile = os.path.join(outdir, motifName + '.enrichment_score')
     scores = calculate_enrichment_scores(siteFilename, params['beta'], enrichmentFile)
-    return scores
+    return scores, motifName 
 
 
 def main():
     args = arguments()
-    params = fittingParameters(args.WM, args.trainSeq, args.outdir, args.GENOME)
-    enrichmentScores = calculateEnrichmetScores(args.WM, \
+    params, priorFile = fittingParameters(args.WM, args.trainSeq, args.outdir, args.GENOME)
+    enrichmentScores, motifName = calculateEnrichmetScores(args.WM, \
                                                 args.testSeq, params, \
-                                                args.outdir, args.GENOME)
-    motifName = os.path.basename(args.WM)
+                                                args.outdir, args.GENOME, priorFile)
     resFilename = os.path.join(args.outdir, motifName + '.results')
     with open(resFilename, 'w') as outf:
         outf.write('\t'.join([
