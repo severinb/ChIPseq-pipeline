@@ -41,11 +41,14 @@ def createJobTemplate(TrainingPool, TestSequences, WMs, scratchDir, genome):
     jobFileContent = '\n'.join([
         '#! /bin/bash',
         'WMFILE=%s' % WMs,
-        'WM=$(sed -n -e "$SGE_TASK_ID p" $WMFILE)',
-        'python {prog} -w $WM \\'.format(prog=prog),
-        '-t {trainseq} \\'.format(trainseq=TrainingPool),
-        '-s {testseq} \\'.format(testseq=TestSequences),        
-        '-o {scratch} -g {genome} '.format(scratch=scratchDir, genome=genome),
+        'for (( i=$SGE_TASK_ID ; i<($SGE_TASK_ID+20) ; i++ ))',
+        'do',
+        '   WM=$(sed -n -e "$i p" $WMFILE)',
+        '   python {prog} -w "$WM" \\'.format(prog=prog),
+        '   -t \'{trainseq}\' \\'.format(trainseq=TrainingPool),
+        '   -s \'{testseq}\' \\'.format(testseq=TestSequences),        
+        '   -o \'{scratch}\' -g \'{genome}\' '.format(scratch=scratchDir, genome=genome),
+        'done'
         ])
     shellFilename = os.path.join(scratchDir, 'command.sh')
     with open(shellFilename, 'w') as outf:
@@ -74,7 +77,7 @@ def runningDrmaaJob(job_path, scratchDir, jobName, NUMBER_OF_JOBS=1):
     jt=init_job_template(s.createJobTemplate(), job_path, [], True, scratchDir, jobName)
     all_jobids = []
     if NUMBER_OF_JOBS > 1:
-        all_jobids = s.runBulkJobs(jt, 1, NUMBER_OF_JOBS, 1)
+        all_jobids = s.runBulkJobs(jt, 1, NUMBER_OF_JOBS, 20)
         s.synchronize(all_jobids, drmaa.Session.TIMEOUT_WAIT_FOREVER, False)
     else:
         all_jobids = s.runJob(jt)
@@ -85,16 +88,25 @@ def runningDrmaaJob(job_path, scratchDir, jobName, NUMBER_OF_JOBS=1):
     
 
 def concatenateResults(scratchDir, resFilename):
+    files = [os.path.join(scratchDir, f) \
+             for f in os.listdir(scratchDir) if re.search('\.results$', f)]
+    resFileUnsorted = resFilename + '.unsorted'
+    with open(resFileUnsorted, 'w') as outf:
+        for a_file in files:
+            with open(a_file) as inf:
+                outf.write(inf.readline())
+    ## sorting according to the enrichment score column
     cmd = ' '.join([
-        'cat',
-        os.path.join(scratchDir, '*.results'),
-        '|',
-        'sort -gr -k 2'
+        'sort -gr -k 2 ',
+        resFileUnsorted,
+        '>',
+        resFilename,
         ])
     proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
     with open(resFilename, 'w') as outf:
         for line in proc.stdout:
             outf.write(line)
+    os.system('rm %s' % (resFileUnsorted))
     return resFilename
 
 
@@ -127,7 +139,8 @@ def execute(cf):
     ## The scratch directory serves as a temporary space for holding files
     scratchDir = createScratchDirectory(outfile)
     ## create a file that lists all the input WMs    
-    WMs = listOfAllWMs(DenovoWMs, DatabaseWMs, scratchDir)
+    WmFile = listOfAllWMs(DenovoWMs, DatabaseWMs, scratchDir)
+    WMs = [wm for wm in open(WmFile)]
     print "Enrichment Scores: There are in total %d WMs" % len(WMs)
     ## create the training pool that contains both real and decoy (shuffled) sequences
     trainingPool = createSequencePool(TrainingInputSequences, TrainingDecoySequences, \
@@ -136,12 +149,13 @@ def execute(cf):
                                   scratchDir, 'testPool')
     ## createJobTemplate for the array job (runs for every motif the fitting and enrichment score program)
     jobName = os.path.basename(os.path.dirname(outfile))
-    shellCommand = createJobTemplate(trainingPool, testPool, WMs, scratchDir, GENOME)
+    shellCommand = createJobTemplate(trainingPool, testPool, WmFile, scratchDir, GENOME)
     runningDrmaaJob(shellCommand, scratchDir, jobName, NUMBER_OF_JOBS=len(WMs))
     ## make the last result file, sorted by the average enrichment score
     concatenateResults(scratchDir, outfile)
     ## cleaning up the scratch directory
     # cleaningUpTmpFiles(scratchDir)
+    
     return 0
 
 

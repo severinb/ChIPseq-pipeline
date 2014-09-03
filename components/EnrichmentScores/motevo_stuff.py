@@ -3,6 +3,7 @@ import os
 import datetime
 import time
 import re
+import uuid
 from concatenate_motifs import concatenate
 
 def create_motevo_param_file(param_filename, site_filename, prior_filename, genome, priordiff=0.05, minposterior=0.0, prior=None):    
@@ -51,6 +52,10 @@ def loadAllPriors(priorFile):
     return priors
 
 
+def randomLabel():
+    return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(64))
+
+
 def run_motevo(WM, sequences, interm_dir, genome, priorFile=None, minposterior=.0):
     motevo_path = '/import/bc2/home/nimwegen/GROUP/software/motevo_ver1.03/bin/motevo'
     priors = loadAllPriors(priorFile)
@@ -63,15 +68,18 @@ def run_motevo(WM, sequences, interm_dir, genome, priorFile=None, minposterior=.
     
     motifName = os.path.basename(WM)
     # print '\nrunnig Motevo for %s' % motifName
-    siteFilename = os.path.join(interm_dir, '%s.sites' % motifName)
-    priorFilename = os.path.join(interm_dir, '%s.priors' % motifName)
-    paramFilename = os.path.join(interm_dir, '%s.params' % motifName)
-    create_motevo_param_file(paramFilename, siteFilename, priorFilename, genome, minposterior=minposterior, prior=priors.get('background'))
+    uniqueID = str(uuid.uuid4())
+    TFname = os.path.basename(os.path.dirname(interm_dir)).replace('_FgBg-enrichmentScores_all_motifs', '')
+    siteFilename = os.path.join('/scratch/', '%s_%s_%s.sites' % (motifName, TFname, uniqueID))
+    priorFilename = os.path.join('/scratch/', '%s_%s_%s.priors' % (motifName, TFname, uniqueID))
+    paramFilename = os.path.join('/scratch/', '%s_%s_%s.params' % (motifName, TFname, uniqueID))
+    create_motevo_param_file(paramFilename, siteFilename, priorFilename, genome, \
+                             minposterior=minposterior, prior=priors.get('background'))
         
     cmd = ' '.join([
         motevo_path,
-        "%s" % sequences,
-        "%s" % paramFilename,
+        "\'%s\'" % sequences,
+        "\'%s\'" % paramFilename,
         "\'%s\'" % WM ])
     print cmd
     proc = subprocess.Popen(cmd,
@@ -86,16 +94,16 @@ def run_motevo(WM, sequences, interm_dir, genome, priorFile=None, minposterior=.
             os.kill(proc.pid, signal.SIGKILL)
             os.waitpid(-1, os.WNOHANG)
             # print '\nMotevo weight matrix refinement did not converge.\n'
-            return None, None, None
-    print proc.stderr.read()
-    print proc.stdout.read()
+            return None, None, None, None
+    # print proc.stderr.read()
+    # print proc.stdout.read()
     if proc.poll() > 0:
         # print '\nMotevo weight matrix refinement not successful.\n'
-        return None, None, None
+        return None, None, None, None
     else:
         # print '\nMotevo weight matrix refinement converged.\n'
-        return siteFilename, priorFilename, WM 
-    return siteFilename, priorFilename, WM
+        return siteFilename, priorFilename, paramFilename,  WM 
+    return siteFilename, priorFilename, paramFilename, WM
 
 
 def extract_priors(prior_file):

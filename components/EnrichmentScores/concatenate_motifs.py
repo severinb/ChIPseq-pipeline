@@ -16,7 +16,7 @@ def arguments():
 
 
 def concatenate(WMs, priors, outf):
-    cmd = 'cat ' + ' '.join(WMs)
+    cmd = 'cat ' + ' '.join(["'%s'" % x for x in WMs])
     proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
     if not priors:
         for line in proc.stdout: outf.write(line)

@@ -1,5 +1,6 @@
 from motevo_stuff import *
 from fitting_beta import *
+from Bio import SeqIO
 from enrichment_score import calculate_enrichment_scores
 from concatenate_motifs import concatenate
 
@@ -26,33 +27,71 @@ def arguments():
     return results
 
 
-def fittingParameters(WM, trainingPool, outdir, genome):
-    siteFilename, priorFilename, motifName = run_motevo(WM, trainingPool, outdir, genome)
+def cleanup(infiles):
+    """
+    To delete the files in the scratch directory
+    """
+    cmd = 'rm -f %s' % (' '.join(infiles))
+    os.system(cmd)
+    return 0    
+
+
+def fittingParameters(WM, trainingPool, trainingLength, outdir, genome):
+    siteFilename, priorFilename, paramFilename, motifName = run_motevo(WM, trainingPool, outdir, genome, priorFile=None, minposterior=0.0001)
     prior = extract_priors(priorFilename)
-    beta = fit_beta(siteFilename, outdir, WM)
+    beta = fit_beta(siteFilename, outdir, WM, trainingLength)
+    cleanup([siteFilename, paramFilename])
     return {'prior': prior, 'beta':beta}, priorFilename
 
 
-def calculateEnrichmetScores(WM, testPool, params, outdir, genome, priorFile):
-    siteFilename, priorFilename, WM = run_motevo(WM, testPool, outdir, \
-                                             genome, priorFile=priorFile, \
-                                             minposterior=0.0)
+def calculateEnrichmetScores(WM, testPool, testLength, params, outdir, genome, priorFile):
+    siteFilename, priorFilename, paramFilename, \
+                  WM = run_motevo(WM, testPool, outdir, \
+                                  genome, priorFile=priorFile, \
+                                  minposterior=0.0001)
     motifName = os.path.basename(WM)
-    enrichmentFile = os.path.join(outdir, motifName + '.enrichment_score')
-    scores = calculate_enrichment_scores(siteFilename, params['beta'], enrichmentFile)
-    return scores, motifName 
+    scores = calculate_enrichment_scores(siteFilename, params['beta'], testLength, os.path.join(outdir, '%s.enrichment_score' % motifName))
+    cleanup([siteFilename, priorFilename, paramFilename, priorFile])    
+    return scores, motifName
+
+
+def lengthOfWM(WMfiles):
+    minLength = np.inf
+    for WMfile in WMfiles:
+        length = 0
+        with open(WMfile) as inf:
+            for line in inf:
+                if re.search('^\d+\s+[(\.)0-9]+\s+[(\.)0-9]+\s+', line):
+                    length += 1
+        if length < minLength:
+            minLength = length
+    return minLength    
+
+
+def lengthOfSequences(trainingPool, testPool, WMfile):
+    wmLength = lengthOfWM(WMfile)
+    trainingLength, testLength = {}, {}
+    with open(trainingPool) as inf:
+        for record in SeqIO.parse(inf, 'fasta'):
+            trainingLength[re.sub('^>', '', record.id)] = (len(record.seq) - wmLength)*2
+    with open(testPool) as inf:
+        for record in SeqIO.parse(inf, 'fasta'):
+            testLength[re.sub('^>', '', record.id)] = (len(record.seq) - wmLength)*2
+    return trainingLength, testLength
 
 
 def main():
     args = arguments()
-    params, priorFile = fittingParameters(args.WM, args.trainSeq, args.outdir, args.GENOME)
+    trainingLength, testLength = lengthOfSequences(args.trainSeq, args.testSeq, args.WM)
+    params, priorFile = fittingParameters(args.WM, args.trainSeq, trainingLength, \
+                                          args.outdir, args.GENOME)
     enrichmentScores, motifName = calculateEnrichmetScores(args.WM, \
-                                                args.testSeq, params, \
+                                                args.testSeq, testLength, params, \
                                                 args.outdir, args.GENOME, priorFile)
     resFilename = os.path.join(args.outdir, motifName + '.results')
     with open(resFilename, 'w') as outf:
         outf.write('\t'.join([
-            motifName,
+            '%&%'.join(args.WM),
             str(enrichmentScores['mean']),
             str(enrichmentScores['std']),
             str(params['beta']),

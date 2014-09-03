@@ -715,6 +715,11 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
 						genome="GENOME")
 
 
+            reducewms_single = ReduceWMs(infile=enrichmentScores_for_all.EnrichmentScores,
+                                  distance_cutoff=0.2,
+                                  @host="long")
+
+
 
             WMlibrary = "WMLIBRARY"
             WMlib = INPUT(path = WMlibrary)
@@ -853,6 +858,11 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
 						DenovoWMs=filterwms.WMdir, 
 						DatabaseWMs="WMLIBRARY", 
 						genome="GENOME")
+
+
+            reducewms_single = ReduceWMs(infile=enrichmentScores_for_all.EnrichmentScores,
+                                  distance_cutoff=0.2,
+                                  @host="long")
 
 
             WMlibrary = "WMLIBRARY"

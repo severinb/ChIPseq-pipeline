@@ -4,10 +4,7 @@ import numpy as np
 
 def sum_of_posteriors_foreground_regions(fname):    
     posteriors = {}
-    number_of_windows = {}
-    number_of_regions = {}
     total_posterior = 0.
-    total_number_of_windows = 0.
     with open(fname) as file_handler:
         for line in file_handler:            
             row = line.split()
@@ -15,21 +12,20 @@ def sum_of_posteriors_foreground_regions(fname):
             if re.search('_reg\d+', row[-1]):
                 posteriors.setdefault(row[-1].strip(), 0.0)
                 posteriors[row[-1].strip()] += posterior
-                number_of_windows.setdefault(row[-1].strip(), 0)
-                number_of_windows[row[-1].strip()] += 1
-            number_of_regions.setdefault(row[-1].strip(), 0)
             total_posterior += posterior
-            total_number_of_windows += 1.
-    return posteriors, total_posterior, number_of_windows, total_number_of_windows, len(number_of_regions.keys())
+    return posteriors, total_posterior
+
 
 
 def likelihood_derivative_beta(normalized_sitecount, beta, N_over_L, B):
     return beta + N_over_L - B*np.power(np.sum(1.0 / (beta + normalized_sitecount)) , -1 )
 
 
-def fit_beta(siteFile, interm_dir, wmFile):
-    binding_regions_sitecount, total_sitecount, number_of_windows, total_length, M = sum_of_posteriors_foreground_regions(siteFile)
-    beta_min, beta_max = 1.0e-12, 1.0e+3
+def fit_beta(siteFile, interm_dir, wmFile, number_of_windows):
+    binding_regions_sitecount, total_sitecount = sum_of_posteriors_foreground_regions(siteFile)
+    total_length = np.sum([l for l in number_of_windows.values()])
+    M = len(number_of_windows.keys())
+    beta_min, beta_max = 1.0e-12, 1.0e+0
     step_size = 5.0
     
     # motifName = os.path.basename(wmFile)    

@@ -157,9 +157,8 @@ def execute(cf):
     outdir = cf.get_output("WMdir")
     log_file = cf.get_output("log_file")
     dist_co = cf.get_parameter("distance_cutoff", "float")
-
-    os.mkdir(outdir)
-
+    
+    os.mkdir(outdir)    
     wmdict = {} #filename: [AUC, Likelihood]
 
     badwms = []
@@ -168,8 +167,11 @@ def execute(cf):
         if i == 0:
             continue
         t = line.strip().split()
-
-        wmdict[t[0]] = float(t[1])
+        try:
+            wmdict[t[0]] = float(t[1])
+        except ValueError:
+            print "Motif %s wasn't included to the initial list" % t[0]
+            continue 
 
     wmdict = filterQuarterWMs(wmdict)
 
