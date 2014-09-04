@@ -3,6 +3,7 @@ from fitting_beta import *
 from Bio import SeqIO
 from enrichment_score import calculate_enrichment_scores
 from concatenate_motifs import concatenate
+import subprocess
 
 
 def arguments():
@@ -32,8 +33,11 @@ def cleanup(infiles):
     To delete the files in the scratch directory
     """
     cmd = 'rm -f %s' % (' '.join(infiles))
-    os.system(cmd)
-    os.system('rm /scratch/*.sites')    
+    proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, \
+                            stderr=subprocess.PIPE)
+    print proc.stderr
+    # os.system(cmd)
+    # os.system('rm /scratch/*.sites')    
     return 0    
 
 

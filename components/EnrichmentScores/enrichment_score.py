@@ -20,7 +20,7 @@ def calculate_enrichment_scores(siteFile, beta, length, res_filename):
     L = np.sum([l for l in length.values()])
     M = len(length.keys())
     fg_regions = M / 11  # 10 times more than fg sequences there's shuffled ones
-    denumerator = np.log( N + L*beta ) - np.log(M)  
+    denumerator = np.log( N + L*beta ) - np.log(M)
     enrichmentScores = np.zeros(fg_regions)
     try:
         index = 0

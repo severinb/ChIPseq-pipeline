@@ -107,7 +107,8 @@ def concatenateResults(scratchDir, resFilename, col):
     with open(resFilename) as outf:
         for line in outf:
             sortedWMs.append( line.split() )
-    # os.system('rm %s' % (resFileUnsorted))
+    for a_file in files:
+        os.system( 'rm %s' % a_file )
     return sortedWMs
 
 
@@ -149,13 +150,14 @@ def combinedMotifs(trainingPool, testPool, WMs, jobName, scratchDir, GENOME, NUM
                         NUMBER_OF_JOBS=len(WMs))
         ## make the last result file, sorted by the average enrichment score
         outfile = os.path.join(os.path.dirname(scratchDir), 'EnrichmentScores_%d' % (index+1))
-        sortedWMs = concatenateResults(scratchDir, outfile, index+2)        
+        sortedWMs = concatenateResults(scratchDir, outfile, index+2)
+        print sortedWMs
         topEnrichmentScoreSecondRound = float(sortedWMs[0][index+1])
         if (topEnrichmentScoreSecondRound - topEnrichmentScoreFirstRound) < 0.005:
             break
         topWM = ' '.join(sortedWMs[0][:(index+1)])
         removeIndex = findTopWMinWMs(WMs, topWM)
-        if removeIndex != -1:
+        if not removeIndex == -1:
             WMs.remove(WMs[removeIndex])
         else:
             raise Exception        
@@ -209,8 +211,10 @@ def execute(cf):
                     NUMBER_OF_JOBS=len(WMs))
     
     ## make the last result file, sorted by the average enrichment score
-
-    sortedWMs = concatenateResults(scratchDir, outfile, 2)
+    # sortedWMs = [wm.split() for wm in \
+    #              open('/import/bc2/home/nimwegen/omidi/Projects/ChIPseq-pipeline/example2/OUTPUT/IRF3_FgBg-enrichmentScores_all_motifs/EnrichmentScores')][:50]
+    # scratchDir = '/import/bc2/home/nimwegen/omidi/Projects/ChIPseq-pipeline/example2/OUTPUT/IRF3_FgBg-enrichmentScores_all_motifs/scratch'
+    sortedWMs = concatenateResults(scratchDir, outfile, 2)    
     ## cleaning up the scratch directory
     # cleaningUpTmpFiles(scratchDir)
     if CombinedMotifs:
