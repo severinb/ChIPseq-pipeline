@@ -2,6 +2,7 @@
 
 import component_skeleton.main
 import sys, os
+from math import isnan
 from pylab import *
 
 
@@ -142,9 +143,14 @@ def reduceWMs(wmdict, dist_co):
             #if diverg <= dist_co:
             if dist <= dist_co:
                 del wmdict[wm]
-
-
     return final_wms
+
+
+def convertFloat(x):
+    res = float(x)
+    if isnan(res):
+        raise Exception
+    return res 
 
 
 def execute(cf):
@@ -168,8 +174,8 @@ def execute(cf):
             continue
         t = line.strip().split()
         try:
-            wmdict[t[0]] = float(t[1])
-        except ValueError:
+            wmdict[t[0]] = convertFloat(t[1])
+        except:
             print "Motif %s wasn't included to the initial list" % t[0]
             continue 
 

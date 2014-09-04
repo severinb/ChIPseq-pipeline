@@ -9,7 +9,7 @@ def arguments():
     import argparse
     parser = argparse.ArgumentParser(description='Fits beta and prior, and also run calculate the enrichment scores')
     parser.add_argument('-w', '--wm',
-                    action="store", dest="WM", type=str, nargs='+'
+                    action="store", dest="WM", type=str
                     )    
     parser.add_argument('-t', '--trainseq',
                     action="store", dest="trainSeq", type=str
@@ -33,6 +33,7 @@ def cleanup(infiles):
     """
     cmd = 'rm -f %s' % (' '.join(infiles))
     os.system(cmd)
+    os.system('rm /scratch/*.sites')    
     return 0    
 
 
@@ -81,7 +82,8 @@ def lengthOfSequences(trainingPool, testPool, WMfile):
 
 
 def main():
-    args = arguments()
+    args = arguments()    
+    args.WM = args.WM.split(' ')  # to have a list of WMs, in case we running for more than one WMs
     trainingLength, testLength = lengthOfSequences(args.trainSeq, args.testSeq, args.WM)
     params, priorFile = fittingParameters(args.WM, args.trainSeq, trainingLength, \
                                           args.outdir, args.GENOME)
@@ -91,12 +93,13 @@ def main():
     resFilename = os.path.join(args.outdir, motifName + '.results')
     with open(resFilename, 'w') as outf:
         outf.write('\t'.join([
-            '%&%'.join(args.WM),
+            '\t'.join(args.WM),
             str(enrichmentScores['mean']),
             str(enrichmentScores['std']),
             str(params['beta']),
             str(params['prior'])
             ]) + '\n')
+    # os.system('find /scratch/ -user omidi -exec rm {} \;')
     
     
     

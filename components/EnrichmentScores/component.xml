@@ -44,6 +44,9 @@
       <parameter name="DatabaseWMs" type="string" default="">
 	<doc>The directory that holds the database motifs</doc>
       </parameter>
+      <parameter name="CombinedMotifs" type="boolean" default="false">
+	<doc>If it's going to find the combination of motifs or not</doc>
+      </parameter>
       <parameter name="genome" type="string" default="">
 	<doc>genome: hg19, mm9 ...</doc>
       </parameter>
