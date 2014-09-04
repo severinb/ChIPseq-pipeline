@@ -372,8 +372,6 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
          aligned_bool = "false"
 
 
-         buildufe = BuildUFEmodel(Sequences = getseqs.Sequences, genome="GENOME", motevoUFE_path="MOTEVOUFE_PATH", @host="long")
-
          getseqs2 = GetSequences(in_file = peakmerge.allpeaks, genome="GENOME", genome_path="GENDIR_PATH", @host="long")
 
 

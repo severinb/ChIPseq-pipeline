@@ -10,7 +10,7 @@
     The cut-off is varied from 0 up to highest scoring region to get this plot.  
     </doc>
     <launcher type="python">
-        <argument name="file" value="WMQuality_updated.py" />
+        <argument name="file" value="WMQuality.py" />
     </launcher>
     <requires>URL="http://www.python.org/not" type="manual">python</requires>
     <inputs>
