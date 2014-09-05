@@ -18,10 +18,11 @@ def sum_of_posteriors_foreground_regions(fname):
 def calculate_enrichment_scores(siteFile, beta, length, res_filename):    
     sites, N = sum_of_posteriors_foreground_regions(siteFile)
     L = np.sum([l for l in length.values()])
+    averageLength = np.mean([l for l in length.values()])
     M = len(length.keys())
     fg_regions = M / 11  # 10 times more than fg sequences there's shuffled ones
     denumerator = np.log( N + L*beta ) - np.log(M)
-    enrichmentScores = np.zeros(fg_regions)
+    enrichmentScores = np.repeat(np.log(beta*averageLength) - denumerator, fg_regions)
     try:
         index = 0
         # with open(res_filename, 'w') as outfile:        

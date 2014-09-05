@@ -81,28 +81,16 @@ def run_motevo(WM, sequences, interm_dir, genome, priorFile=None, minposterior=.
         "\'%s\'" % sequences,
         "\'%s\'" % paramFilename,
         "\'%s\'" % WM ])
-    print cmd
+    # print cmd
     proc = subprocess.Popen(cmd,
                             stdout=subprocess.PIPE,
                             stderr= subprocess.PIPE,
                             shell=True)
-    while proc.poll() == None:
-        # print proc.poll()
-        time.sleep(10)
-        now = datetime.datetime.now()
-        if (now - stime).seconds > 600:
-            os.kill(proc.pid, signal.SIGKILL)
-            os.waitpid(-1, os.WNOHANG)
-            # print '\nMotevo weight matrix refinement did not converge.\n'
-            return None, None, None, None
-    # print proc.stderr.read()
-    # print proc.stdout.read()
-    if proc.poll() > 0:
-        # print '\nMotevo weight matrix refinement not successful.\n'
+    result = proc.communicate()
+    if proc.returncode:
+        print result[0]
+        print result[1]
         return None, None, None, None
-    else:
-        # print '\nMotevo weight matrix refinement converged.\n'
-        return siteFilename, priorFilename, paramFilename,  WM 
     return siteFilename, priorFilename, paramFilename, WM
 
 

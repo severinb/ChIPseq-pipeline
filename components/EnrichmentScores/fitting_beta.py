@@ -1,5 +1,6 @@
 import re, os
 import numpy as np
+from enrichment_score import calculate_enrichment_scores
 
 
 def sum_of_posteriors_foreground_regions(fname):    
@@ -26,7 +27,7 @@ def fit_beta(siteFile, interm_dir, wmFile, number_of_windows):
     total_length = np.sum([l for l in number_of_windows.values()])
     M = len(number_of_windows.keys())
     beta_min, beta_max = 1.0e-12, 1.0e+0
-    step_size = 5.0
+    step_size = 1.0e-3
     
     # motifName = os.path.basename(wmFile)    
     # res_file = open(os.path.join(interm_dir, '%s.beta' % motifName), 'w')    
@@ -44,33 +45,39 @@ def fit_beta(siteFile, interm_dir, wmFile, number_of_windows):
     for region, sitecount in binding_regions_sitecount.items():
         tmp.append(sitecount / float(number_of_windows[region]))
     normalized_sitecount = np.array(tmp)
-    # updating the lower and upper bounds for the value of Beta
-    # It's where the two bounds (upper and lower) have opposite signs
-    likelihood_beta_lower = likelihood_derivative_beta(normalized_sitecount, beta_lower_bound, N_over_L, B)
-    # res_file.write('%f\t%0.12f\n' % (beta_lower_bound, likelihood_beta_lower))
-    if likelihood_beta_lower > .0:
-        while True:            
-            likelihood_beta_upper = likelihood_derivative_beta(normalized_sitecount, beta_upper_bound, N_over_L, B)
-            if likelihood_beta_upper < 0.:
-                beta_lower_bound = beta_upper_bound - step_size
-                break
-            beta_upper_bound += step_size
-            # res_file.write('%f\t%0.12f\n' % (beta_upper_bound, likelihood_beta_upper))            
-            if beta_upper_bound > beta_max:  # prevents to go very very large numbers for Beta
-                return beta_max
-    else:  # once the derivative of likelihood for the lowest beta is already negative
-        return beta_lower_bound
+    # # updating the lower and upper bounds for the value of Beta
+    # # It's where the two bounds (upper and lower) have opposite signs
+    # likelihood_beta_lower = likelihood_derivative_beta(normalized_sitecount, beta_lower_bound, N_over_L, B, number_of_windows)
+    # # res_file.write('%f\t%0.12f\n' % (beta_lower_bound, likelihood_beta_lower))
+    # if likelihood_beta_lower > .0:
+    #     while True:            
+    #         likelihood_beta_upper = likelihood_derivative_beta(normalized_sitecount, beta_upper_bound, N_over_L, B)
+    #         if likelihood_beta_upper < 0.:
+    #             beta_lower_bound = beta_upper_bound - step_size
+    #             break
+    #         beta_upper_bound += step_size
+    #         # res_file.write('%f\t%0.12f\n' % (beta_upper_bound, likelihood_beta_upper))            
+    #         if beta_upper_bound > beta_max:  # prevents to go very very large numbers for Beta
+    #             return beta_max
+    # else:  # once the derivative of likelihood for the lowest beta is already negative
+    #     return beta_lower_bound
 
     # bisection method for refining the search area
-    while (beta_upper_bound - beta_lower_bound) > 1.0e-9:
-        mid_beta = (beta_upper_bound + beta_lower_bound) / 2.0
+    while (beta_upper_bound - beta_lower_bound) > 1.0e-12:
+        mid_beta = (beta_upper_bound + beta_lower_bound) / 2.0        
         # print beta_lower_bound, mid_beta, beta_upper_bound
         mid_likelihood = likelihood_derivative_beta(normalized_sitecount, mid_beta, N_over_L, B)
-        # print beta_lower_bound, mid_beta, beta_upper_bound, mid_likelihood        
+        # print beta_lower_bound, mid_beta, beta_upper_bound, mid_likelihood
         if mid_likelihood > .0:
             beta_lower_bound = mid_beta
         else:
             beta_upper_bound = mid_beta
+
+    # with open('tmp_enrichment', 'w') as outf:
+    #     for beta in np.linspace(beta_min, 3.8201662787927147e-05, 200):        
+    #         scores =calculate_enrichment_scores(siteFile, beta, number_of_windows, '')
+    #         outf.write('%f\t%f\n' % (beta, scores['mean']))
+    #         print beta, '\t', scores
     # print mid_beta
     # res_file.write('beta:\t%0.12f\n' % mid_beta)
     # res_file.close()

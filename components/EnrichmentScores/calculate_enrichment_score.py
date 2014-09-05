@@ -32,13 +32,15 @@ def cleanup(infiles):
     """
     To delete the files in the scratch directory
     """
-    cmd = 'rm -f %s' % (' '.join(infiles))
-    proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, \
+    for a_file in infiles:
+        cmd = "rm -f '%s'" % a_file
+        proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, \
                             stderr=subprocess.PIPE)
-    print proc.stderr
-    # os.system(cmd)
-    # os.system('rm /scratch/*.sites')    
-    return 0    
+        result = proc.communicate()
+        if proc.returncode:
+            print result[1]
+            print 'Problem with these files: ' % infiles
+    return 0 
 
 
 def fittingParameters(WM, trainingPool, trainingLength, outdir, genome):

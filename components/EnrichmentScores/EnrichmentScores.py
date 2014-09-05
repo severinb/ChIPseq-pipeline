@@ -108,12 +108,12 @@ def concatenateResults(scratchDir, resFilename, col):
         for line in outf:
             sortedWMs.append( line.split() )
     for a_file in files:
-        os.system( 'rm %s' % a_file )
+        os.system( "rm '%s'" % a_file )
     return sortedWMs
 
 
 def cleaningUpTmpFiles(scratchDir):
-    cmd = 'rm -fr %s' % scratchDir
+    cmd = "rm -fr '%s'" % scratchDir
     os.system(cmd)
     return 0
 
@@ -151,7 +151,6 @@ def combinedMotifs(trainingPool, testPool, WMs, jobName, scratchDir, GENOME, NUM
         ## make the last result file, sorted by the average enrichment score
         outfile = os.path.join(os.path.dirname(scratchDir), 'EnrichmentScores_%d' % (index+1))
         sortedWMs = concatenateResults(scratchDir, outfile, index+2)
-        print sortedWMs
         topEnrichmentScoreSecondRound = float(sortedWMs[0][index+1])
         if (topEnrichmentScoreSecondRound - topEnrichmentScoreFirstRound) < 0.005:
             break
