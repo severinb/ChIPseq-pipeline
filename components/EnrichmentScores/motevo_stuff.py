@@ -6,6 +6,20 @@ import re
 import uuid
 from concatenate_motifs import concatenate
 
+def cleanup(infile):
+    """
+    To delete the files in the scratch directory
+    """
+    cmd = "rm -f '%s'" % infile
+    proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, \
+                                stderr=subprocess.PIPE)
+    result = proc.communicate()
+    if proc.returncode:
+        print result[1]
+        print 'Problem with removing these file at RunMotevo: ' % infile
+    return 0 
+
+
 def create_motevo_param_file(param_filename, site_filename, prior_filename, genome, priordiff=0.05, minposterior=0.0, prior=None):    
     if not prior:
         prior = '0.99'
@@ -60,9 +74,10 @@ def run_motevo(WM, sequences, interm_dir, genome, priorFile=None, minposterior=.
     motevo_path = '/import/bc2/home/nimwegen/GROUP/software/motevo_ver1.03/bin/motevo'
     priors = loadAllPriors(priorFile)
     stime = datetime.datetime.now()
-
+    isConcatenatedMotif = False 
     if len(WM) > 1:
         WM = concatenate_motifs(WM, interm_dir, priors=priors)
+        isConcatenatedMotif = True 
     else:
         WM = WM[0]
     
@@ -86,11 +101,13 @@ def run_motevo(WM, sequences, interm_dir, genome, priorFile=None, minposterior=.
                             stdout=subprocess.PIPE,
                             stderr= subprocess.PIPE,
                             shell=True)
-    result = proc.communicate()
+    result = proc.communicate()   
     if proc.returncode:
         print result[0]
         print result[1]
-        return None, None, None, None
+        return None, None, None, None    
+    if isConcatenatedMotif: # to remove the temporary motifs that are created via concatenation
+        cleanup(WM)
     return siteFilename, priorFilename, paramFilename, WM
 
 

@@ -299,16 +299,8 @@ function BGfunction(BinaryFile bgIN, string repFMIid, string iter, string DESC, 
 /*------------------------------Composite Component for processing on TF-Background pair---------------------------*/
 /*-----------------------------------------------------------------------------------------------------------------*/
 
-function FGBGprocessing(string IPstring, string BGstring, string WM, string TFname) -> (BinaryFile Sequences, BinaryFolder RegionCoverageDir, BinaryFile PeakStats, BinaryFolder PeakCallDir, BinaryFile LLog, BinaryFile LLog_tops, BinaryFile AUCLog, BinaryFile AUCLog_tops, BinaryFile Peaks, BinaryFile ShuffledTestSet, BinaryFile ShuffledTrainSet, BinaryFile TestSet, BinaryFile TrainingSet, BinaryFile UFEmodel, BinaryFile BaseFrequencies){
+function FGBGprocessing(string IPstring, string BGstring, string TFname) -> (BinaryFile Sequences, BinaryFolder RegionCoverageDir, BinaryFile PeakStats, BinaryFolder PeakCallDir, BinaryFile LLog, BinaryFile LLog_tops, BinaryFile AUCLog, BinaryFile AUCLog_tops, BinaryFile Peaks, BinaryFile ShuffledTestSet, BinaryFile ShuffledTrainSet, BinaryFile TestSet, BinaryFile TrainingSet, BinaryFile UFEmodel, BinaryFile BaseFrequencies){
 
-         //check whether a WM exists for this TF
-	 if WM != "None" {
-		wm_defined=1
-                old_WM = INPUT(path=WM)
-		}
-         else {
-                wm_defined=0
-                }
 
 
          ////Doing all the read counting and BG cut-off filtering with Piotr's binReads.pl
@@ -364,18 +356,10 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
          shuffledSeqs_train = ShuffleAlignments(infile = splitseqs.odd_file, mode="phil", iterations=10, perlPATH="PERL_PATH", pythonPATH="PYTHON_PATH", @host="long")
 
 
-         //this is not really neccessary to assign outports to variables... it is an ancient thing. 
-         shuffled_test_forreturn = shuffledSeqs_test.outfile
-         shuffled_train_forreturn = shuffledSeqs_train.outfile
-         test_forreturn = splitseqs.odd_file
-         training_forreturn = splitseqs.even_file
-         aligned_bool = "false"
-
-
          getseqs2 = GetSequences(in_file = peakmerge.allpeaks, genome="GENOME", genome_path="GENDIR_PATH", @host="long")
 
 
-         //Fork here if no de novo motif finding is requested. If a WM is given it will be refined. Given WM and refined WM will be processed for WM statistics (GetWMStats) and also for a given WM library enrichment is checked and statistics for enriched WMs will be calculated.
+         //Fork here if no de novo motif finding is requested. Also, for a given WM library enrichment is checked and statistics for enriched WMs will be calculated.
 
          pipeFlag = "PIPEFLAG"
 
@@ -430,78 +414,14 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
                                                  sectionTitle="Annotating Refined Peaks:")
 
 
-                  if wm_defined == 1 {
+                  combine2 = CombineLatex(latex1=latexfrag1.fragment, latex2=latexfrag2.fragment, latex3=latexfrag3.fragment, latex4=latexfrag4.fragment, latex5=latexfrag5.fragment, latex6=latexfrag6.fragment)      
+                  OUTPUT(combine2.pdfreport)
+                  OUTPUT(annotpeaks.peakAnnotations)
 
-                     //Run motevo for refinement of existing weight matrix
-                     runmotevo = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = old_WM.in, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
-
-
-                     latexfragRef = LatexFragmentizer(plot1=runmotevo.Logo,
-                                                      capt_plot1="Refined weight matrix logo.",
-                                                      sectionTitle="Refining Given Motif:")
-
-
-
-                     wmqual = WMQuality(train_set = splitseqs.even_file,
-                                        bg_train_set = shuffledSeqs_train.outfile,
-                                        test_set = splitseqs.odd_file,
-                                        bg_test_set = shuffledSeqs_test.outfile,
-                                        WM1 = old_WM.in,
-                                        WM2 = runmotevo.refWM,
-                                        aligned="false", genome="GENOME",
-                                        motevo_path="MOTEVO_PATH",
-                                        @host="long")
-
-
-                     site_enrichment_slim = SiteEnrichmentM_greedy_drmaa(train_set = splitseqs.even_file,
-                                                                         test_set = splitseqs.odd_file,
-                                                                         bg_train_set = shuffledSeqs_train.outfile,
-                                                                         background_set = shuffledSeqs_test.outfile,
-                                                                         BaseFrequencies = buildufe.BaseFrequencies,
-                                                                         WM1 = old_WM.in,
-                                                                         WM2 = runmotevo.refWM,
-                                                                         UFEmodel = buildufe.UFEmodel,
-                                                                         genome="GENOME",
-                                                                         motevo_path="MOTEVO_PATH",
-                                                                         aligned=aligned_bool,
-                                                                         slim="true",
-                                                                         site_enrichment_cutoff=4.6,
-                                                                         pseudocount=0.05,
-                                                                         project_leader="PROJECTLEADER",
-                                                                         queue_name="fs_long")
-
-
-                     stetsOld = GetWMStats(Sequences = getseqs2.Sequences, RegionCoverage = regioncoverage.out_dir, PeakStats = pstats, CandWM = old_WM.in, PeakCallDir = peakcall_newnoise.out_dir,  LLog = site_enrichment_slim.loglik_all_motifs, AUCLog = wmqual.log_file, IP_string=IPstring)
-
-                     stetsRef = GetWMStats(Sequences = getseqs2.Sequences, RegionCoverage = regioncoverage.out_dir, PeakStats = pstats, CandWM = runmotevo.refWM, PeakCallDir = peakcall_newnoise.out_dir,  LLog = site_enrichment_slim.loglik_all_motifs, AUCLog = wmqual.log_file, IP_string=IPstring)
-
-
-                     combinepeakstfbs = CombinePeaksTFBSs_peaks(peaks = annotpeaks.peakAnnotations, peaks_known = stetsOld.Peakstats, peaks_refined = stetsRef.Peakstats, TFBSs_known = stetsOld.TFBSstats, TFBSs_refined = stetsRef.TFBSstats, known_name=WM, minposterior=0.2, FGfiles_string=IPstring, @host="long")
-
-
-                     OUTPUT(combinepeakstfbs.peaks_with_sites)
-
-                     combine2 = CombineLatex(latex1=latexfrag1.fragment, latex2=latexfrag2.fragment, latex3=latexfrag3.fragment, latex4=latexfrag4.fragment, latex5=latexfrag5.fragment, latex6=latexfrag6.fragment, latex7=latexfragRef.fragment)
-
-                     OUTPUT(combine2.pdfreport)
-
-                     //All these outports are dummies. (LLog and AUCLog ports could be used for TFBSstats of given and refined WM respectively.)
-                     return record(Sequences = getseqs2.Sequences, RegionCoverageDir = regioncoverage.out_dir, PeakStats = pstats, PeakCallDir = peakcall_newnoise.out_dir, LLog = stetsOld.TFBSstats, LLog_tops = stetsOld.TFBSstats, AUCLog = stetsRef.TFBSstats, AUCLog_tops = stetsRef.TFBSstats, Peaks = annotpeaks.peakAnnotations, ShuffledTestSet = shuffledSeqs_test.outfile, ShuffledTrainSet = shuffledSeqs_train.outfile, TestSet = splitseqs.odd_file, TrainingSet = splitseqs.even_file, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies)
-
-                     }
-
-
-                  else {
-
-                        combine2 = CombineLatex(latex1=latexfrag1.fragment, latex2=latexfrag2.fragment, latex3=latexfrag3.fragment, latex4=latexfrag4.fragment, latex5=latexfrag5.fragment, latex6=latexfrag6.fragment)      
-                        OUTPUT(combine2.pdfreport)
-                        OUTPUT(annotpeaks.peakAnnotations)
-
-			//All outports are dummy ports:
-                        return record(Sequences = getseqs2.Sequences, RegionCoverageDir = regioncoverage.out_dir, PeakStats = pstats, PeakCallDir = peakcall_newnoise.out_dir, LLog = pstats, LLog_tops = pstats, AUCLog = pstats, AUCLog_tops = pstats, Peaks = annotpeaks.peakAnnotations, ShuffledTestSet = shuffledSeqs_test.outfile, ShuffledTrainSet = shuffledSeqs_train.outfile, TestSet = splitseqs.odd_file, TrainingSet = splitseqs.even_file, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies)
+                  //All outports are dummy ports:
+                  return record(Sequences = getseqs2.Sequences, RegionCoverageDir = regioncoverage.out_dir, PeakStats = pstats, PeakCallDir = peakcall_newnoise.out_dir, LLog = pstats, LLog_tops = pstats, AUCLog = pstats, AUCLog_tops = pstats, Peaks = annotpeaks.peakAnnotations, ShuffledTestSet = shuffledSeqs_test.outfile, ShuffledTrainSet = shuffledSeqs_train.outfile, TestSet = splitseqs.odd_file, TrainingSet = splitseqs.even_file, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies)
 
                       }
-           }
 
 
          //Runs PhyloGibbs
@@ -534,33 +454,6 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
 	 refinedMotifPG6_1 = MotifRefinement(InputSequences=splitseqs.odd_file, WM=phylogibbs6.WeightMatrix1, genome="GENOME", @host="long", weblogo_path="WEBLOGO_PATH")
 	 refinedMotifPG6_2 = MotifRefinement(InputSequences=splitseqs.odd_file, WM=phylogibbs6.WeightMatrix2, genome="GENOME", @host="long", weblogo_path="WEBLOGO_PATH")
 	 
-	 //Fitting the background prior and beta over the training pool
-	 fitPriorBetaPG1_1 = FitBackgroundPriorAndBeta(InputSequences=splitseqs.odd_file, DecoySequences=shuffledSeqs_test.outfile, WM=refinedMotifPG1_1.refWM, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
-	 fitPriorBetaPG1_2 = FitBackgroundPriorAndBeta(InputSequences=splitseqs.odd_file, DecoySequences=shuffledSeqs_test.outfile, WM=refinedMotifPG1_2.refWM, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
-	 fitPriorBetaPG2_1 = FitBackgroundPriorAndBeta(InputSequences=splitseqs.odd_file, DecoySequences=shuffledSeqs_test.outfile, WM=refinedMotifPG2_1.refWM, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
-	 fitPriorBetaPG2_2 = FitBackgroundPriorAndBeta(InputSequences=splitseqs.odd_file, DecoySequences=shuffledSeqs_test.outfile, WM=refinedMotifPG2_2.refWM, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
-	 fitPriorBetaPG3_1 = FitBackgroundPriorAndBeta(InputSequences=splitseqs.odd_file, DecoySequences=shuffledSeqs_test.outfile, WM=refinedMotifPG3_1.refWM, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
-	 fitPriorBetaPG3_2 = FitBackgroundPriorAndBeta(InputSequences=splitseqs.odd_file, DecoySequences=shuffledSeqs_test.outfile, WM=refinedMotifPG3_2.refWM, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
-	 fitPriorBetaPG4_1 = FitBackgroundPriorAndBeta(InputSequences=splitseqs.odd_file, DecoySequences=shuffledSeqs_test.outfile, WM=refinedMotifPG4_1.refWM, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
-	 fitPriorBetaPG4_2 = FitBackgroundPriorAndBeta(InputSequences=splitseqs.odd_file, DecoySequences=shuffledSeqs_test.outfile, WM=refinedMotifPG4_2.refWM, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
-	 fitPriorBetaPG5_1 = FitBackgroundPriorAndBeta(InputSequences=splitseqs.odd_file, DecoySequences=shuffledSeqs_test.outfile, WM=refinedMotifPG5_1.refWM, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
-	 fitPriorBetaPG5_2 = FitBackgroundPriorAndBeta(InputSequences=splitseqs.odd_file, DecoySequences=shuffledSeqs_test.outfile, WM=refinedMotifPG5_2.refWM, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
-	 fitPriorBetaPG6_1 = FitBackgroundPriorAndBeta(InputSequences=splitseqs.odd_file, DecoySequences=shuffledSeqs_test.outfile, WM=refinedMotifPG6_1.refWM, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
-	 fitPriorBetaPG6_2 = FitBackgroundPriorAndBeta(InputSequences=splitseqs.odd_file, DecoySequences=shuffledSeqs_test.outfile, WM=refinedMotifPG6_2.refWM, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
-
-	 //Calculating the enrichment scores over the test set by using the fitted paramters					    
-	 enrichmentScoresPG1_1 = CalculateEnrichmetScore(InputSequences=splitseqs.even_file, DecoySequences=shuffledSeqs_train.outfile, WM=refinedMotifPG1_1.refWM, FittedParams=fitPriorBetaPG1_1.FittedParameters, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
-	 enrichmentScoresPG1_2 = CalculateEnrichmetScore(InputSequences=splitseqs.even_file, DecoySequences=shuffledSeqs_train.outfile, WM=refinedMotifPG1_2.refWM, FittedParams=fitPriorBetaPG1_2.FittedParameters, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
-	 enrichmentScoresPG2_1 = CalculateEnrichmetScore(InputSequences=splitseqs.even_file, DecoySequences=shuffledSeqs_train.outfile, WM=refinedMotifPG2_1.refWM, FittedParams=fitPriorBetaPG2_1.FittedParameters, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
-	 enrichmentScoresPG2_2 = CalculateEnrichmetScore(InputSequences=splitseqs.even_file, DecoySequences=shuffledSeqs_train.outfile, WM=refinedMotifPG2_2.refWM, FittedParams=fitPriorBetaPG2_2.FittedParameters, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
-	 enrichmentScoresPG3_1 = CalculateEnrichmetScore(InputSequences=splitseqs.even_file, DecoySequences=shuffledSeqs_train.outfile, WM=refinedMotifPG3_1.refWM, FittedParams=fitPriorBetaPG3_1.FittedParameters, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
-	 enrichmentScoresPG3_2 = CalculateEnrichmetScore(InputSequences=splitseqs.even_file, DecoySequences=shuffledSeqs_train.outfile, WM=refinedMotifPG3_2.refWM, FittedParams=fitPriorBetaPG3_2.FittedParameters, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
-	 enrichmentScoresPG4_1 = CalculateEnrichmetScore(InputSequences=splitseqs.even_file, DecoySequences=shuffledSeqs_train.outfile, WM=refinedMotifPG4_1.refWM, FittedParams=fitPriorBetaPG4_1.FittedParameters, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
-	 enrichmentScoresPG4_2 = CalculateEnrichmetScore(InputSequences=splitseqs.even_file, DecoySequences=shuffledSeqs_train.outfile, WM=refinedMotifPG4_2.refWM, FittedParams=fitPriorBetaPG4_2.FittedParameters, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
-	 enrichmentScoresPG5_1 = CalculateEnrichmetScore(InputSequences=splitseqs.even_file, DecoySequences=shuffledSeqs_train.outfile, WM=refinedMotifPG5_1.refWM, FittedParams=fitPriorBetaPG5_1.FittedParameters, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
-	 enrichmentScoresPG5_2 = CalculateEnrichmetScore(InputSequences=splitseqs.even_file, DecoySequences=shuffledSeqs_train.outfile, WM=refinedMotifPG5_2.refWM, FittedParams=fitPriorBetaPG5_2.FittedParameters, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
-	 enrichmentScoresPG6_1 = CalculateEnrichmetScore(InputSequences=splitseqs.even_file, DecoySequences=shuffledSeqs_train.outfile, WM=refinedMotifPG6_1.refWM, FittedParams=fitPriorBetaPG6_1.FittedParameters, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
-	 enrichmentScoresPG6_2 = CalculateEnrichmetScore(InputSequences=splitseqs.even_file, DecoySequences=shuffledSeqs_train.outfile, WM=refinedMotifPG6_2.refWM, FittedParams=fitPriorBetaPG6_2.FittedParameters, genome="GENOME", motevo_path="MOTEVO_PATH", @host="long")
 
          //Report generation
 
@@ -665,289 +558,105 @@ function FGBGprocessing(string IPstring, string BGstring, string WM, string TFna
                                           sectionTitle="Logos for All Twelve Refined de novo Motifs.")
 
 
-         if wm_defined == 1 {
 
 
-            //Run motevo for refinement of existing weight matrix
-            runmotevo = RunMotevo(odd_file = splitseqs.odd_file, even_file = splitseqs.even_file, WM = old_WM.in, shuffledPeaks = shuffledSeqs_test.outfile, genome="GENOME", mylogo_path="MYLOGO_PATH", motevo_path="MOTEVO_PATH", minpostwm=0.25, wmdiff=0.000075, aligned="false", @host="long")
+         filterwms = FilterWMs(WM1 = phylogibbs1.WeightMatrix1,
+                               WM2 = refinedMotifPG1_1.refWM,
+                               WM3 = phylogibbs1.WeightMatrix2,
+                               WM4 = refinedMotifPG1_2.refWM,
+                               WM5 = phylogibbs2.WeightMatrix1,
+                               WM6 = refinedMotifPG2_1.refWM,
+                               WM7 = phylogibbs2.WeightMatrix2,
+                               WM8 = refinedMotifPG2_2.refWM,
+                               WM9 = phylogibbs3.WeightMatrix1,
+                               WM10 = refinedMotifPG3_1.refWM,
+                               WM11 = phylogibbs3.WeightMatrix2,
+                               WM12 = refinedMotifPG3_2.refWM,
+                               WM13 = phylogibbs4.WeightMatrix1,
+                               WM14 = refinedMotifPG4_1.refWM,
+                               WM15 = phylogibbs4.WeightMatrix2,
+                               WM16 = refinedMotifPG4_2.refWM,
+                               WM17 = phylogibbs5.WeightMatrix1,
+                               WM18 = refinedMotifPG5_1.refWM,
+                               WM19 = phylogibbs5.WeightMatrix2,
+                               WM20 = refinedMotifPG5_2.refWM,
+                               WM21 = phylogibbs6.WeightMatrix1,
+                               WM22 = refinedMotifPG6_1.refWM,
+                               WM23 = phylogibbs6.WeightMatrix2,
+                               WM24 = refinedMotifPG6_2.refWM,
+                               @host="long")
+     
+         
+         enrichmentScores_for_all = EnrichmentScores(TrainingSequences=splitseqs.odd_file,
+                                    TrainingDecoySequences=shuffledSeqs_train.outfile, 
+  				    TestSequences=splitseqs.even_file, 
+  				    TestDecoySequences=shuffledSeqs_test.outfile, 
+  				    DenovoWMs=filterwms.WMdir, 
+  				    DatabaseWMs="WMLIBRARY", 
+  				    genome="GENOME",
+                                    CombinedMotifs="false")
 
-            filterwms = FilterWMs(WM1 = phylogibbs1.WeightMatrix1,
-                                  WM2 = refinedMotifPG1_1.refWM,
-                                  WM3 = phylogibbs1.WeightMatrix2,
-                                  WM4 = refinedMotifPG1_2.refWM,
-                                  WM5 = phylogibbs2.WeightMatrix1,
-                                  WM6 = refinedMotifPG2_1.refWM,
-                                  WM7 = phylogibbs2.WeightMatrix2,
-                                  WM8 = refinedMotifPG2_2.refWM,
-                                  WM9 = phylogibbs3.WeightMatrix1,
-                                  WM10 = refinedMotifPG3_1.refWM,
-                                  WM11 = phylogibbs3.WeightMatrix2,
-                                  WM12 = refinedMotifPG3_2.refWM,
-                                  WM13 = phylogibbs4.WeightMatrix1,
-                                  WM14 = refinedMotifPG4_1.refWM,
-                                  WM15 = phylogibbs4.WeightMatrix2,
-                                  WM16 = refinedMotifPG4_2.refWM,
-                                  WM17 = phylogibbs5.WeightMatrix1,
-                                  WM18 = refinedMotifPG5_1.refWM,
-                                  WM19 = phylogibbs5.WeightMatrix2,
-                                  WM20 = refinedMotifPG5_2.refWM,
-                                  WM21 = phylogibbs6.WeightMatrix1,
-                                  WM22 = refinedMotifPG6_1.refWM,
-                                  WM23 = phylogibbs6.WeightMatrix2,
-                                  WM24 = refinedMotifPG6_2.refWM,
-                                  WM25 = runmotevo.refWM,
-                                  @host="long")
 
 
-            trimwm = TrimWM(WMdir = filterwms.WMdir,
-                            information_cutoff=0.25,
+         reducewms = ReduceWMs(infile=enrichmentScores_for_all.EnrichmentScores,
+                     distance_cutoff=0.2,
+                     minscore=0.0,
+                     @host="long")
+
+
+         WMlibrary = "WMLIBRARY"
+         WMlib = INPUT(path = WMlibrary)
+
+
+
+         //take one set of alignments and background alignments to test all WMs we have. Also gives the best WM.
+         wmqual_tops = WMQuality(train_set = splitseqs.even_file,
+                                 bg_train_set = shuffledSeqs_train.outfile,
+                                 test_set = splitseqs.odd_file,
+                                 bg_test_set = shuffledSeqs_test.outfile,
+                                 WMlist = enrichmentScores_for_all.EnrichmentScores,
+                            	 aligned="false", genome="GENOME",
+                            	 motevo_path="MOTEVO_PATH",
+                            	 @host="long")
+
+
+         enrichmentScores_combined_motifs = EnrichmentScores(TrainingSequences=splitseqs.odd_file,
+                                            TrainingDecoySequences=shuffledSeqs_train.outfile, 
+  				            TestSequences=splitseqs.even_file, 
+  				            TestDecoySequences=shuffledSeqs_test.outfile, 
+  				            DenovoWMs=reducewms.WMdir, 
+  				            genome="GENOME",
+                                            CombinedMotifs="true")
+
+
+
+         //take one set of alignments and background alignments to test all WMs we have. Also gives the best WM.
+         wmqual = WMQuality(train_set = splitseqs.even_file,
+                            bg_train_set = shuffledSeqs_train.outfile,
+                            test_set = splitseqs.odd_file,
+                            bg_test_set = shuffledSeqs_test.outfile,
+                            WMlist = enrichmentScores_combined_motifs.EnrichmentScores,
+                            aligned="false", genome="GENOME",
+                            motevo_path="MOTEVO_PATH",
                             @host="long")
 
 
-	    enrichmentScores_for_all = EnrichmentScores(TrainingSequences=splitseqs.odd_file,
-						TrainingDecoySequences=shuffledSeqs_train.outfile, 
-						TestSequences=splitseqs.even_file, 
-						TestDecoySequences=shuffledSeqs_test.outfile, 
-						DenovoWMs=filterwms.WMdir, 
-						DatabaseWMs="WMLIBRARY", 
-						genome="GENOME")
+         latexfrag8 = LatexFragmentizer(plot1=wmqual.sens_ppv,
+                                        capt_plot1="Sensitivity - positive predictive value plot of 4 best performing motifs",
+                                        sectionTitle="Precision and Recall Plots of Four Best Performing Motifs:")
 
 
-            reducewms_single = ReduceWMs(infile=enrichmentScores_for_all.EnrichmentScores,
-                                  distance_cutoff=0.2,
-                                  @host="long")
-
-
-
-            WMlibrary = "WMLIBRARY"
-            WMlib = INPUT(path = WMlibrary)
-
-
-            site_enrichment_slim = SiteEnrichmentM_greedy_drmaa(train_set = training_forreturn,
-                                                                test_set = test_forreturn,
-                                                                bg_train_set = shuffled_train_forreturn,
-                                                                background_set = shuffled_test_forreturn,
-                                                                BaseFrequencies = buildufe.BaseFrequencies,
-                                                                WMdir = trimwm.outdir,
-                                                                WMdir2 = filterwms.WMdir,
-                                                                WMdir3 = WMlib.in,
-                                                                UFEmodel = buildufe.UFEmodel,
-                                                                genome="GENOME",
-                                                                motevo_path="MOTEVO_PATH",
-                                                                aligned=aligned_bool,
-                                                                slim="true",
-                                                                site_enrichment_cutoff=4.6,
-                                                                pseudocount=0.05,
-                                                                project_leader="PROJECTLEADER",
-                                                                queue_name="fs_long",
-								top_motifs=10)
-
-
-            //take one set of alignments and background alignments to test all WMs we have. Also gives the best WM.
-            wmqual_tops = WMQuality(train_set = splitseqs.even_file,
-                                    bg_train_set = shuffledSeqs_train.outfile,
-                                    test_set = splitseqs.odd_file,
-                                    bg_test_set = shuffledSeqs_test.outfile,
-                                    WMlist = site_enrichment_slim.loglik_top_motifs,
-                                    aligned="false", genome="GENOME",
-                                    motevo_path="MOTEVO_PATH",
-                                    @host="long")
-
-
-            reducewms = ReduceWMs(infile = site_enrichment_slim.loglik_all_motifs,
-                                  distance_cutoff=0.2,
-                                  @host="long")
+         latexfrag9 = LatexFragmentizer(//log1=site_enrichment.loglik_combined,
+                                        plot1=site_enrichment.loglik_plot,
+                                        //capt_log1="",
+                                        capt_plot1="Contribution of motifs to ChIP peak explanantion.",
+                                        sectionTitle="Final Motifs and Their Contribution in Explaining the Peaks:")
 
 
 
-            site_enrichment = SiteEnrichmentM_greedy_drmaa(train_set = training_forreturn,
-                                                           test_set = test_forreturn,
-                                                           bg_train_set = shuffled_train_forreturn,
-                                                           background_set = shuffled_test_forreturn,
-                                                           BaseFrequencies = buildufe.BaseFrequencies,
-                                                           keepWM = old_WM.in,
-                                                           WMdir = reducewms.WMdir,
-                                                           UFEmodel = buildufe.UFEmodel,
-                                                           genome="GENOME",
-                                                           motevo_path="MOTEVO_PATH",
-                                                           aligned=aligned_bool,
-                                                           slim="false",
-                                                           site_enrichment_cutoff=4.6,
-                                                           pseudocount=0.05,
-                                                           project_leader="PROJECTLEADER",
-                                                           queue_name="fs_long")
+         combine2 = CombineLatex(latex1=latexfrag1.fragment, latex2=latexfrag2.fragment, latex3=latexfrag3.fragment, latex4=latexfrag4.fragment, latex5=latexfrag5.fragment, latex6=latexfrag6.fragment, latex7=latexfragPG.fragment, latex8=latexfragMot.fragment, latex9=latexfrag8.fragment, latex10=latexfrag9.fragment)
+         OUTPUT(combine2.pdfreport)
 
-
-
-            //take one set of alignments and background alignments to test all WMs we have. Also gives the best WM.
-            wmqual = WMQuality(train_set = splitseqs.even_file,
-                               bg_train_set = shuffledSeqs_train.outfile,
-                               test_set = splitseqs.odd_file,
-                               bg_test_set = shuffledSeqs_test.outfile,
-                               WMlist = site_enrichment.loglik_contributing_motifs,
-                               aligned="false", genome="GENOME",
-                               motevo_path="MOTEVO_PATH",
-                               @host="long")
-
-
-
-            latexfrag7 = LatexFragmentizer(plot1=runmotevo.Logo,
-                                           capt_plot1="Refined weight matrix logo.",
-                                           sectionTitle="Log for Refinement of Known Motif:")
-
-            latexfrag8 = LatexFragmentizer(plot1=wmqual.sens_ppv,
-                                           capt_plot1="Sensitivity - positive predictive value plot of 4 best performing motifs",
-                                           sectionTitle="Precision and Recall Plots of Four Best Performing Motifs:")
-
-
-            latexfrag9 = LatexFragmentizer(//log1=site_enrichment.loglik_combined,
-                                           plot1=site_enrichment.loglik_plot,
-                                           //capt_log1="",
-                                           capt_plot1="Contribution of motifs to ChIP peak explanantion.",
-                                           sectionTitle="Final Motifs and Their Contribution in Explaining the Peaks:")
-
-
-
-            combine2 = CombineLatex(latex1=latexfrag1.fragment, latex2=latexfrag2.fragment, latex3=latexfrag3.fragment, latex4=latexfrag4.fragment, latex5=latexfrag5.fragment, latex6=latexfrag6.fragment, latex7=latexfragPG.fragment, latex8=latexfragMot.fragment, latex9=latexfrag7.fragment, latex10=latexfrag8.fragment, latex11=latexfrag9.fragment)
-            OUTPUT(combine2.pdfreport)
-
-
-         } 
-
-
-         else {
-
-
-            filterwms = FilterWMs(WM1 = phylogibbs1.WeightMatrix1,
-                                  WM2 = refinedMotifPG1_1.refWM,
-                                  WM3 = phylogibbs1.WeightMatrix2,
-                                  WM4 = refinedMotifPG1_2.refWM,
-                                  WM5 = phylogibbs2.WeightMatrix1,
-                                  WM6 = refinedMotifPG2_1.refWM,
-                                  WM7 = phylogibbs2.WeightMatrix2,
-                                  WM8 = refinedMotifPG2_2.refWM,
-                                  WM9 = phylogibbs3.WeightMatrix1,
-                                  WM10 = refinedMotifPG3_1.refWM,
-                                  WM11 = phylogibbs3.WeightMatrix2,
-                                  WM12 = refinedMotifPG3_2.refWM,
-                                  WM13 = phylogibbs4.WeightMatrix1,
-                                  WM14 = refinedMotifPG4_1.refWM,
-                                  WM15 = phylogibbs4.WeightMatrix2,
-                                  WM16 = refinedMotifPG4_2.refWM,
-                                  WM17 = phylogibbs5.WeightMatrix1,
-                                  WM18 = refinedMotifPG5_1.refWM,
-                                  WM19 = phylogibbs5.WeightMatrix2,
-                                  WM20 = refinedMotifPG5_2.refWM,
-                                  WM21 = phylogibbs6.WeightMatrix1,
-                                  WM22 = refinedMotifPG6_1.refWM,
-                                  WM23 = phylogibbs6.WeightMatrix2,
-                                  WM24 = refinedMotifPG6_2.refWM,
-                                  @host="long")
-
-            trimwm = TrimWM(WMdir = filterwms.WMdir,
-                            information_cutoff=0.25,
-                            @host="long")
-	
-	    
-	    enrichmentScores_for_all = EnrichmentScores(TrainingSequences=splitseqs.odd_file,
-						TrainingDecoySequences=shuffledSeqs_train.outfile, 
-						TestSequences=splitseqs.even_file, 
-						TestDecoySequences=shuffledSeqs_test.outfile, 
-						DenovoWMs=filterwms.WMdir, 
-						DatabaseWMs="WMLIBRARY", 
-						genome="GENOME")
-
-
-            reducewms_single = ReduceWMs(infile=enrichmentScores_for_all.EnrichmentScores,
-                                  distance_cutoff=0.2,
-                                  @host="long")
-
-
-            WMlibrary = "WMLIBRARY"
-            WMlib = INPUT(path = WMlibrary)
-
-            site_enrichment_slim = SiteEnrichmentM_greedy_drmaa(train_set = training_forreturn,
-                                                                test_set = test_forreturn,
-                                                                bg_train_set = shuffled_train_forreturn,
-                                                                background_set = shuffled_test_forreturn,
-                                                                BaseFrequencies = buildufe.BaseFrequencies,
-                                                                WMdir = trimwm.outdir,
-                                                                WMdir2 = filterwms.WMdir,
-                                                                WMdir3 = WMlib.in,
-                                                                UFEmodel = buildufe.UFEmodel,
-                                                                genome="GENOME",
-                                                                motevo_path="MOTEVO_PATH",
-                                                                aligned=aligned_bool,
-                                                                slim="true",
-                                                                site_enrichment_cutoff=4.6,
-                                                                pseudocount=0.05,
-                                                                project_leader="PROJECTLEADER",
-                                                                queue_name="fs_long",
-								top_motifs=10)
-
-            //take one set of alignments and background alignments to test all WMs we have. Also gives the best WM.
-            wmqual_tops = WMQuality(train_set = splitseqs.even_file,
-                                    bg_train_set = shuffledSeqs_train.outfile,
-                                    test_set = splitseqs.odd_file,
-                                    bg_test_set = shuffledSeqs_test.outfile,
-                                    WMlist = site_enrichment_slim.loglik_top_motifs,
-                               	    aligned="false", genome="GENOME",
-                               	    motevo_path="MOTEVO_PATH",
-                               	    @host="long")
-
-            reducewms = ReduceWMs(infile = site_enrichment_slim.loglik_all_motifs,
-                                  distance_cutoff=0.2,
-                                  @host="long")
-
-
-            site_enrichment = SiteEnrichmentM_greedy_drmaa(train_set = training_forreturn,
-                                                           test_set = test_forreturn,
-                                                           bg_train_set = shuffled_train_forreturn,
-                                                           background_set = shuffled_test_forreturn,
-                                                           BaseFrequencies = buildufe.BaseFrequencies,
-                                                           WMdir = reducewms.WMdir,
-                                                           UFEmodel = buildufe.UFEmodel,
-                                                           genome="GENOME",
-                                                           motevo_path="MOTEVO_PATH",
-                                                           aligned=aligned_bool,
-                                                           slim="false",
-                                                           site_enrichment_cutoff=4.6,
-                                                           pseudocount=0.05,
-                                                           project_leader="PROJECTLEADER",
-                                                           queue_name="fs_long")
-
-
-
-            //take one set of alignments and background alignments to test all WMs we have. Also gives the best WM.
-            wmqual = WMQuality(train_set = splitseqs.even_file,
-                               bg_train_set = shuffledSeqs_train.outfile,
-                               test_set = splitseqs.odd_file,
-                               bg_test_set = shuffledSeqs_test.outfile,
-                               WMlist = site_enrichment.loglik_contributing_motifs,
-                               aligned="false", genome="GENOME",
-                               motevo_path="MOTEVO_PATH",
-                               @host="long")
-
-
-            latexfrag8 = LatexFragmentizer(plot1=wmqual.sens_ppv,
-                                           capt_plot1="Sensitivity - positive predictive value plot of 4 best performing motifs",
-                                           sectionTitle="Precision and Recall Plots of Four Best Performing Motifs:")
-
-
-            latexfrag9 = LatexFragmentizer(//log1=site_enrichment.loglik_combined,
-                                           plot1=site_enrichment.loglik_plot,
-                                           //capt_log1="",
-                                           capt_plot1="Contribution of motifs to ChIP peak explanantion.",
-                                           sectionTitle="Final Motifs and Their Contribution in Explaining the Peaks:")
-
-
-
-            combine2 = CombineLatex(latex1=latexfrag1.fragment, latex2=latexfrag2.fragment, latex3=latexfrag3.fragment, latex4=latexfrag4.fragment, latex5=latexfrag5.fragment, latex6=latexfrag6.fragment, latex7=latexfragPG.fragment, latex8=latexfragMot.fragment, latex9=latexfrag8.fragment, latex10=latexfrag9.fragment)
-            OUTPUT(combine2.pdfreport)
-
-
-
-         }
 
 
          return record(Sequences = getseqs2.Sequences, RegionCoverageDir = regioncoverage.out_dir, PeakStats = pstats, PeakCallDir = peakcall_newnoise.out_dir, LLog = site_enrichment.loglik_contributing_motifs, LLog_tops = site_enrichment_slim.loglik_top_motifs, AUCLog = wmqual.log_file, AUCLog_tops = wmqual_tops.log_file, Peaks = annotpeaks.peakAnnotations, ShuffledTestSet = shuffledSeqs_test.outfile, ShuffledTrainSet = shuffledSeqs_train.outfile, TestSet = splitseqs.odd_file, TrainingSet = splitseqs.even_file, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies)
@@ -1043,19 +752,16 @@ existingSamples = INPUT(path="CSV_EXISTING_SAMPLES")
 
 TFrecord = record() 
 TFrecordStrings = record() //This is the record for already processed replicates. The strings are thus shifted bedweight files
-WMdict = record()  //contains all WMs for all TFs, if they exist
 
 //Add the BG key, in case there is no background given. Otherwise it will complain below when starting FGBGprocessing.
 TFrecordStrings["BG"] = ""
   
 //initialize TFrecordString (contains string with paths to the shifted bedfiles)
 //initilaize TFrecord with records for each input replicate
-//initialize WMdict
 
 for file : std.itercsv(datafiles.in){
 	TFrecordStrings[file.mode] = ""
 	TFrecord[file.mode] = record()   
-        WMdict[file.mode] = file.WM
 }
 
 //std.echo(std.recordToString(TFrecord))
@@ -1065,7 +771,6 @@ for file : std.itercsv(datafiles.in){
 for file : std.itercsv(existingSamples.in){
            TFrecordStrings[file.mode] = ""
            TFrecord[file.mode] = record()
-           WMdict[file.mode] = file.WM
 }
 
 //std.echo(std.recordToString(TFrecord))
@@ -1139,7 +844,7 @@ FGBGOUT = record()
 PEAKS_record = record()
 for TF, str : TFrecordStrings{
 	if TF != "BG"{
-		proc = FGBGprocessing(IPstring = str, BGstring = TFrecordStrings["BG"], WM = WMdict[TF], TFname = TF, @name=TF + "_FgBg")
+		proc = FGBGprocessing(IPstring = str, BGstring = TFrecordStrings["BG"],  TFname = TF, @name=TF + "_FgBg")
 		proc_i = std.lookup(TF + "_FgBg")
 		FGBGOUT[TF] = proc_i
 

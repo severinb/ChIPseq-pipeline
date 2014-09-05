@@ -6,6 +6,7 @@ import subprocess
 import re 
 import drmaa
 from math import ceil
+import numpy as np
 
 NUMBER_OF_COMPUTATION_NODES = 120
 
@@ -109,6 +110,8 @@ def concatenateResults(scratchDir, resFilename, col):
             sortedWMs.append( line.split() )
     for a_file in files:
         os.system( "rm '%s'" % a_file )
+    os.system( "rm '%s'" % resFileUnsorted )
+
     return sortedWMs
 
 
@@ -136,6 +139,9 @@ def findTopWMinWMs(WMs, topWM):
 
 def combinedMotifs(trainingPool, testPool, WMs, jobName, scratchDir, GENOME, NUMBER_OF_MOTIFS_PER_JOB):
     index = 1
+    numberOfForegroundSeq = len([line for line in open(testPool) if re.search('_reg\d+', line)])
+    convergence_criterion = (np.log(10.) / float(numberOfForegroundSeq))
+    print 'Convergence criterion for finding complementary motifs is %f (at least 10 fold increase in likelihood)' %convergence_criterion
     topWM = WMs[0][0]
     topEnrichmentScoreFirstRound = float(WMs[0][1])
     WMs.remove(WMs[0])
@@ -152,7 +158,7 @@ def combinedMotifs(trainingPool, testPool, WMs, jobName, scratchDir, GENOME, NUM
         outfile = os.path.join(os.path.dirname(scratchDir), 'EnrichmentScores_%d' % (index+1))
         sortedWMs = concatenateResults(scratchDir, outfile, index+2)
         topEnrichmentScoreSecondRound = float(sortedWMs[0][index+1])
-        if (topEnrichmentScoreSecondRound - topEnrichmentScoreFirstRound) < 0.005:
+        if (topEnrichmentScoreSecondRound - topEnrichmentScoreFirstRound) < convergence_criterion: # convergence criterion: exp( nr_of_fg_seqs * enrichment_score_diff ) < 100 --> enrichment_score diff should increase at least by log(100)/nr_of_fg_seqs (0.009 for 00 fg seqs)
             break
         topWM = ' '.join(sortedWMs[0][:(index+1)])
         removeIndex = findTopWMinWMs(WMs, topWM)
@@ -203,7 +209,7 @@ def execute(cf):
 
     ## createJobTemplate for the array job (runs for every motif the fitting and enrichment score program)    
     jobName = os.path.basename(os.path.dirname(outfile))
-    NUMBER_OF_MOTIFS_PER_JOB = int(ceil(len(WMs) / NUMBER_OF_COMPUTATION_NODES))
+    NUMBER_OF_MOTIFS_PER_JOB = max(int(ceil(len(WMs) / NUMBER_OF_COMPUTATION_NODES)), 4) #minimum of 4 motifs per job.
     shellCommand = createJobTemplate(trainingPool, testPool, WmFile, scratchDir, GENOME, NUMBER_OF_MOTIFS_PER_JOB)
     runningDrmaaJob(shellCommand, scratchDir, jobName, \
                     NUMBER_OF_MOTIFS_PER_JOB=NUMBER_OF_MOTIFS_PER_JOB, \
@@ -220,13 +226,11 @@ def execute(cf):
         topWM, enrichmentScoresEachRound = combinedMotifs(trainingPool, testPool, \
                                                          sortedWMs, jobName, scratchDir, GENOME, \
                                                           NUMBER_OF_MOTIFS_PER_JOB)
-        with open(os.path.join(os.path.dirname(outfile), "topWMs"), 'w') as outf:
-            for WmName in topWM.split():
-                outf.write(WmName + '\n')
-        with open(os.path.join(os.path.dirname(outfile), "EnrichmentScores_all_rounds"), 'w') as outf:
-            for score in enrichmentScoresEachRound:
-                outf.write(str(score) + '\n')
-        
+        topWM_list = topWM.split()
+        with open(outfile, 'w') as outf:
+            for i in range(len(topWM_list)):
+                outf.write(topWM_list[i] + '\t' + str(enrichmentScoresEachRound[i]) + '\n')
+
     return 0
 
 

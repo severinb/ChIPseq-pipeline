@@ -163,6 +163,7 @@ def execute(cf):
     outdir = cf.get_output("WMdir")
     log_file = cf.get_output("log_file")
     dist_co = cf.get_parameter("distance_cutoff", "float")
+    minscore = cf.get_parameter("minscore", "float")
     
     os.mkdir(outdir)    
     wmdict = {} #filename: [AUC, Likelihood]
@@ -174,9 +175,13 @@ def execute(cf):
             continue
         t = line.strip().split()
         try:
-            wmdict[t[0]] = convertFloat(t[1])
+            score = convertFloat(t[1])
+            if score > minscore:
+                wmdict[t[0]] = score
+            else:
+                print "Motif %s wasn't included to the initial list (too low score)" % t[0]
         except:
-            print "Motif %s wasn't included to the initial list" % t[0]
+            print "Motif %s wasn't included to the initial list (score probably nan)" % t[0]
             continue 
 
     wmdict = filterQuarterWMs(wmdict)

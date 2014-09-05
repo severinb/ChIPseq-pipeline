@@ -31,5 +31,8 @@
         <parameter name="distance_cutoff" type="float" default="0.1">
             <doc>Distance is defined as d = 1 - (2*S_ij)/(S_ii+S_jj), where S_ij is similarity score between WM_i and WM_j, S_ii and S_jj are similarity scores from a WM to itself.</doc>
         </parameter>
+        <parameter name="minscore" type="float" default="0.0">
+            <doc>Minimum score a motif needs to have (given in infile) to get included to the final reduced set of motifs.</doc>
+        </parameter>
     </parameters>
 </component>
