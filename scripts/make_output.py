@@ -567,7 +567,7 @@ def main():
         # extract motif contribution to ensemble enrichment score from site_enrichment log:
         enrichemnt_contribution_d = {}
         tot = 0
-        for line in open(bn + '_FgBg-site_enrichment/loglik_combined'):
+        for line in open(bn + '_FgBg-enrichmentScores_combined_motifs/EnrichmentScores'): 
             if line.startswith('WM_path'):
                 continue
             t = line.strip().split()
@@ -575,7 +575,18 @@ def main():
             ensemble_enrichment = float(t[1])
             cont = ensemble_enrichment - tot
             tot = ensemble_enrichment
-            enrichemnt_contribution_d[name] = cont
+            enrichemnt_contribution_d[name] = round(cont,3)
+
+        # read enrichment scores of separate motifs into a dictionary
+        enrichemnt_scores_d = {}
+        for line in open(bn + '_FgBg-enrichmentScores_for_all/EnrichmentScores'): 
+            if line.startswith('WM_path'):
+                continue
+            t = line.strip().split()
+            name = os.path.split(t[0])[1]
+            enrichment_score = float(t[1])
+            enrichemnt_scores_d[name] = round(enrichment_score,3)
+
 
         # matrix with wm as rows and columns: score, auc, fov, eabs
         wm_ranks = []
@@ -598,7 +609,7 @@ def main():
             wmout = os.path.join(motifs_dir, wmname)
             wmi_html_dict['name'] = urllib.quote(wmname)
             wmi_html_dict['name_unquote'] = wmname
-            wmi_html_dict['score'] = fl[1].strip().split()[-1]
+            wmi_html_dict['score'] = enrichemnt_scores_d[wmname]
             wmi_html_dict['auc'] = fl[2].strip().split()[-1]
             wmi_html_dict['html'] = urllib.quote('%s.html' %wmname) #relative path from the motifs_known.html file.
             wmi_html_dict['contribution'] = enrichemnt_contribution_d[wmname]
@@ -698,10 +709,10 @@ def main():
         # 3:
         os.system('cp \'%s\' \'%s\'' %(bn + '_motif_correlation/correlation_plot.png',os.path.join(TFhtml, motifs_dir)))
 
-        os.system('cp \'%s\' \'%s\'' %(bn + '_FgBg-site_enrichment/loglik_plot.png', os.path.join(TFhtml, motifs_dir)))
+        os.system('cp \'%s\' \'%s\'' %(bn + '_FgBg-enrichmentScores_combined_motifs/EnrichmentScores.png', os.path.join(TFhtml, motifs_dir)))
 
         # for html:
-        html_dict['motif_contribution_plot'] = os.path.join(motifs_dir, 'loglik_plot.png')
+        html_dict['motif_contribution_plot'] = os.path.join(motifs_dir, 'EnrichmentScores.png')
         html_dict['motif_correlation_heatmap'] = os.path.join(motifs_dir, 'correlation_plot.png')
 
         ##########################################################################
@@ -742,7 +753,7 @@ def main():
             wmout = os.path.join(motifs_dir, wmname)
             wmi_html_dict['name'] = urllib.quote(wmname)
             wmi_html_dict['name_unquote'] = wmname
-            wmi_html_dict['score'] = fl[1].strip().split()[-1]
+            wmi_html_dict['score'] = round(float(fl[1].strip().split()[-1]), 3)
             wmi_html_dict['auc'] = fl[2].strip().split()[-1]
             wmi_html_dict['html'] = urllib.quote('%s.html' %wmname) #relative path from the motifs_known.html file.
 

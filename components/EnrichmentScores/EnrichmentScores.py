@@ -7,6 +7,8 @@ import re
 import drmaa
 from math import ceil
 import numpy as np
+import matplotlib.pyplot as plt
+
 
 NUMBER_OF_COMPUTATION_NODES = 120
 
@@ -43,7 +45,7 @@ def createSequencePool(InputSequences, DecoySequences, scratchDir, resFile):
 
 
 def createJobTemplate(TrainingPool, TestSequences, WMs, scratchDir, genome, NUMBER_OF_MOTIFS_PER_JOB):
-    prog = '/import/bc2/home/nimwegen/omidi/Projects/ChIPseq-pipeline/components/EnrichmentScores/calculate_enrichment_score.py'
+    prog = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'calculate_enrichment_score.py')
     jobFileContent = '\n'.join([
         '#! /bin/bash',
         'WMFILE=%s' % WMs,
@@ -63,24 +65,24 @@ def createJobTemplate(TrainingPool, TestSequences, WMs, scratchDir, genome, NUMB
 
 
 
-def init_job_template(jt, path, args, as_bulk_job, scratchDir, jobName):
+def init_job_template(jt, path, args, as_bulk_job, scratchDir, jobName, queue_type, project_leader):
     stderr = os.path.join(scratchDir, 'stderr')
     stdout = os.path.join(scratchDir, 'stdout')    
-    JOB_PARAM = '-q fs_long -P project_nimwegen -e %s -o %s -b y ' % (stderr, stdout)
+    JOB_PARAM = '-q %s -P %s -e %s -o %s -b y ' % (queue_type, project_leader, stderr, stdout)
     JOB_PARAM += '-N %s' % jobName
     env = {'PATH': '/bin:usr/bin:/import/bc2/home/nimwegen/GROUP/local/bin'}
+    jt.jobEnvironment = env
     jt.workingDirectory = drmaa.JobTemplate.HOME_DIRECTORY
     jt.remoteCommand = '/bin/bash'
     jt.args = [path]
-    jt.jobEnvironment = env
     jt.nativeSpecification = JOB_PARAM
     return jt
 
 
-def runningDrmaaJob(job_path, scratchDir, jobName, NUMBER_OF_MOTIFS_PER_JOB=1, NUMBER_OF_JOBS=1):
+def runningDrmaaJob(job_path, scratchDir, jobName, queue_type, project_leader, NUMBER_OF_MOTIFS_PER_JOB=1, NUMBER_OF_JOBS=1):
     s=drmaa.Session()
     s.initialize()
-    jt=init_job_template(s.createJobTemplate(), job_path, [], True, scratchDir, jobName)
+    jt=init_job_template(s.createJobTemplate(), job_path, [], True, scratchDir, jobName, queue_type, project_leader)
     all_jobids = []
     if NUMBER_OF_JOBS > 1:
         all_jobids = s.runBulkJobs(jt, 1, NUMBER_OF_JOBS, NUMBER_OF_MOTIFS_PER_JOB)
@@ -102,12 +104,20 @@ def concatenateResults(scratchDir, resFilename, col):
         for a_file in files:
             with open(a_file) as inf:
                 outf.write(inf.readline())
+    ## adding a header line that can be used by anduril
+    with open(resFilename, 'w') as outf:
+        outf.write('WM_path\tenrichment_score\tstdev\tbeta\tbg_prior\n')
     ## sorting according to the enrichment score column
-    cmd = 'sort -gr -k %d %s > %s' % (col, resFileUnsorted, resFilename)
+    cmd = 'sort -gr -k %d %s >> %s' % (col, resFileUnsorted, resFilename)
     os.system(cmd)
     with open(resFilename) as outf:
+        header = True
         for line in outf:
+            if header:
+                header = False
+                continue
             sortedWMs.append( line.split() )
+
     for a_file in files:
         os.system( "rm '%s'" % a_file )
     os.system( "rm '%s'" % resFileUnsorted )
@@ -137,7 +147,7 @@ def findTopWMinWMs(WMs, topWM):
     return -1
     
 
-def combinedMotifs(trainingPool, testPool, WMs, jobName, scratchDir, GENOME, NUMBER_OF_MOTIFS_PER_JOB):
+def combinedMotifs(trainingPool, testPool, WMs, jobName, scratchDir, GENOME, NUMBER_OF_MOTIFS_PER_JOB, queue_type, project_leader):
     index = 1
     numberOfForegroundSeq = len([line for line in open(testPool) if re.search('_reg\d+', line)])
     convergence_criterion = (np.log(10.) / float(numberOfForegroundSeq))
@@ -151,7 +161,7 @@ def combinedMotifs(trainingPool, testPool, WMs, jobName, scratchDir, GENOME, NUM
         WmFile = createWMcombinedFile(topWM, WMs, scratchDir)
         shellCommand = createJobTemplate(trainingPool, testPool, WmFile, \
                                          scratchDir, GENOME, NUMBER_OF_MOTIFS_PER_JOB)
-        runningDrmaaJob(shellCommand, scratchDir, jobName, \
+        runningDrmaaJob(shellCommand, scratchDir, jobName, queue_type, project_leader, \
                         NUMBER_OF_MOTIFS_PER_JOB=NUMBER_OF_MOTIFS_PER_JOB, \
                         NUMBER_OF_JOBS=len(WMs))
         ## make the last result file, sorted by the average enrichment score
@@ -191,7 +201,13 @@ def execute(cf):
     DatabaseWMs = cf.get_parameter("DatabaseWMs")
     GENOME = cf.get_parameter('genome', 'string')
     CombinedMotifs = cf.get_parameter('CombinedMotifs', 'boolean')
+    top_wms = cf.get_parameter('top_wms', 'int')
+    queue_type = cf.get_parameter('queue_type', 'string')
+    project_leader = cf.get_parameter('project_leader', 'string')
     outfile = cf.get_output("EnrichmentScores")
+    outfile_tops = cf.get_output("EnrichmentScores_tops") #This file contains the top WMs of the single WM run. The number of top WMs is controlled by the top_wms parameter.
+    
+
     print "Calculating Enrichment Scores for: "
     print DenovoWMs
     print DatabaseWMs
@@ -211,7 +227,7 @@ def execute(cf):
     jobName = os.path.basename(os.path.dirname(outfile))
     NUMBER_OF_MOTIFS_PER_JOB = max(int(ceil(len(WMs) / NUMBER_OF_COMPUTATION_NODES)), 4) #minimum of 4 motifs per job.
     shellCommand = createJobTemplate(trainingPool, testPool, WmFile, scratchDir, GENOME, NUMBER_OF_MOTIFS_PER_JOB)
-    runningDrmaaJob(shellCommand, scratchDir, jobName, \
+    runningDrmaaJob(shellCommand, scratchDir, jobName, queue_type, project_leader, \
                     NUMBER_OF_MOTIFS_PER_JOB=NUMBER_OF_MOTIFS_PER_JOB, \
                     NUMBER_OF_JOBS=len(WMs))
     
@@ -219,17 +235,36 @@ def execute(cf):
     # sortedWMs = [wm.split() for wm in \
     #              open('/import/bc2/home/nimwegen/omidi/Projects/ChIPseq-pipeline/example2/OUTPUT/IRF3_FgBg-enrichmentScores_all_motifs/EnrichmentScores')][:50]
     # scratchDir = '/import/bc2/home/nimwegen/omidi/Projects/ChIPseq-pipeline/example2/OUTPUT/IRF3_FgBg-enrichmentScores_all_motifs/scratch'
-    sortedWMs = concatenateResults(scratchDir, outfile, 2)    
+    sortedWMs = concatenateResults(scratchDir, outfile, 2)
+    with open(outfile_tops, 'w') as outf_tops:
+        with open(outfile) as outf:
+            i = 0
+            for line in outf:
+                if i > top_wms:
+                    break
+                outf_tops.write(line)
+                i += 1
+ 
     ## cleaning up the scratch directory
     # cleaningUpTmpFiles(scratchDir)
     if CombinedMotifs:
         topWM, enrichmentScoresEachRound = combinedMotifs(trainingPool, testPool, \
                                                          sortedWMs, jobName, scratchDir, GENOME, \
-                                                          NUMBER_OF_MOTIFS_PER_JOB)
+                                                          NUMBER_OF_MOTIFS_PER_JOB, queue_type, project_leader)
         topWM_list = topWM.split()
         with open(outfile, 'w') as outf:
+            outf.write('WM_path\tenrichment_score\n')
             for i in range(len(topWM_list)):
                 outf.write(topWM_list[i] + '\t' + str(enrichmentScoresEachRound[i]) + '\n')
+
+        plt.plot(range(len(topWM_list)+1), [0] + enrichmentScoresEachRound, 'r-')
+        plt.plot(range(len(topWM_list)+1), [0] + enrichmentScoresEachRound, 'ko')
+        plt.xlabel("Motifs")
+        plt.ylabel("Enrichment Score")
+        plt.xticks(range(len(topWM_list)+1), [''] + [os.path.split(n)[1] for n in topWM_list], rotation=45)
+        plt.tight_layout()
+        plt.savefig(outfile + '.pdf')
+
 
     return 0
 

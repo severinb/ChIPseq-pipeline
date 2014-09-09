@@ -218,6 +218,8 @@ def create_network():
 
     ntext = re.sub('MYLOGO_PATH', params['MYLOGO_PATH'], ntext)
 
+    ntext = re.sub('WEBLOGO_PATH', params['WEBLOGO_PATH'], ntext)
+
     ntext = re.sub('MOTEVO_PATH', params['MOTEVO_PATH'], ntext)
 
     ntext = re.sub('MOTEVOUFE_PATH', params['MOTEVOUFE_PATH'], ntext)

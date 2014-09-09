@@ -112,7 +112,7 @@ def execute(cf):
     ldict = {}
     for line in open(llog):
         t = line.strip().split()
-        ldict[t[0]] = t[1:]
+        ldict[t[0]] = t[1]
 
     lvals = ldict[wmnameInit]
 
@@ -131,7 +131,7 @@ def execute(cf):
 
     o = open(log, 'w')
     text = '\n'.join(['- Motif name: %s' %os.path.split(wmnameInit)[1],
-                      '- Enrichment score at an optimal prior of %s: %s' %(lvals[1], lvals[0]),
+                      '- Enrichment score: %s' %(lvals),
                       '- Area under precision recall curve: %s' %(aucval)])
     o.write(text)
     o.close()

@@ -7,7 +7,7 @@ BG_FASTQ_FILES: #(comment: .fastq extension)
 BG_FASTA_FILES: #(comment: .fa extension)
 BG_BED_FILES: #(comment: .bedweight or .bed extension)
 BG_SHIFTEDBED_FILES: #(comment: .bedweight or .bed extension)
-WM:
+
 OUT_DIR: OUTPUT
 ADAPTOR:
 ANNOTATION_TYPE: dm3-none-aln2.3
@@ -80,6 +80,8 @@ PHYLOGIBBS_PATH:
     /import/bc2/home/nimwegen/GROUP/software/phylogibbs-1.2/src/phylogibbs
 MYLOGO_PATH:
     /import/bc2/home/nimwegen/GROUP/Scripts/weblogo/mylogo
+WEBLOGO_PATH:
+    /import/bc2/home/nimwegen/GROUP/software/weblogo-3.4/weblogo
 MOTEVO_PATH:
     /import/bc2/home/nimwegen/GROUP/software/motevo_ver1.03/bin/motevo
 MOTEVOUFE_PATH:

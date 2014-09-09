@@ -8,7 +8,6 @@ BG_FASTA_FILES: #(comment: .fa extension)
 BG_BED_FILES: #(comment: .bedweight or .bed extension)
 BG_SHIFTEDBED_FILES: #(comment: .bedweight or .bed extension)
 
-WM:
 OUT_DIR: OUTPUT
 ADAPTOR:
 ANNOTATION_TYPE: hg19-none-aln2.3
@@ -48,11 +47,11 @@ TO_FMI_REPOSITORY:
     #- latexfrag
     #- pdfreport
 FMI_PATH:
-    /import/bc2/home/nimwegen/omidi/Projects/ChIPseq-pipeline/fmitools
+    /import/bc2/home/nimwegen/bergerse00/Projects/ChIPseq-pipeline/fmitools
 ANDURIL_COMPONENTS_PATH:
-    /import/bc2/home/nimwegen/omidi/Projects/ChIPseq-pipeline/components
+    /import/bc2/home/nimwegen/bergerse00/Projects/ChIPseq-pipeline/components
 ANDURIL_TEMPLATES_PATH:
-    /import/bc2/home/nimwegen/omidi/Projects/ChIPseq-pipeline/templates
+    /import/bc2/home/nimwegen/bergerse00/Projects/ChIPseq-pipeline/templates
 ANDURIL_HOME:
     /import/bc2/soft/app/anduril/1.2.5/Linux
 PERL_PATH:
@@ -76,11 +75,13 @@ QUEUE_NAMES:
 ALIGN_PIPE_PATH:
     /import/bc2/home/nimwegen/GROUP/AlignmentPipeline/scripts/pipeline.pl
 BEDTOOLS_PATH:
-    /import/bc2/home/nimwegen/omidi/Projects/ChIPseq-pipeline/fmitools/soft/bedtools
+    /import/bc2/home/nimwegen/bergerse00/Projects/ChIPseq-pipeline/fmitools/soft/bedtools
 PHYLOGIBBS_PATH:
     /import/bc2/home/nimwegen/GROUP/software/phylogibbs-1.2/src/phylogibbs
 MYLOGO_PATH:
     /import/bc2/home/nimwegen/GROUP/Scripts/weblogo/mylogo
+WEBLOGO_PATH:
+    /import/bc2/home/nimwegen/GROUP/software/weblogo-3.4/weblogo
 MOTEVO_PATH:
     /import/bc2/home/nimwegen/GROUP/software/motevo_ver1.03/bin/motevo
 MOTEVOUFE_PATH:

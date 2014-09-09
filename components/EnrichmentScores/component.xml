@@ -38,6 +38,9 @@
         <output name="EnrichmentScores" type="BinaryFile">
             <doc>The enrichment value and the fitted parameters for each input WM</doc>
         </output>
+        <output name="EnrichmentScores_tops" type="BinaryFile">
+            <doc>The enrichment value and the fitted parameters for top_wms top WMs of the single WM run.</doc>
+        </output>
     </outputs>
 
     <parameters>
@@ -49,6 +52,15 @@
       </parameter>
       <parameter name="genome" type="string" default="">
 	<doc>genome: hg19, mm9 ...</doc>
+      </parameter>
+      <parameter name="top_wms" type="int" default="10">
+	<doc>This parameter controls the number of WMs that should be reported in EnrichmentScores_tops output port.</doc>
+      </parameter>
+      <parameter name="queue_type" type="string" default="">
+	<doc>Queue type like fs_long..</doc>
+      </parameter>
+      <parameter name="project_leader" type="string" default="">
+	<doc>For example project_nimwegen</doc>
       </parameter>
     </parameters>
     

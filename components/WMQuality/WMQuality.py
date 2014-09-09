@@ -142,8 +142,6 @@ def predict_sites(train_set, test_set, bg_train_set, bg_test_set, tmpwm, ufemode
         t = line.strip().split()
         prior_d[t[0]] = float(t[1])
 
-    os.system('rm %s' %priors)
-
     tmpwm2 = os.path.join(interm, os.path.split(tmpwm)[1] + '_updated')
     o = open(tmpwm2, 'w')
     for line in open(tmpwm):
@@ -194,7 +192,7 @@ def predict_sites(train_set, test_set, bg_train_set, bg_test_set, tmpwm, ufemode
 
 
     os.system('rm %s' %params)
-    os.system('rm %s' %tmpwm2)
+    os.system("rm '%s'" %tmpwm2)
     os.system('rm %s' %priors)
 
 
@@ -328,6 +326,7 @@ def execute(cf):
         f.close()
         for w in wmlist:
             WMs.append(w.split()[0])
+
 
     FGsitefiles = []
     BGsitefiles = []

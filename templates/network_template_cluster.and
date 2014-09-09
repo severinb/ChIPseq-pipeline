@@ -299,7 +299,7 @@ function BGfunction(BinaryFile bgIN, string repFMIid, string iter, string DESC, 
 /*------------------------------Composite Component for processing on TF-Background pair---------------------------*/
 /*-----------------------------------------------------------------------------------------------------------------*/
 
-function FGBGprocessing(string IPstring, string BGstring, string TFname) -> (BinaryFile Sequences, BinaryFolder RegionCoverageDir, BinaryFile PeakStats, BinaryFolder PeakCallDir, BinaryFile LLog, BinaryFile LLog_tops, BinaryFile AUCLog, BinaryFile AUCLog_tops, BinaryFile Peaks, BinaryFile ShuffledTestSet, BinaryFile ShuffledTrainSet, BinaryFile TestSet, BinaryFile TrainingSet, BinaryFile UFEmodel, BinaryFile BaseFrequencies){
+function FGBGprocessing(string IPstring, string BGstring, string TFname) -> (BinaryFile Sequences, BinaryFolder RegionCoverageDir, BinaryFile PeakStats, BinaryFolder PeakCallDir, BinaryFile LLog, BinaryFile LLog_tops, BinaryFile AUCLog, BinaryFile AUCLog_tops, BinaryFile Peaks, BinaryFile ShuffledTestSet, BinaryFile ShuffledTrainSet, BinaryFile TestSet, BinaryFile TrainingSet){
 
 
 
@@ -419,7 +419,7 @@ function FGBGprocessing(string IPstring, string BGstring, string TFname) -> (Bin
                   OUTPUT(annotpeaks.peakAnnotations)
 
                   //All outports are dummy ports:
-                  return record(Sequences = getseqs2.Sequences, RegionCoverageDir = regioncoverage.out_dir, PeakStats = pstats, PeakCallDir = peakcall_newnoise.out_dir, LLog = pstats, LLog_tops = pstats, AUCLog = pstats, AUCLog_tops = pstats, Peaks = annotpeaks.peakAnnotations, ShuffledTestSet = shuffledSeqs_test.outfile, ShuffledTrainSet = shuffledSeqs_train.outfile, TestSet = splitseqs.odd_file, TrainingSet = splitseqs.even_file, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies)
+                  return record(Sequences = getseqs2.Sequences, RegionCoverageDir = regioncoverage.out_dir, PeakStats = pstats, PeakCallDir = peakcall_newnoise.out_dir, LLog = pstats, LLog_tops = pstats, AUCLog = pstats, AUCLog_tops = pstats, Peaks = annotpeaks.peakAnnotations, ShuffledTestSet = shuffledSeqs_test.outfile, ShuffledTrainSet = shuffledSeqs_train.outfile, TestSet = splitseqs.odd_file, TrainingSet = splitseqs.even_file)
 
                       }
 
@@ -594,6 +594,9 @@ function FGBGprocessing(string IPstring, string BGstring, string TFname) -> (Bin
   				    DenovoWMs=filterwms.WMdir, 
   				    DatabaseWMs="WMLIBRARY", 
   				    genome="GENOME",
+                                    top_wms=10,
+                                    queue_type="fs_long", 
+                                    project_leader="PROJECTLEADER",
                                     CombinedMotifs="false")
 
 
@@ -614,7 +617,7 @@ function FGBGprocessing(string IPstring, string BGstring, string TFname) -> (Bin
                                  bg_train_set = shuffledSeqs_train.outfile,
                                  test_set = splitseqs.odd_file,
                                  bg_test_set = shuffledSeqs_test.outfile,
-                                 WMlist = enrichmentScores_for_all.EnrichmentScores,
+                                 WMlist = enrichmentScores_for_all.EnrichmentScores_tops,
                             	 aligned="false", genome="GENOME",
                             	 motevo_path="MOTEVO_PATH",
                             	 @host="long")
@@ -626,8 +629,9 @@ function FGBGprocessing(string IPstring, string BGstring, string TFname) -> (Bin
   				            TestDecoySequences=shuffledSeqs_test.outfile, 
   				            DenovoWMs=reducewms.WMdir, 
   				            genome="GENOME",
+                                            queue_type="fs_long", 
+                                            project_leader="PROJECTLEADER",
                                             CombinedMotifs="true")
-
 
 
          //take one set of alignments and background alignments to test all WMs we have. Also gives the best WM.
@@ -646,20 +650,21 @@ function FGBGprocessing(string IPstring, string BGstring, string TFname) -> (Bin
                                         sectionTitle="Precision and Recall Plots of Four Best Performing Motifs:")
 
 
+/*
          latexfrag9 = LatexFragmentizer(//log1=site_enrichment.loglik_combined,
                                         plot1=site_enrichment.loglik_plot,
                                         //capt_log1="",
                                         capt_plot1="Contribution of motifs to ChIP peak explanantion.",
                                         sectionTitle="Final Motifs and Their Contribution in Explaining the Peaks:")
+*/
 
 
-
-         combine2 = CombineLatex(latex1=latexfrag1.fragment, latex2=latexfrag2.fragment, latex3=latexfrag3.fragment, latex4=latexfrag4.fragment, latex5=latexfrag5.fragment, latex6=latexfrag6.fragment, latex7=latexfragPG.fragment, latex8=latexfragMot.fragment, latex9=latexfrag8.fragment, latex10=latexfrag9.fragment)
+         combine2 = CombineLatex(latex1=latexfrag1.fragment, latex2=latexfrag2.fragment, latex3=latexfrag3.fragment, latex4=latexfrag4.fragment, latex5=latexfrag5.fragment, latex6=latexfrag6.fragment, latex7=latexfragPG.fragment, latex8=latexfragMot.fragment, latex9=latexfrag8.fragment)
          OUTPUT(combine2.pdfreport)
 
 
 
-         return record(Sequences = getseqs2.Sequences, RegionCoverageDir = regioncoverage.out_dir, PeakStats = pstats, PeakCallDir = peakcall_newnoise.out_dir, LLog = site_enrichment.loglik_contributing_motifs, LLog_tops = site_enrichment_slim.loglik_top_motifs, AUCLog = wmqual.log_file, AUCLog_tops = wmqual_tops.log_file, Peaks = annotpeaks.peakAnnotations, ShuffledTestSet = shuffledSeqs_test.outfile, ShuffledTrainSet = shuffledSeqs_train.outfile, TestSet = splitseqs.odd_file, TrainingSet = splitseqs.even_file, UFEmodel = buildufe.UFEmodel, BaseFrequencies = buildufe.BaseFrequencies)
+         return record(Sequences = getseqs2.Sequences, RegionCoverageDir = regioncoverage.out_dir, PeakStats = pstats, PeakCallDir = peakcall_newnoise.out_dir, LLog = enrichmentScores_for_all.EnrichmentScores, LLog_tops = enrichmentScores_for_all.EnrichmentScores_tops, AUCLog = wmqual.log_file, AUCLog_tops = wmqual_tops.log_file, Peaks = annotpeaks.peakAnnotations, ShuffledTestSet = shuffledSeqs_test.outfile, ShuffledTrainSet = shuffledSeqs_train.outfile, TestSet = splitseqs.odd_file, TrainingSet = splitseqs.even_file)
 
 
 }
@@ -857,9 +862,6 @@ for TF, str : TFrecordStrings{
 std.echo(std.recordToString(FGBGOUT))
 
 pipeFlag = "PIPEFLAG"
-
-//always use non aligned peaks, i.e. sequences
-aligned_flag = "false"
 
 
 /*-------3.2 Now get statistics for candidate WMs (de novo motifs) if requested---------*/

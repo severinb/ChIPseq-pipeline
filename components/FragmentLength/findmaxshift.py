@@ -23,7 +23,6 @@ def smooth(x, window_len=11,window='hanning'):
 	if not window in ['flat','hanning',',hamming','bartlett','blackman']:
 		raise ValueError, "invalid window type:  'flat', 'hanning', 'hamming', 'bartlett', 'blackman' "
 
-#	s=np.r_[x[window_len-1:0:-1],x,x[-1:-window_len:-1]]
 	s=np.r_[x]
 	if window== 'flat': 	#moving ave
 		w=np.ones(window_len,'d')
@@ -56,20 +55,7 @@ def smooth_file(f,smoothdist=50):
 	y2=smooth(y,smoothdist)
 	y2prime=derivative(y2)
 	y2doubleprime=derivative(y2prime)
-	"""
-	fw=open('smoothedfile','w')
-	fw2=open('smooted-derivative','w')
-	fw3=open('smooth2p','w')
 
-	for n in y2:
-		fw.write('%f\n'%n)
-	
-	for n in y2prime:
-		fw2.write('%f\n'%n)
-
-	for n in y2doubleprime:
-		fw3.write('%f\n'%n)
-    """
 	return (y2,y2prime,y2doubleprime)
 
 def write_smoothed_file(V,fwname):
@@ -103,7 +89,6 @@ def calculate_shift(y,y1,y2,skip=80,smoothstep=50):
 
 	minx=99999
 	c=skip
-
 	
 
 	for x in y2[skip:maxy2]:
@@ -136,27 +121,13 @@ if __name__ == '__main__':
 	if not(len(sys.argv))==8 and not len(sys.argv) == 9:
 		sys.exit('usage: findmaxshift.py input-file outputdir intermediate_outdir logfile plotfile perlPath multi (repeatPath)')  
 
+	infile = sys.argv[1]
         out_dir=sys.argv[2]
         interm_out=sys.argv[3]
         log_file = sys.argv[4]
         plot_file = sys.argv[5]
         perlPATH = sys.argv[6]
         multi = int(sys.argv[7])
-
-        #check whether input file is gzipped:
-        try:
-                gop = gzip.open(sys.argv[1])
-                gop.readline()
-                gzipped = True
-                gop.close()
-        except IOError:
-                gop.close()
-                gzipped = False
-
-	try:
-		infile=open(sys.argv[1])
-	except IOError:
-		sys.exit("CAN'T FIND FILE %s"%sys.argv[1])
 
         try:
                 repeatpath = sys.argv[8]
@@ -165,33 +136,11 @@ if __name__ == '__main__':
         except IndexError:
                 repeatpath = ""
 
-	absolute_name = re.sub(r'\.bedweight.gz', '.shiftcalc.bedweight', os.path.split(sys.argv[1])[-1])
-	name = os.path.join(interm_out, absolute_name)
-	# name=sys.argv[1].split('.bed')[len(sys.argv[1].split('.bed'))-2]+'_for_shiftcalc.bed'	outdir = sys.argv[3]
-	fw=open(name,'w')
 
-	#repeatpath="/import/bc2/home/nimwegen/GROUP/hseq_pipeline/general/repeatMask/%s"%genome
-
-
-        if gzipped:
-                for line in gzip.open(sys.argv[1]):	#filters out multi-mappers: only write lines that have weight of 1 or higher
-                        items=line.strip().split()
-                        if float(items[4])>=1.0:
-                                fw.write("%s\n"%line.strip())
-        else:
-                for line in open(sys.argv[1]):     #filters out multi-mappers: only write lines that have weight of 1 or higher
-                        items=line.strip().split()
-                        if float(items[4])>=1.0:
-                                fw.write("%s\n"%line.strip())
-
-        fw.close()
-
-
-	reg_cor_outfile='%s.reg_cor'%name
-        #'/import/bc2/home/nimwegen/GROUP/hseq_pipeline/saeed/FragmentLength/shifts_repeats_nwk.pl %s %s %s'%(name,genome,reg_cor_outfile)) 
+	reg_cor_outfile='%s.reg_cor' %infile
 
         #start Erik's shift auto correlation script
-        command = '%s shifts_repeats_nwk.pl %s %s %s %s' %(perlPATH,name,reg_cor_outfile,multi,repeatpath)
+        command = '%s shifts_repeats_nwk.pl %s %s %s %s' %(perlPATH, infile, reg_cor_outfile, multi, repeatpath)
         proc = subprocess.Popen (command,
                                  stdout=subprocess.PIPE,
                                  stderr= subprocess.PIPE,
@@ -205,10 +154,7 @@ if __name__ == '__main__':
                 print '\tstderr:', repr(stderr_value.rstrip())
                 sys.exit(-1)
 
-	#os.system('%s shifts_repeats_nwk.pl %s %s %s' %(perlPATH,name,reg_cor_outfile,repeatpath))	#script to output the text file
-#	newfile=open('tmpout.txt')						#OR MAKE THIS NAME SPECIFIC
-#	os.system('cp tmpout.txt %s.reg_cor'%name)
-	
+
         (y1,y2,y3)=smooth_file(open(reg_cor_outfile))						#calculates 3 potential shifts
 
 	write_smoothed_file(y1,'%s.smoothed'%reg_cor_outfile)	
@@ -216,18 +162,10 @@ if __name__ == '__main__':
 
 	minfrag=80 #minimum number of reads at beginning to ignore in calculating the maximum, set to 80
 	(shift1,shift2,shift3,Z)=calculate_shift(y1,y2,y3,minfrag)
-#	if Z>2:
-#		shift=shift1
-#	elif abs(shift1-shift2)<=30:
-#		shift=np.average(shift1,shift2)
-#		pass
-#	else:
-#		shift=shift1
-
 
 
 	fwout=open(log_file,'w')
-	fwresout=open('%s.res'%name,'w')
+	fwresout=open('%s.res' %infile,'w')
 
 	if abs(shift1-minfrag)>10:
 		outvalue=shift1
@@ -242,49 +180,6 @@ if __name__ == '__main__':
 	fwout.close()
 	fwresout.write("FRAG_LENGTH: %f\n"%outvalue)
 
-	## added by Saeed
-	## to make a shifted bed file
-	infile = sys.argv[1]
-	res_shifted = open(os.path.join(out_dir, 'tmp.shifted.bedweight'),'w')
-
- #gzip.open(os.path.join(out_dir, re.sub(r'\.bedweight', '.bedweight.shifted.gz', os.path.split(infile)[-1])), 'w')
-
-	def shifting(pos, val, strand):
-		if strand == '+':
-			return str(int(pos)+(int(val)/2))
-		else:
-			return str(int(pos)-(int(val)/2))
-	
-        if gzipped:
-                for a_line in gzip.open(infile):
-                        tmp = a_line.rstrip().split()
-                        if int(shifting(tmp[1], outvalue, tmp[5])) > 0:
-                                res_shifted.write('\t'.join([tmp[0],
-                                                             shifting(tmp[1], outvalue, tmp[5]),
-                                                             shifting(tmp[2], outvalue, tmp[5]),
-                                                             tmp[3],
-                                                             tmp[4],
-                                                             tmp[5],
-                                                             '\n',
-                                                             ]))
-
-        else:
-                for a_line in open(infile):
-                        tmp = a_line.rstrip().split()
-                        if int(shifting(tmp[1], outvalue, tmp[5])) > 0:
-                                res_shifted.write('\t'.join([tmp[0],
-                                                             shifting(tmp[1], outvalue, tmp[5]),
-                                                             shifting(tmp[2], outvalue, tmp[5]),
-                                                             tmp[3],
-                                                             tmp[4],
-                                                             tmp[5],
-                                                             '\n',
-                                                             ]))
-
-	res_shifted.flush()	
-	
-#	fwnew.write("%f	%f	%f\n"%(shift1,shift2,shift3))
-#	shift_reads(inputbedfile,outputbedfile)
 
 	##added by Severin
 	##plot smoothed correlation curve with outvalue
@@ -298,6 +193,3 @@ if __name__ == '__main__':
 	plt.savefig(plot_file)
         plt.savefig(plot_file.rstrip('.pdf')) #doesn't work?
 
-
-        #clean up:
-        os.system('rm %s' %name)
