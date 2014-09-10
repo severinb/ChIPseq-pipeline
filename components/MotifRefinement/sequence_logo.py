@@ -7,7 +7,7 @@ def generate_sequence_logo(fname, resfile, weblogo_path, desc=' ', errorbars='NO
         '--size large',
         '--color-scheme classic',
         '--errorbars %s' % errorbars,
-        '--fineprint %s' % desc,
+        '--fineprint \'%s \'' % desc,
         '< %s >' % fname,
         resfile
         ])

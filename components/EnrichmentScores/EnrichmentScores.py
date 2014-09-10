@@ -263,7 +263,7 @@ def execute(cf):
         plt.ylabel("Enrichment Score")
         plt.xticks(range(len(topWM_list)+1), [''] + [os.path.split(n)[1] for n in topWM_list], rotation=45)
         plt.tight_layout()
-        plt.savefig(outfile + '.pdf')
+        plt.savefig(outfile + '.png')
 
 
     return 0
