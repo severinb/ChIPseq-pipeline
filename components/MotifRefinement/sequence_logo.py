@@ -1,6 +1,6 @@
 import os
 
-def generate_sequence_logo(fname, resfile, weblogo_path, desc='', errorbars='NO'):
+def generate_sequence_logo(fname, resfile, weblogo_path, desc=' ', errorbars='NO'):
     cmd = ' '.join([
         weblogo_path,
         '--sequence-type dna',

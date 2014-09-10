@@ -20,7 +20,7 @@ def execute(cf):
     output_dir = os.path.dirname(output_file)
     (siteFilename, priorFilename, paramFilename) = run_motevo(wmFile, inputSequences, \
                                                output_file, output_dir, genome)
-    desc = '%s refined' % os.path.basename(os.path.dirname(output_file))    
+    desc = ' ' #'%s refined' % os.path.basename(os.path.dirname(output_file))    
     generate_sequence_logo(output_file, output_logo, weblogo_path, desc)
     # os.system( 'rm %s %s %s' % (siteFilename, priorFilename, paramFilename) )
     return 0

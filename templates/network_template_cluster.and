@@ -664,7 +664,7 @@ function FGBGprocessing(string IPstring, string BGstring, string TFname) -> (Bin
 
 
 
-         return record(Sequences = getseqs2.Sequences, RegionCoverageDir = regioncoverage.out_dir, PeakStats = pstats, PeakCallDir = peakcall_newnoise.out_dir, LLog = enrichmentScores_for_all.EnrichmentScores, LLog_tops = enrichmentScores_for_all.EnrichmentScores_tops, AUCLog = wmqual.log_file, AUCLog_tops = wmqual_tops.log_file, Peaks = annotpeaks.peakAnnotations, ShuffledTestSet = shuffledSeqs_test.outfile, ShuffledTrainSet = shuffledSeqs_train.outfile, TestSet = splitseqs.odd_file, TrainingSet = splitseqs.even_file)
+         return record(Sequences = getseqs2.Sequences, RegionCoverageDir = regioncoverage.out_dir, PeakStats = pstats, PeakCallDir = peakcall_newnoise.out_dir, LLog = enrichmentScores_combined_motifs.EnrichmentScores, LLog_tops = enrichmentScores_for_all.EnrichmentScores_tops, AUCLog = wmqual.log_file, AUCLog_tops = wmqual_tops.log_file, Peaks = annotpeaks.peakAnnotations, ShuffledTestSet = shuffledSeqs_test.outfile, ShuffledTrainSet = shuffledSeqs_train.outfile, TestSet = splitseqs.odd_file, TrainingSet = splitseqs.even_file)
 
 
 }
