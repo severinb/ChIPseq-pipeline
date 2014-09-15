@@ -34,5 +34,5 @@ def calculate_enrichment_scores(siteFile, beta, length, res_filename):
             index += 1
     except:
         return {}
-    return {'mean':np.mean(enrichmentScores),
-            'std':np.std(enrichmentScores)} 
+    return {'mean':np.mean(np.exp(enrichmentScores)),
+            'std':np.std(np.exp(enrichmentScores))} 

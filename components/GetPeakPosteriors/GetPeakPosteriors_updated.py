@@ -281,6 +281,7 @@ def execute(cf):
     lf.write(timetext)
     lf.close()
 
+    print 'Running time: %s' %str(T3-T1)
 
     return 0
 

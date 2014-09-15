@@ -140,7 +140,9 @@ if __name__ == '__main__':
 	reg_cor_outfile='%s.reg_cor' %infile
 
         #start Erik's shift auto correlation script
-        command = '%s shifts_repeats_nwk.pl %s %s %s %s' %(perlPATH, infile, reg_cor_outfile, multi, repeatpath)
+        #command = '%s shifts_repeats_nwk.pl %s %s %s %s' %(perlPATH, infile, reg_cor_outfile, multi, repeatpath)
+        #command = '%s shifts_repeats_evn_sep2014.pl %s %s %s %s' %(perlPATH, infile, reg_cor_outfile, multi, repeatpath)
+        command = '%s shifts_repeats_sb_12_9_2014.pl %s %s %s %s' %(perlPATH, infile, reg_cor_outfile, multi, repeatpath)
         proc = subprocess.Popen (command,
                                  stdout=subprocess.PIPE,
                                  stderr= subprocess.PIPE,

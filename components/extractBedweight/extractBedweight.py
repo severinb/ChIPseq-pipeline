@@ -35,8 +35,17 @@ def execute(cf):
                          '-f'])
 
     command2 = ' ' .join([FMIpath+'/soft.bc2/frag2bedweight.pl',
-                          '- -m %s ' %mismatches,
-                          ' > %s' %tmpoutfile])
+                          '- -m %s ' %mismatches])
+                          #' > %s' %tmpoutfile])
+
+    command3 = ' ' .join([FMIpath+'/soft/pioSortBed9',
+                          '-s5', #sort by 5' end
+                          '--input-file -' #read from stdin
+                          ])
+
+    command4 = './collapse_bedweight.py'
+
+    command5 = 'gzip -9 > %s' %outfile
 
 
     print 'Extracting %s\n' %FMIid
@@ -51,15 +60,48 @@ def execute(cf):
                           stderr=subprocess.PIPE,
                           shell=True)
 
-    p1.stdout.close()
-    stdout_value, stderr_value = p2.communicate()
+    p3 = subprocess.Popen(command3,
+                          stdin=p2.stdout,
+                          stdout=subprocess.PIPE,
+                          stderr=subprocess.PIPE,
+                          shell=True)
 
+    p4 = subprocess.Popen(command4,
+                          stdin=p3.stdout,
+                          stdout=subprocess.PIPE,
+                          stderr=subprocess.PIPE,
+                          shell=True)
+
+    p5 = subprocess.Popen(command5,
+                          stdin=p4.stdout,
+                          stdout=subprocess.PIPE,
+                          stderr=subprocess.PIPE,
+                          shell=True)
+
+    p1.stdout.close()
+    p2.stdout.close()
+    p3.stdout.close()
+    p4.stdout.close()
+    stdout_value, stderr_value = p5.communicate()
+
+    print 'p5 returncode', p5.returncode, p5.poll()
+    print 'p4 returncode', p4.returncode, p4.poll()
+    print 'p3 returncode', p3.returncode, p3.poll()
     print 'p2 returncode', p2.returncode, p2.poll()
     print 'p1 returncode', p1.returncode, p1.poll()
 
     print stdout_value
     print stderr_value
 
+    if p5.poll() > 0:
+        print 'p5 failed'
+        return -1
+    if p4.poll() > 0:
+        print 'p4 failed'
+        return -1
+    if p3.poll() > 0:
+        print 'p3 failed'
+        return -1
     if p2.poll() > 0:
         print 'p2 failed'
         return -1
@@ -68,34 +110,32 @@ def execute(cf):
         return -1
 
 
+    # command2 = ' '.join(['%s/soft/pioSortBed6 --input-file %s' %(FMIpath, tmpoutfile),
+    #                      '| gzip -9 > %s' %outfile
+    #                      ])
 
-    command2 = ' '.join(['%s/soft/pioSortBed6 --input-file %s' %(FMIpath, tmpoutfile),
-                         '| gzip -9 > %s' %outfile
-                         ])
 
-    T2 = datetime.now()
+    # ##Sorting of Bedweight
+    # print '\nStart Sorting\n'
+    # proc = subprocess.Popen (command2,
+    #                          stdout=subprocess.PIPE,
+    #                          stderr=subprocess.PIPE,
+    #                          shell=True
+    #                          )
 
-    ##Sorting of Bedweight
-    print '\nStart Sorting\n'
-    proc = subprocess.Popen (command2,
-                             stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE,
-                             shell=True
-                             )
+    # stdout_value, stderr_value = proc.communicate()
+    # print stdout_value
+    # print stderr_value
+    # if proc.poll() > 0:
+    #     print '\tstderr:', repr(stderr_value.rstrip())
+    #     return -1
 
-    stdout_value, stderr_value = proc.communicate()
-    print stdout_value
-    print stderr_value
-    if proc.poll() > 0:
-        print '\tstderr:', repr(stderr_value.rstrip())
-        return -1
-
-    #remove tmp file
-    os.system('rm %s' %tmpoutfile)
+    # #remove tmp file
+    # os.system('rm %s' %tmpoutfile)
 
    
-    T3 = datetime.now()
-    time = 'Running time for:\n\t-bedweight extraction: %s\n\t-bedweight sorting: %s\n\t-overall: %s\n' %(T2-T1, T3-T2, T3-T1)
+    T2 = datetime.now()
+    time = 'Running time %s\n' %(T2-T1)
     lf = open(logfile, 'a')
     lf.write(time)
     lf.close	

@@ -8,7 +8,7 @@ import drmaa
 from math import ceil
 import numpy as np
 import matplotlib.pyplot as plt
-
+import datetime
 
 NUMBER_OF_COMPUTATION_NODES = 120
 
@@ -207,6 +207,7 @@ def execute(cf):
     outfile = cf.get_output("EnrichmentScores")
     outfile_tops = cf.get_output("EnrichmentScores_tops") #This file contains the top WMs of the single WM run. The number of top WMs is controlled by the top_wms parameter.
     
+    T1 = datetime.datetime.now()
 
     print "Calculating Enrichment Scores for: "
     print DenovoWMs
@@ -265,6 +266,8 @@ def execute(cf):
         plt.tight_layout()
         plt.savefig(outfile + '.png')
 
+    T2 = datetime.datetime.now()
+    print 'Running time: %s' %str(T2-T1)
 
     return 0
 

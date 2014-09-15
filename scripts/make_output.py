@@ -394,8 +394,8 @@ def find_Reps_in_outdir(TFs_samples_dict, download_out, outdir):
 def main():
 
     # remove large OUTPUT_FMI directory
-    print 'remove large OUTPUT_FMI directory'
-    os.system('rm -r OUTPUT_FMI')
+    # print 'remove large OUTPUT_FMI directory'
+    # os.system('rm -r OUTPUT_FMI')
 
     # Directory REPORT will contain two directories: downloads and html
     # downloads will contain large files (wig, bed) for downloading

@@ -681,7 +681,7 @@ function GetWMStats(BinaryFile Sequences, BinaryFile TrainingSet, BinaryFile Shu
 
              WMlibrary = "WMLIBRARY"
 
-             identifymotif = IdentifyMotif(WM = CandWM, WMlibrary=WMlibrary, ntop=4, mylogo_path="MYLOGO_PATH", @host="long")
+             identifymotif = IdentifyMotif(WM = CandWM, WMlibrary=WMlibrary, ntop=10, mylogo_path="MYLOGO_PATH", @host="long")
 
              createlogo = CreateLogo(WM = CandWM, llog = LLog, auclog = AUCLog, mylogo_path="MYLOGO_PATH")
 

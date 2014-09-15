@@ -51,12 +51,12 @@ $(function () {
                                    "aoColumns": [
                                        {"bSortable": false},
                                        {"bSortable": false},
-                                       null,
-                                       null,
-                                       null,
-                                       null,
-                                       null,
-                                       null,
+                                       {"bSortable": false},
+                                       {"bSortable": false},
+                                       {"bSortable": false},
+                                       {"bSortable": false},
+                                       {"bSortable": false},
+                                       {"bSortable": false},
                                        {"sType": "peak-ratio"}],
                                    "aaSorting": [ [2,'asc']]});
 

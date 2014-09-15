@@ -278,6 +278,9 @@ def execute(cf):
     #remove intermediate dir
     os.system('rm -r %s' %interm)
 
+    T4 = datetime.datetime.now()
+    # write time statistics to stderr:
+    print 'Running time: %s' %str(T4-T1)
 
 
     return 0

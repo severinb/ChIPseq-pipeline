@@ -202,7 +202,7 @@ def execute(cf):
     T2 = datetime.now()
     print "\nSort File\n"
     #sort temoprary outfile and remove it
-    SortCommand = '%s/soft/pioSortBed6 --input-file %s | gzip -9 > %s' %(FMIpath, tmp_file, out_file)
+    SortCommand = '%s/soft/pioSortBed9 -s5 --input-file %s | gzip -9 > %s' %(FMIpath, tmp_file, out_file) #sort by 5' ends
     r2 = run(SortCommand)
     if r2 < 0:
         return -1
