@@ -564,33 +564,47 @@ def main():
         ## de novo motifs
         html_dict['motif_list'] = []
 
-        # extract motif contribution to ensemble enrichment score from site_enrichment log:
-        enrichemnt_contribution_d = {}
-        tot = 0
+        # extract motif ensemble enrichment score (cumulative!) from enrichmentScores log:
+        ensemble_enrichment_d = {}
         for line in open(bn + '_FgBg-enrichmentScores_combined_motifs/EnrichmentScores'): 
             if line.startswith('WM_path'):
                 continue
             t = line.strip().split()
             name = os.path.split(t[0])[1]
             ensemble_enrichment = float(t[1])
-            cont = ensemble_enrichment - tot
-            tot = ensemble_enrichment
-            enrichemnt_contribution_d[name] = round(cont,3)
+            ensemble_enrichment_d[name] = round(ensemble_enrichment,3)
+
+        # extract motif ensemble LL-ratio (cumulative!) from enrichmentScores log:
+        ensemble_LLratio_d = {}
+        for line in open(bn + '_FgBg-enrichmentScores_combined_motifs/EnrichmentScores'): 
+            if line.startswith('WM_path'):
+                continue
+            t = line.strip().split()
+            name = os.path.split(t[0])[1]
+            ensemble_LLratio = float(t[2])
+            ensemble_LLratio_d[name] = round(ensemble_LLratio,3)
 
         # read enrichment scores of separate motifs into a dictionary
-        enrichemnt_scores_d = {}
+        enrichment_scores_d = {}
         for line in open(bn + '_FgBg-enrichmentScores_for_all/EnrichmentScores'): 
             if line.startswith('WM_path'):
                 continue
             t = line.strip().split()
             name = os.path.split(t[0])[1]
             enrichment_score = float(t[1])
-            enrichemnt_scores_d[name] = round(enrichment_score,3)
+            enrichment_scores_d[name] = round(enrichment_score,3)
 
+        # read enrichment scores of separate motifs into a dictionary
+        LLratio_d = {}
+        for line in open(bn + '_FgBg-enrichmentScores_for_all/EnrichmentScores'): 
+            if line.startswith('WM_path'):
+                continue
+            t = line.strip().split()
+            name = os.path.split(t[0])[1]
+            LLratio = float(t[3])
+            LLratio_d[name] = round(LLratio,3)
 
         # matrix with wm as rows and columns: score, auc, fov, eabs
-        wm_ranks = []
-
         motifs_dir = 'motifs'
         os.mkdir('%s' %os.path.join(TFhtml, motifs_dir))
 
@@ -609,10 +623,12 @@ def main():
             wmout = os.path.join(motifs_dir, wmname)
             wmi_html_dict['name'] = urllib.quote(wmname)
             wmi_html_dict['name_unquote'] = wmname
-            wmi_html_dict['score'] = enrichemnt_scores_d[wmname]
+            wmi_html_dict['score'] = enrichment_scores_d[wmname]
             wmi_html_dict['auc'] = fl[2].strip().split()[-1]
             wmi_html_dict['html'] = urllib.quote('%s.html' %wmname) #relative path from the motifs_known.html file.
-            wmi_html_dict['contribution'] = enrichemnt_contribution_d[wmname]
+            wmi_html_dict['ensemble_score'] = ensemble_enrichment_d[wmname]
+            wmi_html_dict['LLratio'] = LLratio_d[wmname]
+            wmi_html_dict['ensemble_LLratio'] = ensemble_LLratio_d[wmname]
 
             print TFname, wmout
             WMhtml = '%s/%s' %(TFhtml, wmout)
@@ -643,7 +659,6 @@ def main():
             wmi_html_dict['eabs'] = fl[6].strip().split()[-1]
             wmi_html_dict['fov'] = fl[7].strip().split()[-1]
 
-            wm_ranks.append(map(float, [wmi_html_dict['score'], wmi_html_dict['auc'], wmi_html_dict['fov'], wmi_html_dict['eabs']]))
 
             wmi_html_dict['similar'] = []
             for i, fl in enumerate(open(identifylog)):
@@ -685,25 +700,6 @@ def main():
                 o.write(l)
             o.close()
 
-        # scipy rank function gives the lowest rank (lowest number) to the lowest value in the array:
-        # I want it the other way round, so I shift the values in the array so that all are positive and then I take the inverse.
-        wm_ranks = array(wm_ranks)
-
-        minval = 0.
-        for i in arange(len(wm_ranks)):
-            if min(wm_ranks[i]) < minval:
-                minval = min(wm_ranks[i])
-        for i in arange(len(wm_ranks)):
-            wm_ranks[i] -= minval
-            wm_ranks[i] += 1. # psuedo count, so that it is not zero and I get division by 0
-        wm_ranks = 1./wm_ranks
-        ranks = zeros(len(wm_ranks))
-        for i in arange(4): # 4 scores
-            ranks += scipy.stats.rankdata(wm_ranks[:,i])
-        ranks /= 4.0 # so if one WM is always first it will get rank 1
-
-        for i in arange(len(ranks)):
-            html_dict['motif_list'][i]['rank'] = ranks[i]
 
 
         # 3:
@@ -754,7 +750,8 @@ def main():
             wmi_html_dict['name'] = urllib.quote(wmname)
             wmi_html_dict['name_unquote'] = wmname
             wmi_html_dict['score'] = round(float(fl[1].strip().split()[-1]), 3)
-            wmi_html_dict['auc'] = fl[2].strip().split()[-1]
+            wmi_html_dict['LLratio'] = round(float(fl[2].strip().split()[-1]), 3)
+            wmi_html_dict['auc'] = fl[3].strip().split()[-1]
             wmi_html_dict['html'] = urllib.quote('%s.html' %wmname) #relative path from the motifs_known.html file.
 
             print TFname, wmout

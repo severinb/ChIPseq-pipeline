@@ -103,6 +103,7 @@ def run_motevo(WM, sequences, interm_dir, genome, priorFile=None, minposterior=.
                             shell=True)
     result = proc.communicate()   
     if proc.returncode:
+        print "MotEvo failed"
         print result[0]
         print result[1]
         return None, None, None, None    

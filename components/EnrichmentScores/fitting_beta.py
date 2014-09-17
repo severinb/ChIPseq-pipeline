@@ -18,8 +18,8 @@ def sum_of_posteriors_foreground_regions(fname):
 
 
 
-def likelihood_derivative_beta(normalized_sitecount, beta, N_over_L, B):
-    return beta + N_over_L - B*np.power(np.sum(1.0 / (beta + normalized_sitecount)) , -1 )
+def likelihood_derivative_beta(normalized_sitecount, beta, N_over_L, B):    
+    return beta + N_over_L - B*np.power(np.sum(np.where(normalized_sitecount!=0, 1.0 / (beta + normalized_sitecount), 1.0/beta)) , -1 )
 
 
 def fit_beta(siteFile, interm_dir, wmFile, number_of_windows):

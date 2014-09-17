@@ -56,7 +56,6 @@ $(function () {
                                        {"bSortable": false},
                                        {"bSortable": false},
                                        {"bSortable": false},
-                                       {"bSortable": false},
                                        {"sType": "peak-ratio"}],
                                    "aaSorting": [ [2,'asc']]});
 

@@ -603,7 +603,7 @@ function FGBGprocessing(string IPstring, string BGstring, string TFname) -> (Bin
 
          reducewms = ReduceWMs(infile=enrichmentScores_for_all.EnrichmentScores,
                      distance_cutoff=0.2,
-                     minscore=0.0,
+                     minscore=1.0,
                      @host="long")
 
 

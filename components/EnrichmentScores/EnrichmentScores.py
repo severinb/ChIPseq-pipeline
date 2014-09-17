@@ -49,9 +49,11 @@ def createJobTemplate(TrainingPool, TestSequences, WMs, scratchDir, genome, NUMB
     jobFileContent = '\n'.join([
         '#! /bin/bash',
         'WMFILE=%s' % WMs,
-        'for (( i=$SGE_TASK_ID ; i<($SGE_TASK_ID+%d) ; i++ ))' % NUMBER_OF_MOTIFS_PER_JOB,
+        'for (( i=$SGE_TASK_ID ; i<($SGE_TASK_ID+%d) ; i++ ))' %NUMBER_OF_MOTIFS_PER_JOB,
         'do',
+        '   printf "Doing jobID: %s\n" "$i"',
         '   WM=$(sed -n -e "$i p" $WMFILE)',
+        '   printf "Doing WM: %s\n" "$WM"',
         '   python {prog} -w "$WM" \\'.format(prog=prog),
         '   -t \'{trainseq}\' \\'.format(trainseq=TrainingPool),
         '   -s \'{testseq}\' \\'.format(testseq=TestSequences),        
@@ -106,7 +108,7 @@ def concatenateResults(scratchDir, resFilename, col):
                 outf.write(inf.readline())
     ## adding a header line that can be used by anduril
     with open(resFilename, 'w') as outf:
-        outf.write('WM_path\tenrichment_score\tstdev\tbeta\tbg_prior\n')
+        outf.write('WM_path\tenrichment_score\tstdev\tLL_ratio\tbeta\tbg_prior\n')
     ## sorting according to the enrichment score column
     cmd = 'sort -gr -k %d %s >> %s' % (col, resFileUnsorted, resFilename)
     os.system(cmd)
@@ -150,13 +152,15 @@ def findTopWMinWMs(WMs, topWM):
 def combinedMotifs(trainingPool, testPool, WMs, jobName, scratchDir, GENOME, NUMBER_OF_MOTIFS_PER_JOB, queue_type, project_leader):
     index = 1
     numberOfForegroundSeq = len([line for line in open(testPool) if re.search('_reg\d+', line)])
-    convergence_criterion = (np.log(10.) / float(numberOfForegroundSeq))
-    print 'Convergence criterion for finding complementary motifs is %f (at least 10 fold increase in likelihood)' %convergence_criterion
+    convergence_criterion = np.log(10.)
+    print 'Convergence criterion for finding complementary motifs is %f (at least 10 fold increase in log-likelihood)' %convergence_criterion
     topWM = WMs[0][0]
     topEnrichmentScoreFirstRound = float(WMs[0][1])
+    top_LL_FirstRound = float(WMs[0][3])
     WMs.remove(WMs[0])
     topEnrichmentScoreSecondRound = 0.
     enrichmentScoresEachRound = [topEnrichmentScoreFirstRound]
+    LL_RatioEachRound = [top_LL_FirstRound]
     while True:        
         WmFile = createWMcombinedFile(topWM, WMs, scratchDir)
         shellCommand = createJobTemplate(trainingPool, testPool, WmFile, \
@@ -168,7 +172,8 @@ def combinedMotifs(trainingPool, testPool, WMs, jobName, scratchDir, GENOME, NUM
         outfile = os.path.join(os.path.dirname(scratchDir), 'EnrichmentScores_%d' % (index+1))
         sortedWMs = concatenateResults(scratchDir, outfile, index+2)
         topEnrichmentScoreSecondRound = float(sortedWMs[0][index+1])
-        if (topEnrichmentScoreSecondRound - topEnrichmentScoreFirstRound) < convergence_criterion: # convergence criterion: exp( nr_of_fg_seqs * enrichment_score_diff ) < 100 --> enrichment_score diff should increase at least by log(100)/nr_of_fg_seqs (0.009 for 00 fg seqs)
+        top_LL_SecondRound = float(sortedWMs[0][index+3])
+        if (top_LL_SecondRound - top_LL_FirstRound) < convergence_criterion: # convergence criterion: exp( nr_of_fg_seqs * enrichment_score_diff ) < 100 --> enrichment_score diff should increase at least by log(100)/nr_of_fg_seqs (0.009 for 00 fg seqs)
             break
         topWM = ' '.join(sortedWMs[0][:(index+1)])
         removeIndex = findTopWMinWMs(WMs, topWM)
@@ -177,11 +182,13 @@ def combinedMotifs(trainingPool, testPool, WMs, jobName, scratchDir, GENOME, NUM
         else:
             raise Exception        
         enrichmentScoresEachRound.append(topEnrichmentScoreSecondRound)        
+        LL_RatioEachRound.append(top_LL_SecondRound)
         topEnrichmentScoreFirstRound = topEnrichmentScoreSecondRound
+        top_LL_FirstRound = top_LL_SecondRound
         index += 1
         if index > 8:
             break
-    return topWM, enrichmentScoresEachRound
+    return topWM, enrichmentScoresEachRound, LL_RatioEachRound
         
 
 def execute(cf):
@@ -249,14 +256,14 @@ def execute(cf):
     ## cleaning up the scratch directory
     # cleaningUpTmpFiles(scratchDir)
     if CombinedMotifs:
-        topWM, enrichmentScoresEachRound = combinedMotifs(trainingPool, testPool, \
+        topWM, enrichmentScoresEachRound, LL_ratioEachRound = combinedMotifs(trainingPool, testPool, \
                                                          sortedWMs, jobName, scratchDir, GENOME, \
                                                           NUMBER_OF_MOTIFS_PER_JOB, queue_type, project_leader)
         topWM_list = topWM.split()
         with open(outfile, 'w') as outf:
-            outf.write('WM_path\tenrichment_score\n')
+            outf.write('WM_path\tenrichment_score\tLL_ratio\n')
             for i in range(len(topWM_list)):
-                outf.write(topWM_list[i] + '\t' + str(enrichmentScoresEachRound[i]) + '\n')
+                outf.write(topWM_list[i] + '\t' + str(enrichmentScoresEachRound[i]) + '\t' + str(LL_ratioEachRound[i]) + '\n')
 
         plt.plot(range(len(topWM_list)+1), [0] + enrichmentScoresEachRound, 'r-')
         plt.plot(range(len(topWM_list)+1), [0] + enrichmentScoresEachRound, 'ko')

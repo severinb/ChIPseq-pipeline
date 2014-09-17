@@ -112,7 +112,13 @@ def execute(cf):
     ldict = {}
     for line in open(llog):
         t = line.strip().split()
-        ldict[t[0]] = t[1]
+        # llog from combined motifs and tops motifs looks a bit different, i.e. in tops LLratio is in third column, in combined motifs LLratio is in fourth column.
+        try:
+            LLratio = t[3]
+        except IndexError:
+            LLratio = t[2]
+
+        ldict[t[0]] = [t[1], LLratio] #enrichment and LL-ratio
 
     lvals = ldict[wmnameInit]
 
@@ -131,7 +137,8 @@ def execute(cf):
 
     o = open(log, 'w')
     text = '\n'.join(['- Motif name: %s' %os.path.split(wmnameInit)[1],
-                      '- Enrichment score: %s' %(lvals),
+                      '- Enrichment: %s' %(lvals[0]),
+                      '- log-Likelihood Ratio: %s' %(lvals[1]),
                       '- Area under precision recall curve: %s' %(aucval)])
     o.write(text)
     o.close()

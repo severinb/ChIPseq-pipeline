@@ -64,14 +64,21 @@ def calculateEnrichmetScores(WM, testPool, testLength, params, outdir, genome, p
 
 def lengthOfWM(WMfiles):
     minLength = np.inf
+    i = 0
     for WMfile in WMfiles:
+        i +=1
         length = 0
-        with open(WMfile) as inf:
-            for line in inf:
-                if re.search('^\d+\s+[(\.)0-9]+\s+[(\.)0-9]+\s+', line):
-                    length += 1
-        if length < minLength:
-            minLength = length
+        try:
+            with open(WMfile) as inf:
+                for line in inf:
+                    if re.search('^\d+\s+[(\.)0-9]+\s+[(\.)0-9]+\s+', line):
+                        length += 1
+            if length < minLength:
+                minLength = length
+        except IOError:
+            print 'Couldnt find WMfile: %i' %1
+            print WMfile
+            print WMfiles
     return minLength    
 
 
@@ -90,21 +97,25 @@ def lengthOfSequences(trainingPool, testPool, WMfile):
 def main():
     args = arguments()    
     args.WM = args.WM.split(' ')  # to have a list of WMs, in case we running for more than one WMs
-    trainingLength, testLength = lengthOfSequences(args.trainSeq, args.testSeq, args.WM)
-    params, priorFile = fittingParameters(args.WM, args.trainSeq, trainingLength, \
-                                          args.outdir, args.GENOME)
-    enrichmentScores, motifName = calculateEnrichmetScores(args.WM, \
-                                                args.testSeq, testLength, params, \
-                                                args.outdir, args.GENOME, priorFile)
-    resFilename = os.path.join(args.outdir, motifName + '.results')
-    with open(resFilename, 'w') as outf:
-        outf.write('\t'.join([
-            '\t'.join(args.WM),
-            str(enrichmentScores['mean']),
-            str(enrichmentScores['std']),
-            str(params['beta']),
-            str(params['prior'])
-            ]) + '\n')
+    if not args.WM == ['']:
+        trainingLength, testLength = lengthOfSequences(args.trainSeq, args.testSeq, args.WM)
+        params, priorFile = fittingParameters(args.WM, args.trainSeq, trainingLength, \
+                                                  args.outdir, args.GENOME)
+        enrichmentScores, motifName = calculateEnrichmetScores(args.WM, \
+                                                                   args.testSeq, testLength, params, \
+                                                                   args.outdir, args.GENOME, priorFile)
+        resFilename = os.path.join(args.outdir, motifName + '.results')
+        with open(resFilename, 'w') as outf:
+            outf.write('\t'.join([
+                        '\t'.join(args.WM),
+                        str(enrichmentScores['mean']),
+                        str(enrichmentScores['std']),
+                        str(enrichmentScores['LL_ratio']),
+                        str(params['beta']),
+                        str(params['prior'])
+                        ]) + '\n')
+    else:
+        print 'No WM given.'
     # os.system('find /scratch/ -user omidi -exec rm {} \;')
     
     

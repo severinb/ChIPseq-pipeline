@@ -193,9 +193,8 @@
   <tr>
     <th><p>Motif Name</p></th>
     <th><p>Sequence Logo</p></th>
-    <th><p>Rank</p></th>
-    <th><p>Contribution to Motif Ensemble Enrichment</p></th>
-    <th><p>Enrichment Score</p></th>
+    <th><p>Motif Ensemble Enrichment (Motif Ensemble log-Likelihood Ratio)</p></th>
+    <th><p>Enrichment (log-Likelihood Ratio)</p></th>
     <th><p>Precision and Recall</p></th>
     <th><p>Prediction - Observation Correlation</p></th>
     <th><p>Enrichment at Binding Sites</p></th>
@@ -208,15 +207,15 @@
   <tr>
     <td><a href="{{motif.html}}">{{motif.name_unquote}}</a></td>
     <td> <a href="{{motif.logo}}"><img src="{{motif.logo}}" style="width: 200px;" alt="motif logo"></a></td>
-    <td>{{motif.rank}}</td>
-    <td>{{motif.contribution}}</td>
-    <td>{{motif.score}}</td>
+    <td>{{motif.ensemble_score}} ({{motif.ensemble_LLratio}})</td>
+    <td>{{motif.score}} ({{motif.LLratio}})</td>
     <td>{{motif.auc}}</td>
     <td>{{motif.fov}}</td>
     <td>{{motif.eabs}}</td>
     <td>{{motif.truepeaks}}</td>
   </tr>
   {% endfor %}
+
 
   </tbody>
 </table>
@@ -238,7 +237,7 @@
   <tr>
     <th><p>Motif Name</p></th>
     <th><p>Sequence Logo</p></th>
-    <th><p>Enrichment Score</p></th>
+    <th><p>Enrichment (log-Likelihood Ratio)</p></th>
     <th><p>Precision and Recall</p></th>
     <th><p>Prediction - Observation Correlation</p></th>
     <th><p>Enrichment at Binding Sites</p></th>
@@ -251,7 +250,7 @@
   <tr>
     <td><a href="{{motif.html}}">{{motif.name_unquote}}</a></td>
     <td> <a href="{{motif.logo}}"><img src="{{motif.logo}}" style="width: 200px;" alt="motif logo"></a></td>
-    <td>{{motif.score}}</td>
+    <td>{{motif.score}} ({{motif.LLratio}})</td>
     <td>{{motif.auc}}</td>
     <td>{{motif.fov}}</td>
     <td>{{motif.eabs}}</td>

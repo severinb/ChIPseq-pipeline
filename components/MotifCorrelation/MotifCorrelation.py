@@ -80,6 +80,7 @@ def execute(cf):
         yticks(range(motif_num), wmnames)
         title('Correlation of Motif Predictions')
         tight_layout()
+        clim(-1,1) #constant range for colorbar
         colorbar()
 
     except AttributeError: # exception for one dimensional C, because we only have one matrix                                                          
@@ -98,6 +99,7 @@ def execute(cf):
         yticks(range(motif_num), wmnames)
         title('Correlation of Motif Predictions')
         tight_layout()
+        clim(-1,1) #constant range for colorbar
         colorbar()
 
     except AttributeError: # exception for one dimensional C, because we only have one matrix                                                          
