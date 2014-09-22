@@ -31,20 +31,6 @@ BG_FASTA_DESCRIPTION:
 
 
 ##invariant, do not touch:
-TO_FMI_REPOSITORY:
-    #- qualityfilter
-    #- adaptor
-    #- transform
-    #- import
-    #- annotate
-    #- bedweight
-    #- bed
-    #- wig
-    #- mappable
-    #- errorplots
-    #- fraglen
-    #- latexfrag
-    #- pdfreport
 FMI_PATH:
     /import/bc2/home/nimwegen/bergerse00/Projects/ChIPseq-pipeline/fmitools
 ANDURIL_COMPONENTS_PATH:

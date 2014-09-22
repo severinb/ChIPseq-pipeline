@@ -1,0 +1,155 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use Getopt::Long;
+use List::Util qw(min max);
+
+# global variables
+my $average       = 0;
+my $fixedCount    = 0;
+my $quiet         = 0;
+my $scalingFactor = 1;
+
+# digest command line
+my $res = GetOptions("a|avg|average" => \$average,
+		     "f|fixed=i" => \$fixedCount,
+		     "q|quiet"   => \$quiet,
+                    );
+
+if(scalar(@ARGV) != 1) {
+    die ("usage:\n\t$0 fragFile [>normFragFile] [options]\n\n" .
+	 "assumes that fragment report is sorted by sample and targetId\n\n" .
+         "\t  -a       : normalize to the average [default is smallest sample]\n" .
+         "\t  -f int   : normalize to the fixed number of mappable reads\n" .
+	 "\t  -q       : quiet (no progress report on STDERR)\n\n");
+}
+
+# open IO
+my ($FIN, $FOUT);
+if(not -r $ARGV[0]) {
+    die "error: could not read input file $ARGV[0]: $!\n";
+} elsif($ARGV[0] =~ m/\.gz$/) {
+    open($FIN, "gunzip -dc $ARGV[0]|") or die "error decompressing $ARGV[0]: $!\n";
+} elsif($ARGV[0] =~ m/\.bz2$/) {
+    open($FIN, "bunzip2 -dc $ARGV[0]|") or die "error decompressing $ARGV[0]: $!\n";
+} else {
+    open($FIN, "<$ARGV[0]") or die "error reading $ARGV[0]: $!\n";
+}
+
+# store one sequence at a time
+print STDERR "counting reads ...\n" if($quiet==0);
+my $currentSample      = "";
+my $nSample            = 0;
+my $currentSampleCount = 0;
+my %sampleCounts;
+
+while (my $line = <$FIN>) {
+    if($line =~ m/^\#/) { next; }
+    chomp $line;
+    my @f = split("\t", $line);
+    # format: $f[0] : read id
+    #           [1] : target id
+    #           [2] : target strand
+    #           [3] : target start
+    #           [4] : target end
+    #           [5] : number of errors
+    #           [6] : sequence alignment string
+    #           [7] : target alignment string
+    #           [8] : sampleId
+    #           [9] : read count
+    #          [10] : read inverse weight
+
+    if($f[8] ne $currentSample) {
+	if ($nSample > 0) {
+	    $sampleCounts{$currentSample} = $currentSampleCount;
+	}
+	$nSample++;
+	$currentSample = $f[8];
+	$currentSampleCount = 0;
+	print STDERR "\tparsing $currentSample\n" if($quiet==0);
+    } 
+    $currentSampleCount += $f[9];
+}
+$sampleCounts{$currentSample} = $currentSampleCount;
+close $FIN;
+
+# calculate the scaling factor
+if ($fixedCount != 0) {
+     $scalingFactor = $fixedCount;
+} else {
+    if ($average) {
+	my $sampleCount = scalar keys %sampleCounts;
+	my $totalCount = 0;
+	foreach my $key (keys %sampleCounts) {
+	    $totalCount += $sampleCounts{$key};
+	}
+	$scalingFactor = $totalCount/$sampleCount;
+    } else {
+	my $minCount = $sampleCounts{(keys %sampleCounts)[0]};
+	foreach my $key (keys %sampleCounts) {
+	    if ($sampleCounts{$key} < $minCount) {
+		$minCount = $sampleCounts{$key};
+	    }
+	}
+	$scalingFactor = $minCount;
+    }
+}
+print STDERR "parsing finished\n\n" if($quiet==0);
+
+print STDERR "Scaling summary:\n" if($quiet==0);
+#  report
+foreach my $key (keys %sampleCounts) {
+    print STDERR "\tSample: $key \tTotalReadCounts: $sampleCounts{$key}\t" if($quiet==0);
+    $sampleCounts{$key} = $scalingFactor / $sampleCounts{$key};
+    print STDERR "Scaling Factor: ". sprintf("%.3f", $sampleCounts{$key}) . "\n" if($quiet==0);
+#$sampleCounts{$key} . "\n"; #
+}
+
+print STDERR "\nwriting file ...\n" if($quiet==0);
+
+## #############################################################################
+
+# open IO
+if(not -r $ARGV[0]) {
+    die "error: could not read input file $ARGV[0]: $!\n";
+} elsif($ARGV[0] =~ m/\.gz$/) {
+    open($FIN, "gunzip -dc $ARGV[0]|") or die "error decompressing $ARGV[0]: $!\n";
+} elsif($ARGV[0] =~ m/\.bz2$/) {
+    open($FIN, "bunzip2 -dc $ARGV[0]|") or die "error decompressing $ARGV[0]: $!\n";
+} else {
+    open($FIN, "<$ARGV[0]") or die "error reading $ARGV[0]: $!\n";
+}
+$FOUT = \*STDOUT;
+
+while (my $line = <$FIN>) {
+    chomp $line;
+    if($line =~ m/^\#/) { 
+	print $FOUT "$line\n"; 
+    } else {
+	my @f = split("\t", $line);
+	# format: $f[0] : read id
+	#           [1] : target id
+	#           [2] : target strand
+	#           [3] : target start
+	#           [4] : target end
+	#           [5] : number of errors
+	#           [6] : sequence alignment string
+	#           [7] : target alignment string
+	#           [8] : sampleId
+	#           [9] : read count
+	#          [10] : read inverse weight
+	for (my $i=0; $i<=8; $i++) {
+	    print $FOUT "$f[$i]\t";
+	}
+#	my $normCount = $f[9] * $sampleCounts{$f[8]};
+	print $FOUT $f[9]*$sampleCounts{$f[8]} ."\t";
+	print $FOUT $f[10] . "\n";
+    }
+}
+close $FOUT;
+close $FIN;
+    
+## #############################################################################
+print STDERR "done\n" if($quiet==0);
+## #############################################################################
