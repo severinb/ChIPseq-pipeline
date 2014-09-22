@@ -410,7 +410,7 @@ class Motif(AlphabeticArray) :
         for line in fin :
             if line.isspace() or line[0] =='#' or re.search('^//$', line): continue
             stuff = line.split()
-            if start and stuff[0] != 'P0': continue
+            if start and stuff[0] != 'P0' and stuff[0] != 'PO' : continue
             start = False
             items.append(stuff[0:5])
         if len(items) < 2  :
@@ -421,7 +421,7 @@ class Motif(AlphabeticArray) :
         hcols = len(header)
         rows = len(items)
         cols = len(items[0])
-        if not( header[0] =='P0' or hcols == cols-1 or hcols == cols-2) :
+        if not( header[0] =='P0' or header[0] =='PO' or hcols == cols-1 or hcols == cols-2) :
             raise ValueError("Missing header line!")
 
         # Do all lines (except the first) contain the same number of items?
