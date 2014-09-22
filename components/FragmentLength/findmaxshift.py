@@ -118,8 +118,8 @@ def calculate_shift(y,y1,y2,skip=80,smoothstep=50):
 
 if __name__ == '__main__':
 
-	if not(len(sys.argv))==8 and not len(sys.argv) == 9:
-		sys.exit('usage: findmaxshift.py input-file outputdir intermediate_outdir logfile plotfile perlPath multi (repeatPath)')  
+	if not(len(sys.argv))==7 and not len(sys.argv) == 8:
+		sys.exit('usage: findmaxshift.py input-file outputdir intermediate_outdir logfile plotfile perlPath (repeatPath)')  
 
 	infile = sys.argv[1]
         out_dir=sys.argv[2]
@@ -127,10 +127,9 @@ if __name__ == '__main__':
         log_file = sys.argv[4]
         plot_file = sys.argv[5]
         perlPATH = sys.argv[6]
-        multi = int(sys.argv[7])
 
         try:
-                repeatpath = sys.argv[8]
+                repeatpath = sys.argv[7]
                 if not(os.path.exists(repeatpath)):
                         sys.exit('GENOME DIRECTORY FOR REPEATS - %s - DOES NOT EXIST'%repeatpath)
         except IndexError:
@@ -140,9 +139,7 @@ if __name__ == '__main__':
 	reg_cor_outfile='%s.reg_cor' %infile
 
         #start Erik's shift auto correlation script
-        #command = '%s shifts_repeats_nwk.pl %s %s %s %s' %(perlPATH, infile, reg_cor_outfile, multi, repeatpath)
-        #command = '%s shifts_repeats_evn_sep2014.pl %s %s %s %s' %(perlPATH, infile, reg_cor_outfile, multi, repeatpath)
-        command = '%s shifts_repeats_sb_12_9_2014.pl %s %s %s %s' %(perlPATH, infile, reg_cor_outfile, multi, repeatpath)
+        command = '%s shifts_repeats_faster_sb.pl %s %s %s' %(perlPATH, infile, reg_cor_outfile, repeatpath)
         proc = subprocess.Popen (command,
                                  stdout=subprocess.PIPE,
                                  stderr= subprocess.PIPE,

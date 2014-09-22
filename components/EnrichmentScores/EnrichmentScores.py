@@ -51,9 +51,7 @@ def createJobTemplate(TrainingPool, TestSequences, WMs, scratchDir, genome, NUMB
         'WMFILE=%s' % WMs,
         'for (( i=$SGE_TASK_ID ; i<($SGE_TASK_ID+%d) ; i++ ))' %NUMBER_OF_MOTIFS_PER_JOB,
         'do',
-        '   printf "Doing jobID: %s\n" "$i"',
         '   WM=$(sed -n -e "$i p" $WMFILE)',
-        '   printf "Doing WM: %s\n" "$WM"',
         '   python {prog} -w "$WM" \\'.format(prog=prog),
         '   -t \'{trainseq}\' \\'.format(trainseq=TrainingPool),
         '   -s \'{testseq}\' \\'.format(testseq=TestSequences),        
@@ -267,9 +265,8 @@ def execute(cf):
 
         plt.plot(range(len(topWM_list)+1), [0] + enrichmentScoresEachRound, 'r-')
         plt.plot(range(len(topWM_list)+1), [0] + enrichmentScoresEachRound, 'ko')
-        plt.xlabel("Motifs")
         plt.ylabel("Enrichment Score")
-        plt.xticks(range(len(topWM_list)+1), [''] + [os.path.split(n)[1] for n in topWM_list], rotation=45)
+        plt.xticks(range(len(topWM_list)+1), [''] + [os.path.split(n)[1] for n in topWM_list], rotation=90)
         plt.tight_layout()
         plt.savefig(outfile + '.png')
 

@@ -72,6 +72,8 @@ QUEUE_NAMES:
     long_hm=fs_long@@x3755
     verylong_hm=fs_very_long_hm
     sjpn_long_hm=fs_long@@x3755
+    multi_long_hm=fs_long@@x3755
+THREAD_NUMBER: 8
 ALIGN_PIPE_PATH:
     /import/bc2/home/nimwegen/GROUP/AlignmentPipeline/scripts/pipeline.pl
 BEDTOOLS_PATH:

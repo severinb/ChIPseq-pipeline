@@ -7,13 +7,13 @@ function IPfunction(BinaryFile IN, string repFMIid, string iter, string DESC, st
     if formatFlag == "bed" {
 
        //Tries to estimate a fragment length. It also shifts the reads by half fragment length upstream (+) or downstream (-)
-       fraglen = FragmentLength(in_file = IN, repeatPath="REPEAT_PATH", perlPATH="PERL_PATH", pythonPATH="PYTHON_PATH", FMIpath="FMI_PATH", @host="long_hm"FRAGLEN_iter)
+       fraglen = FragmentLength(in_file = IN, repeatPath="REPEAT_PATH", perlPATH="PERL_PATH", pythonPATH="PYTHON_PATH", FMIpath="FMI_PATH", @host="long_hm")
 
        latexfrag = LatexFragmentizer(plot1=fraglen.FragmentLength_plot, 
                                      capt_plot1="Fragment size correlation plot",
-                                     sectionTitle=TFname+": Fragment Size Estimation:", @host="noQueue"LATEXFRAG_iter)
+                                     sectionTitle=TFname+": Fragment Size Estimation:", @host="noQueue")
 
-       pdfreport = CombineLatex(latex1=latexfrag.fragment, @host="noQueue"PDFREPORT_iter)
+       pdfreport = CombineLatex(latex1=latexfrag.fragment, @host="noQueue")
        OUTPUT(pdfreport.pdfreport)
 
        return record(IPout=fraglen.out_dir, IPlog=latexfrag.fragment)
@@ -26,31 +26,31 @@ function IPfunction(BinaryFile IN, string repFMIid, string iter, string DESC, st
        ////quality filtering, transform and importSample //////
        if formatFlag == "fastq" {
           //Quality Filter: Filters out reads that are too short and have too many Ns.
-          qualityfilter = SilviaQF(in_file = IN, pythonPATH="PYTHON_PATH", @host="long"QUALITYFILTER_iter)
+          qualityfilter = SilviaQF(in_file = IN, pythonPATH="PYTHON_PATH", @host="long")
 
           //Searches a subset of the input fasta file for matches with several adaptors and subwords thereof. The one adaptor with the most matches is given out.
-          adaptor = adaptorDecision(in_file = qualityfilter.out_file, reads_number=250000, perlPATH="PERL_PATH", FMIpath="FMI_PATH", adapters="ADAPTERS_3", @host="long_hm"ADAPTOR_iter)
+          adaptor = adaptorDecision(in_file = qualityfilter.out_file, reads_number=250000, perlPATH="PERL_PATH", FMIpath="FMI_PATH", adapters="ADAPTERS_3", @host="long_hm")
 
           //Removes the adaptor. If one is given in the parameter yaml file, this one is taken. Otherwise the one found by adaptorDecision is used.
-          trans = transform(in_file = qualityfilter.out_file, adaptor3automatic = adaptor.finalAdaptor, adaptor3="NONE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", sortTMPDIR="SORT_TMPDIR", @host="long_hm"TRANS_iter)
+          trans = transform(in_file = qualityfilter.out_file, adaptor3automatic = adaptor.finalAdaptor, adaptor3="NONE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", sortTMPDIR="SORT_TMPDIR", @host="long_hm")
 
           latexfrag1 = LatexFragmentizer(plot1=qualityfilter.plot_before,
                                          plot2=qualityfilter.plot_after,
                                          capt_plot1="Read length reverse cumulative distribution before filtering",
                                          capt_plot2="Read length reverse cumulative distribution after filtering",
-                                         sectionTitle=TFname+": Quality Filtering:", @host="noQueue"LATEXFRAG_iter)
+                                         sectionTitle=TFname+": Quality Filtering:", @host="noQueue")
 
 
           latexfrag2 = LatexFragmentizer(log1=adaptor.log_file,
                                          capt_log1="",
                                          plot1=adaptor.plot,
                                          capt_plot1="Plot for Adaptor Finding: Length of Adaptor versus Full Matches",
-                                         sectionTitle="Adaptor Finding:", @host="noQueue"LATEXFRAG_iter)
+                                         sectionTitle="Adaptor Finding:", @host="noQueue")
 
 
           latexfrag3 = LatexFragmentizer(log1=trans.transform_log,
                                          capt_log1="",
-                                         sectionTitle="Adaptor Removal and Quality Filtering:", @host="noQueue"LATEXFRAG_iter)
+                                         sectionTitle="Adaptor Removal and Quality Filtering:", @host="noQueue")
 
 
 
@@ -59,56 +59,56 @@ function IPfunction(BinaryFile IN, string repFMIid, string iter, string DESC, st
        if formatFlag == "fasta" {
 
           //Searches a subset of the input fasta file for matches with several adaptors and subwords thereof. The one adaptor with the most matches is given out.
-          adaptor = adaptorDecision(in_file = IN, reads_number=250000, perlPATH="PERL_PATH", FMIpath="FMI_PATH", adapters="ADAPTERS_3", @host="long_hm"ADAPTOR_iter)
+          adaptor = adaptorDecision(in_file = IN, reads_number=250000, perlPATH="PERL_PATH", FMIpath="FMI_PATH", adapters="ADAPTERS_3", @host="long_hm")
 
           //Removes the adaptor. If one is given in the parameter yaml file, this one is taken. Otherwise the one found by adaptorDecision is used.
-          trans = transform(in_file = IN, adaptor3automatic = adaptor.finalAdaptor, adaptor3="NONE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", sortTMPDIR="SORT_TMPDIR", @host="long_hm"TRANS_iter)
+          trans = transform(in_file = IN, adaptor3automatic = adaptor.finalAdaptor, adaptor3="NONE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", sortTMPDIR="SORT_TMPDIR", @host="long_hm")
 
 
           latexfrag2 = LatexFragmentizer(log1=adaptor.log_file,
                                          capt_log1="",
                                          plot1=adaptor.plot,
                                          capt_plot1="Plot for Adaptor Finding: Length of Adaptor versus Full Matches",
-                                         sectionTitle=TFname+": Adaptor Finding:", @host="noQueue"LATEXFRAG_iter)
+                                         sectionTitle=TFname+": Adaptor Finding:", @host="noQueue")
 
 
           latexfrag3 = LatexFragmentizer(log1=trans.transform_log,
                                          capt_log1="",
-                                         sectionTitle="Adaptor Removal and Quality Filtering:", @host="noQueue"LATEXFRAG_iter)
+                                         sectionTitle="Adaptor Removal and Quality Filtering:", @host="noQueue")
 
 
        }
 
 
        //Imports the sample into FMI repository (copies the fasta file there and creates some directories).
-       import = importSample(in_file = trans.out_file, desc=DESC, FMIpath="FMI_PATH", FMIid = repFMIid, perlPATH="PERL_PATH", FMI_output_dir="FMI_OUTPUT_DIR", @host="long_hm"IMPORT_iter) 
+       import = importSample(in_file = trans.out_file, desc=DESC, FMIpath="FMI_PATH", FMIid = repFMIid, perlPATH="PERL_PATH", FMI_output_dir="FMI_OUTPUT_DIR", @host="long_hm") 
 
 
        ////work from the samples repository: annotateSample, extract wig and bed and count mappable reads //////////////
 
        //Runs bowtie to map to genome and transcriptome  
-       annotate = annotateSample(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", FMI_output_dir="FMI_OUTPUT_DIR", @bind=import, @host="verylong_hm"ANNOTATE_iter)
+       annotate = annotateSample(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", FMI_output_dir="FMI_OUTPUT_DIR", threads="THREAD_NUMBER", @bind=import, @host="multi_long_hm")
   
        //Extracts mappings in bedweight format (weight is number of identical reads/number of mapping positions)
-       bedweight = extractBedweight(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", mismatches=100, FMI_output_dir="FMI_OUTPUT_DIR", @bind=annotate, @host="sjpn_long_hm"BEDWEIGHT_iter)
+       bedweight = extractBedweight(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", mismatches=100, FMI_output_dir="FMI_OUTPUT_DIR", @bind=annotate, @host="long_hm")
 
        //extracting bed format file. It's location is the same as bedweight.
-       //bed = extractBed(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", maxhits=100, FMI_output_dir="FMI_OUTPUT_DIR", @bind=annotate, @host="sjpn_long_hm"BED_iter)
+       //bed = extractBed(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", maxhits=100, FMI_output_dir="FMI_OUTPUT_DIR", @bind=annotate, @host="long_hm")
 
        //Extracts mappings in wig format
-       wig = extractWig(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", mismatches=100, width=100, FMI_output_dir="FMI_OUTPUT_DIR", @bind=annotate, @host="sjpn_long_hm"WIG_iter)
+       wig = extractWig(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", mismatches=100, width=100, FMI_output_dir="FMI_OUTPUT_DIR", @bind=annotate, @host="long_hm")
 
        //Counts how many reads were mapped
-       mappable = numberMappableReads(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", FMI_output_dir="FMI_OUTPUT_DIR", @bind=annotate, @host="sjpn_long_hm"MAPPABLE_iter)
+       mappable = numberMappableReads(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", FMI_output_dir="FMI_OUTPUT_DIR", @bind=annotate, @host="long_hm")
 
        //Creates three plots with mapping statistics
-       errorPlots = createErrorPlots(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", FMI_output_dir="FMI_OUTPUT_DIR", @bind=annotate, @host="sjpn_long_hm"ERRORPLOTS_iter)
+       errorPlots = createErrorPlots(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", FMI_output_dir="FMI_OUTPUT_DIR", @bind=annotate, @host="long_hm")
 
 
        ////Shift bed file, output from bed_i
 
        //Tries to estimate a fragment length. It also shifts the reads by half fragment length upstream (+) or downstream (-)
-       fraglen = FragmentLength(in_dir = bedweight.out_dir, repeatPath="REPEAT_PATH", perlPATH="PERL_PATH", pythonPATH="PYTHON_PATH", FMIpath="FMI_PATH", @host="long_hm"FRAGLEN_iter)
+       fraglen = FragmentLength(in_dir = bedweight.out_dir, repeatPath="REPEAT_PATH", perlPATH="PERL_PATH", pythonPATH="PYTHON_PATH", FMIpath="FMI_PATH", @host="long_hm")
 
        latexfrag4 = LatexFragmentizer(log1=mappable.numberMappableReads_log, 
                                       plot1=errorPlots.error_profiles_plot,
@@ -118,23 +118,23 @@ function IPfunction(BinaryFile IN, string repFMIid, string iter, string DESC, st
                                       capt_plot1="Fraction of all reads that had an error at read position",
                                       capt_plot2="Fraction of all reads that have a certain mapping error up to read position",
                                       capt_plot3="Number of reads that have a certain number of hits",
-                                      sectionTitle="Mappging:", @host="noQueue"LATEXFRAG_iter)
+                                      sectionTitle="Mappging:", @host="noQueue")
 
        latexfrag5 = LatexFragmentizer(plot1=fraglen.FragmentLength_plot, 
                                       capt_plot1="Fragment size correlation plot",
-                                      sectionTitle="Fragment Size Estimation:", @host="noQueue"LATEXFRAG_iter)
+                                      sectionTitle="Fragment Size Estimation:", @host="noQueue")
 
 
        if formatFlag == "fastq" {
 
-       pdfreport = CombineLatex(latex1=latexfrag1.fragment, latex2=latexfrag2.fragment, latex3=latexfrag3.fragment, latex4=latexfrag4.fragment, latex5=latexfrag5.fragment, @host="noQueue"PDFREPORT_iter)
+       pdfreport = CombineLatex(latex1=latexfrag1.fragment, latex2=latexfrag2.fragment, latex3=latexfrag3.fragment, latex4=latexfrag4.fragment, latex5=latexfrag5.fragment, @host="noQueue")
        OUTPUT(pdfreport.pdfreport)
 
        }
 
        if formatFlag == "fasta" {
 
-       pdfreport = CombineLatex(latex1=latexfrag2.fragment, latex2=latexfrag3.fragment, latex3=latexfrag4.fragment, latex4=latexfrag5.fragment, @host="noQueue"PDFREPORT_iter)
+       pdfreport = CombineLatex(latex1=latexfrag2.fragment, latex2=latexfrag3.fragment, latex3=latexfrag4.fragment, latex4=latexfrag5.fragment, @host="noQueue")
        OUTPUT(pdfreport.pdfreport)
 
        }
@@ -154,13 +154,13 @@ function BGfunction(BinaryFile bgIN, string repFMIid, string iter, string DESC, 
     if formatFlag == "bed" {
 
        //Tries to estimate a fragment length. It also shifts the reads by half fragment length upstream (+) or downstream (-)
-       fraglen = FragmentLength(in_file = bgIN, repeatPath="REPEAT_PATH", perlPATH="PERL_PATH", pythonPATH="PYTHON_PATH", FMIpath="FMI_PATH", @host="long_hm"FRAGLEN_iter)
+       fraglen = FragmentLength(in_file = bgIN, repeatPath="REPEAT_PATH", perlPATH="PERL_PATH", pythonPATH="PYTHON_PATH", FMIpath="FMI_PATH", @host="long_hm")
 
        latexfrag = LatexFragmentizer(plot1=fraglen.FragmentLength_plot, 
                                      capt_plot1="Fragment size correlation plot",
-                                     sectionTitle=TFname+": Fragment Size Estimation:", @host="noQueue"LATEXFRAG_iter)
+                                     sectionTitle=TFname+": Fragment Size Estimation:", @host="noQueue")
 
-       pdfreport = CombineLatex(latex1=latexfrag.fragment, @host="noQueue"PDFREPORT_iter)
+       pdfreport = CombineLatex(latex1=latexfrag.fragment, @host="noQueue")
        OUTPUT(pdfreport.pdfreport)
 
        return record(BGout=fraglen.out_dir, BGlog=latexfrag.fragment)
@@ -173,31 +173,31 @@ function BGfunction(BinaryFile bgIN, string repFMIid, string iter, string DESC, 
        ////quality filtering, transform and importSample //////
        if formatFlag == "fastq" {
           //Quality Filter: Filters out reads that are too short and have too many Ns.
-          qualityfilter = SilviaQF(in_file = bgIN, pythonPATH="PYTHON_PATH", @host="long"QUALITYFILTER_iter)
+          qualityfilter = SilviaQF(in_file = bgIN, pythonPATH="PYTHON_PATH", @host="long")
 
           //Searches a subset of the input fasta file for matches with several adaptors and subwords thereof. The one adaptor with the most matches is given out.
-          adaptor = adaptorDecision(in_file = qualityfilter.out_file, reads_number=250000, perlPATH="PERL_PATH", FMIpath="FMI_PATH", adapters="ADAPTERS_3", @host="long_hm"ADAPTOR_iter)
+          adaptor = adaptorDecision(in_file = qualityfilter.out_file, reads_number=250000, perlPATH="PERL_PATH", FMIpath="FMI_PATH", adapters="ADAPTERS_3", @host="long_hm")
 
           //Removes the adaptor. If one is given in the parameter yaml file, this one is taken. Otherwise the one found by adaptorDecision is used.
-          trans = transform(in_file = qualityfilter.out_file, adaptor3automatic = adaptor.finalAdaptor, adaptor3="NONE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", sortTMPDIR="SORT_TMPDIR", @host="long_hm"TRANS_iter)
+          trans = transform(in_file = qualityfilter.out_file, adaptor3automatic = adaptor.finalAdaptor, adaptor3="NONE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", sortTMPDIR="SORT_TMPDIR", @host="long_hm")
 
           latexfrag1 = LatexFragmentizer(plot1=qualityfilter.plot_before,
                                          plot2=qualityfilter.plot_after,
                                          capt_plot1="Read length reverse cumulative distribution before filtering",
                                          capt_plot2="Read length reverse cumulative distribution after filtering",
-                                         sectionTitle=TFname+": Quality Filtering:", @host="noQueue"LATEXFRAG_iter)
+                                         sectionTitle=TFname+": Quality Filtering:", @host="noQueue")
 
 
           latexfrag2 = LatexFragmentizer(log1=adaptor.log_file,
                                          capt_log1="",
                                          plot1=adaptor.plot,
                                          capt_plot1="Plot for Adaptor Finding: Length of Adaptor versus Full Matches",
-                                         sectionTitle="Adaptor Finding:", @host="noQueue"LATEXFRAG_iter)
+                                         sectionTitle="Adaptor Finding:", @host="noQueue")
 
 
           latexfrag3 = LatexFragmentizer(log1=trans.transform_log,
                                          capt_log1="",
-                                         sectionTitle="Adaptor Removal and Quality Filtering:", @host="noQueue"LATEXFRAG_iter)
+                                         sectionTitle="Adaptor Removal and Quality Filtering:", @host="noQueue")
 
 
 
@@ -206,56 +206,56 @@ function BGfunction(BinaryFile bgIN, string repFMIid, string iter, string DESC, 
        if formatFlag == "fasta" {
 
           //Searches a subset of the input fasta file for matches with several adaptors and subwords thereof. The one adaptor with the most matches is given out.
-          adaptor = adaptorDecision(in_file = bgIN, reads_number=250000, perlPATH="PERL_PATH", FMIpath="FMI_PATH", adapters="ADAPTERS_3", @host="long_hm"ADAPTOR_iter)
+          adaptor = adaptorDecision(in_file = bgIN, reads_number=250000, perlPATH="PERL_PATH", FMIpath="FMI_PATH", adapters="ADAPTERS_3", @host="long_hm")
 
           //Removes the adaptor. If one is given in the parameter yaml file, this one is taken. Otherwise the one found by adaptorDecision is used.
-          trans = transform(in_file = bgIN, adaptor3automatic = adaptor.finalAdaptor, adaptor3="NONE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", sortTMPDIR="SORT_TMPDIR", @host="long_hm"TRANS_iter)
+          trans = transform(in_file = bgIN, adaptor3automatic = adaptor.finalAdaptor, adaptor3="NONE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", sortTMPDIR="SORT_TMPDIR", @host="long_hm")
 
 
           latexfrag2 = LatexFragmentizer(log1=adaptor.log_file,
                                          capt_log1="",
                                          plot1=adaptor.plot,
                                          capt_plot1="Plot for Adaptor Finding: Length of Adaptor versus Full Matches",
-                                         sectionTitle=TFname+": Adaptor Finding:", @host="noQueue"LATEXFRAG_iter)
+                                         sectionTitle=TFname+": Adaptor Finding:", @host="noQueue")
 
 
           latexfrag3 = LatexFragmentizer(log1=trans.transform_log,
                                          capt_log1="",
-                                         sectionTitle="Adaptor Removal and Quality Filtering:", @host="noQueue"LATEXFRAG_iter)
+                                         sectionTitle="Adaptor Removal and Quality Filtering:", @host="noQueue")
 
 
        }
 
 
        //Imports the sample into FMI repository (copies the fasta file there and creates some directories).
-       import = importSample(in_file = trans.out_file, desc=DESC, FMIpath="FMI_PATH", FMIid = repFMIid, perlPATH="PERL_PATH", FMI_output_dir="FMI_OUTPUT_DIR", @host="long_hm"IMPORT_iter) 
+       import = importSample(in_file = trans.out_file, desc=DESC, FMIpath="FMI_PATH", FMIid = repFMIid, perlPATH="PERL_PATH", FMI_output_dir="FMI_OUTPUT_DIR", @host="long_hm") 
 
 
        ////work from the samples repository: annotateSample, extract wig and bed and count mappable reads //////////////
 
        //Runs bowtie to map to genome and transcriptome  
-       annotate = annotateSample(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", FMI_output_dir="FMI_OUTPUT_DIR", @bind=import, @host="verylong_hm"ANNOTATE_iter)
+       annotate = annotateSample(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", FMI_output_dir="FMI_OUTPUT_DIR", threads="THREAD_NUMBER", @bind=import, @host="multi_long_hm")
   
        //Extracts mappings in bedweight format (weight is number of identical reads/number of mapping positions)
-       bedweight = extractBedweight(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", mismatches=100, FMI_output_dir="FMI_OUTPUT_DIR", @bind=annotate, @host="sjpn_long_hm"BEDWEIGHT_iter)
+       bedweight = extractBedweight(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", mismatches=100, FMI_output_dir="FMI_OUTPUT_DIR", @bind=annotate, @host="long_hm")
 
        //extracting bed format file. It's location is the same as bedweight.
-       //bed = extractBed(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", maxhits=100, FMI_output_dir="FMI_OUTPUT_DIR", @bind=annotate, @host="sjpn_long_hm"BED_iter)
+       //bed = extractBed(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", maxhits=100, FMI_output_dir="FMI_OUTPUT_DIR", @bind=annotate, @host="long_hm")
 
        //Extracts mappings in wig format
-       wig = extractWig(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", mismatches=100, width=100, FMI_output_dir="FMI_OUTPUT_DIR", @bind=annotate, @host="sjpn_long_hm"WIG_iter)
+       wig = extractWig(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", mismatches=100, width=100, FMI_output_dir="FMI_OUTPUT_DIR", @bind=annotate, @host="long_hm")
 
        //Counts how many reads were mapped
-       mappable = numberMappableReads(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", FMI_output_dir="FMI_OUTPUT_DIR", @bind=annotate, @host="sjpn_long_hm"MAPPABLE_iter)
+       mappable = numberMappableReads(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", FMI_output_dir="FMI_OUTPUT_DIR", @bind=annotate, @host="long_hm")
 
        //Creates three plots with mapping statistics
-       errorPlots = createErrorPlots(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", FMI_output_dir="FMI_OUTPUT_DIR", @bind=annotate, @host="sjpn_long_hm"ERRORPLOTS_iter)
+       errorPlots = createErrorPlots(FMIid = repFMIid, annoType="ANNOTYPE", FMIpath="FMI_PATH", perlPATH="PERL_PATH", FMI_output_dir="FMI_OUTPUT_DIR", @bind=annotate, @host="long_hm")
 
 
        ////Shift bed file, output from bed_i
 
        //Tries to estimate a fragment length. It also shifts the reads by half fragment length upstream (+) or downstream (-)
-       fraglen = FragmentLength(in_dir = bedweight.out_dir, repeatPath="REPEAT_PATH", perlPATH="PERL_PATH", pythonPATH="PYTHON_PATH", FMIpath="FMI_PATH", @host="long_hm"FRAGLEN_iter)
+       fraglen = FragmentLength(in_dir = bedweight.out_dir, repeatPath="REPEAT_PATH", perlPATH="PERL_PATH", pythonPATH="PYTHON_PATH", FMIpath="FMI_PATH", @host="long_hm")
 
 
        latexfrag4 = LatexFragmentizer(log1=mappable.numberMappableReads_log, 
@@ -266,23 +266,23 @@ function BGfunction(BinaryFile bgIN, string repFMIid, string iter, string DESC, 
                                       capt_plot1="Fraction of all reads that had an error at read position",
                                       capt_plot2="Fraction of all reads that have a certain mapping error up to read position",
                                       capt_plot3="Number of reads that have a certain number of hits",
-                                      sectionTitle="Mappging:", @host="noQueue"LATEXFRAG_iter)
+                                      sectionTitle="Mappging:", @host="noQueue")
 
        latexfrag5 = LatexFragmentizer(plot1=fraglen.FragmentLength_plot, 
                                       capt_plot1="Fragment size correlation plot",
-                                      sectionTitle="Fragment Size Estimation:", @host="noQueue"LATEXFRAG_iter)
+                                      sectionTitle="Fragment Size Estimation:", @host="noQueue")
 
 
        if formatFlag == "fastq" {
 
-       pdfreport = CombineLatex(latex1=latexfrag1.fragment, latex2=latexfrag2.fragment, latex3=latexfrag3.fragment, latex4=latexfrag4.fragment, latex5=latexfrag5.fragment, @host="noQueue"PDFREPORT_iter)
+       pdfreport = CombineLatex(latex1=latexfrag1.fragment, latex2=latexfrag2.fragment, latex3=latexfrag3.fragment, latex4=latexfrag4.fragment, latex5=latexfrag5.fragment, @host="noQueue")
        OUTPUT(pdfreport.pdfreport)
 
        }
 
        if formatFlag == "fasta" {
 
-       pdfreport = CombineLatex(latex1=latexfrag2.fragment, latex2=latexfrag3.fragment, latex3=latexfrag4.fragment, latex4=latexfrag5.fragment, @host="noQueue"PDFREPORT_iter)
+       pdfreport = CombineLatex(latex1=latexfrag2.fragment, latex2=latexfrag3.fragment, latex3=latexfrag4.fragment, latex4=latexfrag5.fragment, @host="noQueue")
        OUTPUT(pdfreport.pdfreport)
 
        }
@@ -704,7 +704,7 @@ function GetWMStats(BinaryFile Sequences, BinaryFile TrainingSet, BinaryFile Shu
                                             log2=createlogo.log_file,
                                             plot1=createlogo.Logo,
                                             plot2=createlogo.sens_spec,
-                                            capt_log1="4 Top Similar Looking Motifs:",
+                                            capt_log1="Top Similar Looking Motifs:",
                                             capt_log2="Statistics:",
                                             capt_plot1="Logo of Weight Matrix",
                                             capt_plot2="Precision and Recall curve",

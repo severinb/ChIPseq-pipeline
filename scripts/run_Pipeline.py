@@ -33,13 +33,6 @@ def create_csvFiles(IPkey, BGkey, flag):
             except Exception:
                 globalTFdict[TF] = inlist
 
-            try:
-                wm = params['WM'][TF]
-                if not wm:
-                    wm = "None"
-            except (TypeError, KeyError):
-                wm = "None"
-
             #Do everything with descriptions: check whether they are there.
             if flag == 'fastq':
                 try:
@@ -91,9 +84,9 @@ def create_csvFiles(IPkey, BGkey, flag):
                                 matched = True
                                 existingcsv.write(matchShiftfile.group() + '\t' + TF + '\t' + wm + '\n')
                     if not matched: #Directory is present in FMI repository but shifted bedweight file not! Treat it as if sample wasn't present in FMI repository at all.
-                        csvf.write(infile + '\t' + TF + '\t' + fileFMIid + '\t' + desc + '\t' + wm + '\t' + flag + '\n')
+                        csvf.write(infile + '\t' + TF + '\t' + fileFMIid + '\t' + desc + '\t' + flag + '\n')
                 else:
-                    csvf.write(infile + '\t' + TF + '\t' + fileFMIid + '\t' + desc + '\t' + wm + '\t' + flag + '\n')
+                    csvf.write(infile + '\t' + TF + '\t' + fileFMIid + '\t' + desc + '\t' + flag + '\n')
 
 
     ##Process background files
@@ -151,11 +144,11 @@ def create_csvFiles(IPkey, BGkey, flag):
                         matchShiftfile = re.search(os.path.join(outdir,'\S+\d+-\S*fraglen/out_dir/outfile.gz'), os.path.join(p,fi))
                         if matchShiftfile:
                             matched = True
-                            existingcsv.write(matchShiftfile.group() + '\tBG\tNone\n')
+                            existingcsv.write(matchShiftfile.group() + '\tBG\n')
                 if not matched:
-                    csvf.write(bgfile + '\tBG\t' + fileFMIid + '\t' + desc + '\tNone\t' + flag + '\n')
+                    csvf.write(bgfile + '\tBG\t' + fileFMIid + '\t' + desc + '\t' + flag + '\n')
             else:
-                csvf.write(bgfile + '\tBG\t' + fileFMIid + '\t'+ desc + '\tNone\t' + flag + '\n')
+                csvf.write(bgfile + '\tBG\t' + fileFMIid + '\t'+ desc + '\t' + flag + '\n')
 
     csvf.close()
     existingcsv.close()
@@ -228,6 +221,8 @@ def create_network():
 
     ntext = re.sub('FDRVALUE', str(params['FDR']), ntext)
 
+    ntext = re.sub('THREAD_NUMBER', str(params['THREAD_NUMBER']), ntext)
+
     try:
         project_l = params['PROJECTLEADER']
         ntext = re.sub('PROJECTLEADER', project_l, ntext)
@@ -252,21 +247,6 @@ def create_network():
         ntext = re.sub('USER_NAME', user, ntext)
     except (TypeError, KeyError):
         ntext = re.sub('USER_NAME', '', ntext)
-
-
-    #modify template such that components defined under the variable TO_FMI_REPOSITORY get copied to the FMI repository
-    nameDict = {'qualityfilter': 'QUALITYFILTER', 'adaptor': 'ADAPTOR', 'transform': 'TRANS', 'import': 'IMPORT', 'annotate': 'ANNOTATE', 'bedweight': 'BEDWEIGHT', 'bed': 'BED', 'wig': 'WIG', 'mappable': 'MAPPABLE', 'errorplots': 'ERRORPLOTS', 'fraglen': 'FRAGLEN', 'latexfrag': 'LATEXFRAG', 'pdfreport': 'PDFREPORT'}
-
-    if params['TO_FMI_REPOSITORY']:
-        for component in nameDict:
-            if component in params['TO_FMI_REPOSITORY']:
-                ntext = re.sub(nameDict[component] + '_', '+', ntext)
-            else:
-                ntext = re.sub(nameDict[component] + '_iter', '', ntext)
-    else:
-        for component in nameDict:
-            ntext = re.sub(nameDict[component] + '_iter', '', ntext)        
-
 
     net = open('network.and', 'w')
     net.write(ntext)
@@ -309,46 +289,6 @@ def create_hosts_conf():
         h.write(text)
 
 
-
-    ###Add remote hosts for components that should store there output in the FMI repository (FMI components)
-    #TFdict = params['IP_FASTQ_FILES']
-
-    i = 1
-    ibg = 1
-    j = 1
-    for line in open(datafiles_csv):
-        if j == 1:
-            j = 10
-            continue
-        else:
-            t = line.strip().split()
-            fileFMIid = t[2]
-            mode = t[1]
-
-            outdir = os.path.join(repository_path, fileFMIid)
-            outdirlist.append(outdir)
-
-            for queue in queue_dict:
-                text = host_template
-                    
-                if mode == 'BG':
-                    text = re.sub('HOSTID', queue + 'BG' + str(ibg), text)
-                else:
-                    text = re.sub('HOSTID', queue + 'IP' + str(i), text)
-
-                text = re.sub('OUT_DIR', outdir, text)
-                text = re.sub('REMOTE_EXECUTE', os.path.join(scripts_dir, 'localrun.sh'), text)
-                text = re.sub('SHARED', 'false', text)
-                text = re.sub('WRAPPER_PATH', queue_dict[queue][1], text)
-        
-                h.write(text)
-
-            if mode == 'BG':
-                ibg += 1
-            else:
-                i += 1
-
-
     h.close()
 
 
@@ -380,6 +320,8 @@ def create_wrappers():
 
             if queue.startswith('sjpn'):
                 text = re.sub('ADDITIONAL_PARAMETERS', '-l sjpn=1', text) #call qsub with single job per node option
+            elif queue.startswith('multi'):
+                text = re.sub('ADDITIONAL_PARAMETERS', '-pe MT %i' %params['THREAD_NUMBER'], text) #qsub for 8 cores.
             else:
                 text = re.sub('ADDITIONAL_PARAMETERS', '', text)
 
@@ -415,12 +357,6 @@ def start_with_bedweight():
     if TFdict:
         for TF in TFdict:
 
-            try:
-                wm = params['WM'][TF]
-                if not wm:
-                    wm = "None"
-            except (TypeError, KeyError):
-                wm = "None"
                 
             if TFdict[TF]:
                 inlist = TFdict[TF].split()
@@ -433,7 +369,7 @@ def start_with_bedweight():
                 globalTFdict[TF] = inlist
                 
             for bedweightFile in inlist:
-                existingcsv.write(bedweightFile + '\t' + TF + '\t' + wm + '\n')
+                existingcsv.write(bedweightFile + '\t' + TF + '\n')
 
     ##Now background samples
     bgfiles = params['BG_SHIFTEDBED_FILES']
@@ -445,44 +381,7 @@ def start_with_bedweight():
         globalBGlist += bglist
 
         for bedweightFile in bglist:
-            existingcsv.write(bedweightFile + '\tBG\tNone\n')
-
-
-def createRemoveMappings(datafile): 
-    """
-    This function makes a script that removes mappings directories (use a lot of space) from the FMI repository.
-    """
-
-    fmiids = []
-    i = 1
-    for line in open(datafile):
-        if i == 1:
-            i += 1
-            continue #skip the first line
-        else:
-            t = line.split()
-            fmiids.append(t[2])
-
-    o = open(os.path.join(pipelineDir, 'removeFMImappings.py'), 'w')
-
-    code = '\n'.join(['import os, sys',
-                      'def main():',
-                      '  if len(sys.argv) != 2:',
-                      '    print \'Usage: python removeFMImappings.py [list, remove]\'',
-                      '    sys.exit(0)',
-                      '  tag = sys.argv[1]',
-                      '  fmiids = %s' %fmiids,
-                      '  for ID in fmiids:',
-                      '    t = os.path.join(\'%s\', ID, \'mappings/genomes*\')' %repository_path,
-                      '    if tag == \'list\':',
-                      '      os.system(\'du -sh %s\' %t)',
-                      '    elif tag == \'remove\':',
-                      '      os.system(\'rm -r %s\' %t)',
-                      'if __name__ == \'__main__\':',
-                      '  main()'])
-
-    o.write(code)
-    o.close()
+            existingcsv.write(bedweightFile + '\tBG\n')
 
 
 def createSourceFile():
@@ -513,16 +412,18 @@ if __name__ == '__main__':
         print '\nUsage: ./run_Pipeline.py config_file.yaml\n'
         sys.exit(0)
 
-    ##set mask that all files are created with permissions for everybody
-    os.system('umask u=rwx,g=rwx,o=rwx') #This doesn't work for outside this script. It just sets the umask within the python script
+
+    # # load directory with all output html templates into jinja2:
+    # pipeline_dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
+    # temp_env = jinja2.Environment(loader=jinja2.FileSystemLoader('%s' %(os.path.join(pipeline_dir, 'templates'))),
+    #                               trim_blocks=True)
+
 
     ##read yaml config file
     configfile = sys.argv[1]
     cf = open(configfile)
     params = yaml.load(cf)
     cf.close()
-
-
 
     repository_path = os.path.join(params['FMI_PATH'], 'samples')
     template_dir = params['ANDURIL_TEMPLATES_PATH']
@@ -541,7 +442,6 @@ if __name__ == '__main__':
             tmp = q.split('=')
             queue_dict[tmp[0]] = []
             queue_dict[tmp[0]].append(tmp[1])
-
 
 
     ##Create list with all used output directories (Main/Project directory and FMI repository)
@@ -567,12 +467,12 @@ if __name__ == '__main__':
     ##Call functions to create all files
     datafiles_csv = os.path.join(pipelineDir, 'datafiles.csv')
     csvf = open(datafiles_csv, 'a')
-    csvf.write('filepath\tmode\tFMIid\tdesc\tWM\tformat\n')
+    csvf.write('filepath\tmode\tFMIid\tdesc\tformat\n')
     csvf.close()
 
     existing_csv = os.path.join(pipelineDir, 'existingSamples.csv')
     existingcsv = open(existing_csv, 'a')
-    existingcsv.write('filepath\tmode\tWM\n')
+    existingcsv.write('filepath\tmode\n')
     existingcsv.close()
 
     (csvfile_path, existingcsv_path) = create_csvFiles('IP_FASTQ_FILES', 'BG_FASTQ_FILES', 'fastq')
@@ -586,8 +486,6 @@ if __name__ == '__main__':
     queue_dict = create_wrappers()
 
     hostsconf_path = create_hosts_conf()
-
-    createRemoveMappings(csvfile_path)
 
     createSourceFile()
 

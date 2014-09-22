@@ -3,6 +3,10 @@
     float: left;
 }
 
+.standard1_img {
+    height: 450px;
+}
+
 .peak_plot {
     width: 300px;
 }

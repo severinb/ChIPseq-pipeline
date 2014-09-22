@@ -46,9 +46,6 @@
         <parameter name="perlPATH" type="string" default="perl">
             <doc>Path to perl to use for shift_repeats_nwk.pl execution.</doc>
         </parameter>
-        <parameter name="multi" type="int" default="0">
-            <doc>flag whether multiplicity of reads is taken into account. 1 means reads starting at identical position are all counted. With 0 only presence of reads is counted (present or not present)</doc>
-        </parameter>
         <parameter name="fraglen" type="float" default="-1">
             <doc>Fragment length to used. If this is non-negative, it is used to shift the reads. Otherwise the fragment length is estimated by cross correlation.</doc>
         </parameter>

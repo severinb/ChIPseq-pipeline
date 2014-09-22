@@ -11,6 +11,7 @@ def execute(cf):
     logfile = cf.get_output("annotateSample_log")
     perlPATH = cf.get_parameter("perlPATH", "string")
     FMI_output_dir = cf.get_parameter("FMI_output_dir", "string")
+    threads = cf.get_parameter("threads", "int")
 
     T1 = datetime.now()
 
@@ -20,7 +21,7 @@ def execute(cf):
     FMIsoft = os.path.join(FMIpath, 'soft')
 
     print "submitting %s \n" %(FMIid)
-    proc = subprocess.Popen(perlPATH + " " + FMIsoft + "/annotateSample.pl %s %s %s" %(FMIid, annoType, FMI_output_dir),
+    proc = subprocess.Popen(perlPATH + " " + FMIsoft + "/annotateSample.pl %s %s %s %s" %(FMIid, annoType, threads, FMI_output_dir),
                             stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE,
                             shell=True)

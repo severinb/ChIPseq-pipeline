@@ -142,7 +142,7 @@
   <tbody>
   {% for peak in peak_lines %}
   <tr>
-    <td><a href="http://test.swissregulon.unibas.ch/gbrowse2/fcgi/gbrowse/{{organism}}/?name={{peak.chrom}}%3A{{peak.swiss_reg_frame_start}}..{{peak.swiss_reg_frame_stop}}">
+    <td><a href="http://test.swissregulon.unibas.ch/gbrowse2/fcgi/gbrowse/{{organism}}/?name={{peak.chrom}}%3A{{peak.swiss_reg_frame_start}}..{{peak.swiss_reg_frame_stop}}&h_region={{peak.chrom}}:{{peak.start}}..{{peak.stop}}@lightgreen">
         {{peak.chrom}}:{{peak.start}}..{{peak.stop}}</a></td>
     <td>{{peak.score}}</td>
     <td>{{peak.upstream_genes}}</td>
@@ -224,8 +224,8 @@
 <div class="hidden">
 <h3>Contribution and Correlation Plots <button type="button" class="sh_switch btn">show</button></h3>
   <div class="images" style="display: none">
-    <a href="{{motif_contribution_plot}}"><img class="standard_img" src="{{motif_contribution_plot}}" alt="contribution plot"></a>
-    <a href="{{motif_correlation_heatmap}}"><img class="standard_img" src="{{motif_correlation_heatmap}}" alt="correlation heatmap"></a>
+    <a href="{{motif_contribution_plot}}"><img class="standard1_img" src="{{motif_contribution_plot}}" alt="contribution plot"></a>
+    <a href="{{motif_correlation_heatmap}}"><img class="standard1_img" src="{{motif_correlation_heatmap}}" alt="correlation heatmap"></a>
   </div>
 </div>
 

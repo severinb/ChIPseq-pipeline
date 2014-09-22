@@ -146,7 +146,6 @@ def execute(cf):
     pythonPATH = cf.get_parameter("pythonPATH", "string")
     perlPATH = cf.get_parameter("perlPATH", "string")
     FMIpath = cf.get_parameter("FMIpath", "string")
-    multi = cf.get_parameter("multi", "int")
     given_fraglen = cf.get_parameter("fraglen", "float")
 
     T1 = datetime.now()
@@ -160,13 +159,13 @@ def execute(cf):
     if not in_file:
         in_file = os.path.join(in_dir, os.listdir(in_dir)[0])
 
-    tmp_in_file1 = remove_multi_mappers(in_file, intermediate_out)
-    tmp_in_file = sample_infile(tmp_in_file1, intermediate_out)
+    tmp_in_file = remove_multi_mappers(in_file, intermediate_out)
+    #tmp_in_file = sample_infile(tmp_in_file1, intermediate_out)
 
     if given_fraglen < 0:
         print "find shift\n"
         #run shift finder
-        FraglenCommand = pythonPATH + ' findmaxshift.py %s %s %s %s %s %s %s %s' % (tmp_in_file, out_dir, intermediate_out, log_file, plot_file, perlPATH, multi, repeatPath)
+        FraglenCommand = pythonPATH + ' findmaxshift.py %s %s %s %s %s %s %s' % (tmp_in_file, out_dir, intermediate_out, log_file, plot_file, perlPATH, repeatPath)
         r1 = run(FraglenCommand)
         if r1 < 0:
             return -1
@@ -209,7 +208,7 @@ def execute(cf):
 
     T3 = datetime.now()
 
-    os.system('rm %s' %' '.join([tmp_file, tmp_in_file1, tmp_in_file]))
+    os.system('rm %s' %' '.join([tmp_file, tmp_in_file]))
 
     T4 = datetime.now()
     time = '\nRunning time for fragment length finder:\n\t-Finding Shift and Shifting: %s\n\t-Sorting and gzipping bedweight: %s\n\t-Overall: %s\n' %(T2-T1, T3-T2, T4-T1)

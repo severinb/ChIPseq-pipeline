@@ -624,7 +624,7 @@ def main():
             wmi_html_dict['name'] = urllib.quote(wmname)
             wmi_html_dict['name_unquote'] = wmname
             wmi_html_dict['score'] = enrichment_scores_d[wmname]
-            wmi_html_dict['auc'] = fl[2].strip().split()[-1]
+            wmi_html_dict['auc'] = fl[3].strip().split()[-1]
             wmi_html_dict['html'] = urllib.quote('%s.html' %wmname) #relative path from the motifs_known.html file.
             wmi_html_dict['ensemble_score'] = ensemble_enrichment_d[wmname]
             wmi_html_dict['LLratio'] = LLratio_d[wmname]

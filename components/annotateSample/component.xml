@@ -21,6 +21,9 @@
         </output>
     </outputs>
     <parameters>
+            <parameter name="threads" type="int" default="1">
+                <doc>Number of threads used by bowtie.</doc>
+            </parameter>
             <parameter name="FMIid" type="string" default="">
                 <doc>FMIid string. Looks like input filename without gz fastq extensions.</doc>
             </parameter>
