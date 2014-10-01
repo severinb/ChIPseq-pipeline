@@ -83,48 +83,7 @@ def getBaseFreqs(f):
 
 
 
-def giveMotevoParamFile(genome, wmlen, inter_dir, markovorder, seqfile):
-    """
-    Returns a parameter file for motevo.
-    """
-
-    sitefilepath = os.path.join(inter_dir, 'sites')
-    priorfilepath = os.path.join(inter_dir, 'priors')
-
-
-    print '\nCreate motevo parameter file'
-    motevo_params = '\n'.join(['refspecies %s' %genome,
-                               'TREE (%s: 1)' %genome,
-                               'Mode TFBS',
-                               'EMprior %s' %1,
-                               'priordiff %s' %0.01,
-                               'markovorderBG %s' %markovorder,
-                               'bgprior %s' %0.99,
-                               'restrictparses %s' %0,
-                               'sitefile %s' %sitefilepath,
-                               'priorfile %s' %priorfilepath,
-                               'printsiteals %s' %0,
-                               'minposterior %f' %0.01])
-
-    params_path = os.path.join(inter_dir, 'motevo_TFBS_params')
-    pf = open(params_path, 'w')
-    pf.write(motevo_params)
-
-    if markovorder == 0:
-        ATfreq, GCfreq = getBaseFreqs(seqfile)
-
-        freq_params = '\n'.join(['bg A %s' %ATfreq,
-                                 'bg T %s' %ATfreq,
-                                 'bg G %s' %GCfreq,
-                                 'bg C %s' %GCfreq])
-        pf.write('\n'+freq_params)
-
-    pf.close()
-
-    return (params_path, sitefilepath)    
-
-
-def runMotevo(motevo_path, seqs, params, WM, interm, project_leader, pickled_sitesdict, pickled_idstats, pickled_idcoords, sites, statsfile, regcov_dir, instance_name, queue_name):
+def runMotevo(motevo_path, seqs, train_set, bg_train_set, WM, interm, project_leader, pickled_sitesdict, pickled_idstats, pickled_idcoords, statsfile, regcov_dir, instance_name, queue_name, genome, markovorder):
     """
     runs Motevo
     """
@@ -140,7 +99,7 @@ def runMotevo(motevo_path, seqs, params, WM, interm, project_leader, pickled_sit
 
     jt.remoteCommand = './runmotevo.py'
 
-    jt.args = [motevo_path, seqs, params, WM, pickled_sitesdict, pickled_idstats, pickled_idcoords, sites, statsfile, regcov_dir]
+    jt.args = [motevo_path, seqs, train_set, bg_train_set, WM, pickled_sitesdict, pickled_idstats, pickled_idcoords, statsfile, regcov_dir, genome, str(markovorder), interm]
 
     job = s.runJob(jt)
 
@@ -239,6 +198,8 @@ def execute(cf):
 
     ##Ports and parameters
     regions = cf.get_input("regions") #sequences of candidate regions
+    train_set = cf.get_input("train_set") #train_set and bg_train_set are used to estimate a prior for the WM that is then used to predict sites on the regions.
+    bg_train_set = cf.get_input("bg_train_set")
     regcov_dir = cf.get_input("RegCov_dir")
     WM = cf.get_input("WM") 
     statsfile = cf.get_input("statsfile")
@@ -265,22 +226,24 @@ def execute(cf):
 
     T1 = datetime.datetime.now()
 
+    # Creatign a plot for every region with the predicted TFBS can result in many files (>1GB) and it also takes time to create, archive and remove again.
+    # So I just create a flag to stop producing them
+    # There is also the same flag in combinePosteriors script. To switch on plotting, also switch the flag there!
+    do_plots = False
+
     ##Main function
     os.mkdir(interm)
-    os.mkdir(plotdir)
+    if do_plots:
+        os.mkdir(plotdir)
 
     fraglen = findFraglen(read_files)
 
-    wmlen = len(open(WM).readlines())-4
-
     #get parameter file and predicted sites for best WM
-    (params, sites) = giveMotevoParamFile(genome, wmlen, interm, markovorder, regions)
-
     pickled_sd = os.path.join(interm, 'sitesDict')
     pickled_ids = os.path.join(interm, 'IDstats')
     pickled_idc = os.path.join(interm, 'IDcoords')
 
-    retval = runMotevo(motevo_path, regions, params, WM, interm, project_leader, pickled_sd, pickled_ids, pickled_idc, sites, statsfile, regcov_dir, instance_name, queue_name_motevo)
+    retval = runMotevo(motevo_path, regions, train_set, bg_train_set, WM, interm, project_leader, pickled_sd, pickled_ids, pickled_idc, statsfile, regcov_dir, instance_name, queue_name_motevo, genome, markovorder)
     if not retval:
         return 1
 
@@ -293,16 +256,15 @@ def execute(cf):
     tfbsstats_root = os.path.join(interm, 'tfbsstatsfile')
 
     submitJobs(regcov_root, pickled_sd, pickled_ids, pickled_idc, plotdir, fraglen, minpost, peakstats_root, tfbsstats_root, count, project_leader, instance_name, queue_name)
-    os.system('tar -czf %s.tar.gz %s' %(plotdir, plotdir))
-    os.system('rm -r %s' %(plotdir))
 
     combineFiles(peakstats_root, tfbsstats_root, count, peakstats, TFBSstats)
 
+    if do_plots:
+        # make archive:
+        pwd = os.getcwd()
+        os.system('cd %s && tar -czf ../%s.tar.gz . && cd %s' %(plotdir, os.path.split(plotdir)[1], pwd))
+        os.system('rm -r %s' %plotdir)
 
-    # make archive:
-    pwd = os.getcwd()
-    os.system('cd %s && tar -czf ../%s.tar.gz . && cd %s' %(plotdir, os.path.split(plotdir)[1], pwd))
-    os.system('rm -r %s' %plotdir)
 
     # clean up: remove pickled dictionaries and file chunks
     os.system('rm %s %s %s' %(pickled_sd, pickled_ids, pickled_idc))
@@ -312,13 +274,12 @@ def execute(cf):
             os.system('rm %s' %f)
 
 
-
     T3 = datetime.datetime.now()
 
 
     timetext = '\n'.join(['Running time:',
                           '\t-Predicting sites on given regions and loading data into dictionaries: %s' %(T2-T1),
-                          '\t-Plotting coverage profiles with TFBSs and computing peak posteriors: %s' %(T3-T2),
+                          '\t-Computing peak posteriors: %s' %(T3-T2),
                           ])
 
 
@@ -326,6 +287,7 @@ def execute(cf):
     lf.write(timetext)
     lf.close()
 
+    print 'Running time: %s' %str(T3-T1)
 
     return 0
 

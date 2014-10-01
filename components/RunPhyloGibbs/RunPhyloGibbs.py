@@ -7,7 +7,7 @@ from datetime import datetime
 from pylab import *
 import time
 import cProfile, pstats 
-
+from sequence_logo import generate_sequence_logo
 
 def informCont(wmLine):
     pseudo_count = 0.001  ## maybe we need to change/adjust this value
@@ -189,8 +189,7 @@ def execute(cf):
         return -1
 
 
-    ##get wm from phylogibbs out_file
-
+    ## get wm from phylogibbs out_file
     f = open(out_file)
     lines = f.readlines()
 
@@ -217,21 +216,8 @@ def execute(cf):
         wm.close()
 
 
-        ##Produce Logo for WM
-        pwd = os.getcwd()
-        os.chdir(logo_dir)
-
-        proc = subprocess.Popen('%s -n -a -c -p -Y -F PDF -f %s' %(mylogo_path, wmpaths[i]),
-                                stdout=subprocess.PIPE,
-                                stderr= subprocess.PIPE,
-                                shell=True
-                                )
-    
-        stdout_value, stderr_value = proc.communicate()
-        print stdout_value
-        print stderr_value
-
-        os.chdir(pwd)
+        ## Produce Logo for WM
+        generate_sequence_logo(wmpaths[i], logopaths[i])
 
     # os.system('tar -zcvf %s %s' % (interm +'.tar.gz', interm) )
     # os.system('rm -fr %s' % interm )

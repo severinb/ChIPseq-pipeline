@@ -59,7 +59,7 @@ QUEUE_NAMES:
     verylong_hm=fs_very_long_hm
     sjpn_long_hm=fs_long@@x3755
     multi_long_hm=fs_long@@x3755
-THREAD_NUMBER: 8
+THREAD_NUMBER: 16
 ALIGN_PIPE_PATH:
     /import/bc2/home/nimwegen/GROUP/AlignmentPipeline/scripts/pipeline.pl
 BEDTOOLS_PATH:
@@ -77,4 +77,4 @@ MOTEVOUFE_PATH:
 DRMAA_LIBRARY_PATH:
     /import/bc2/soft/app/SGE/6.1/Linux/lib/lx24-amd64/libdrmaa.so
 WEBLOGO_PATH:
-    /import/bc2/home/nimwegen/GROUP/software/weblogo-3.4/weblogo
+    /import/bc2/home/nimwegen/bergerse00/Projects/ChIPseq-pipeline/scripts/weblogo-3.4/weblogo

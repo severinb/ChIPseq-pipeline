@@ -14,7 +14,7 @@
     </doc>
     <author email="severin.berger@stud.unibas.ch">Severin</author>
     <launcher type="python">
-        <argument name="file" value="GetPeakPosteriors_updated.py" />
+        <argument name="file" value="GetPeakPosteriors.py" />
     </launcher>
     <requires>URL="http://www.python.org/not" type="manual">python</requires>
     <inputs>

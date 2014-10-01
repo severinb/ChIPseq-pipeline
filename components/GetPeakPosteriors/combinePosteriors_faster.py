@@ -25,6 +25,9 @@ def getPeakPlotsTFBS(regcov_file, sitesDict, IDstats, IDcoords, plotdir, fraglen
      chr10_121356000_121357250: reg1000053 
     """
 
+    # Flag for whether to create the plots
+    do_plots = False
+
     po = open(peakstats, 'w')
     #po.write('#chrom\tstart\tend\tpeakID\theight\tquality\tsummed_posterior\n')
     to = open(TFBSstats, 'w')
@@ -69,12 +72,13 @@ def getPeakPlotsTFBS(regcov_file, sitesDict, IDstats, IDcoords, plotdir, fraglen
 
         height = int(max(covs.T[1])) + 10 #just used for plotting
 
-        #only plots profiles when there are also sites
-        figure()
-        plot(covs.T[0], covs.T[1], 'r', label='Coverage')
+        if do_plots:
+            # only plots profiles when there are also sites
+            figure()
+            plot(covs.T[0], covs.T[1], 'r', label='Coverage')
 
-        colourlist = ['b', 'g', 'r', 'c', 'm', 'y'] #used for plotting
-        ci = 0 # color index
+            colourlist = ['b', 'g', 'r', 'c', 'm', 'y'] #used for plotting
+            ci = 0 # color index
 
         # To compare the histogram of distances from TFBSs to peak centers to a background,
         # we want to randomly place sites (as many as we have predicted with the WM) into the region and then take the nearest one to each peak.
@@ -105,26 +109,28 @@ def getPeakPlotsTFBS(regcov_file, sitesDict, IDstats, IDcoords, plotdir, fraglen
 
                 to.write('%s\t%s\t%s\t%s\t%s\t%s\t%s\n' %(chrom, regionstart + s, regionstart + e, peakids[whichmu], possibledists[whichmu], TFBS[-1], covs.T[1][int(midcoord)]))
 
-                if TFBS[-1] >= minpost: #take everything for plots and statistics, but just plot TFBSs that are above minpost
-                    try:
-                        colr = colourlist[ci]
-                    except IndexError:
-                        colr = colourlist[randint(0,6)]
+                if do_plots:
+                    if TFBS[-1] >= minpost: #take everything for plots and statistics, but just plot TFBSs that are above minpost
+                        try:
+                            colr = colourlist[ci]
+                        except IndexError:
+                            colr = colourlist[randint(0,6)]
 
-                    bar(s, height*TFBS[-1], e-s, color=colr, linewidth=0, alpha=0.2, label="%i-%i, post %.2f" %(s, e, TFBS[-1])) # bars with height proportional to posterior
-                    ci += 1
+                        bar(s, height*TFBS[-1], e-s, color=colr, linewidth=0, alpha=0.2, label="%i-%i, post %.2f" %(s, e, TFBS[-1])) # bars with height proportional to posterior
+                        ci += 1
 
         site_midcoords = array(site_midcoords)
         site_posts = array(site_posts)
 
-        ### finish plotting
-        xlabel('Position')
-        ylabel('Coverage')
-        title(os.path.split(fname)[1])
-        legend(prop={'size':8})
-        savefig(os.path.join(plotdir, coords))
-        close()
-        ###
+        if do_plots:
+            ### finish plotting
+            xlabel('Position')
+            ylabel('Coverage')
+            title(os.path.split(fname)[1])
+            legend(prop={'size':8})
+            savefig(os.path.join(plotdir, coords))
+            close()
+            ###
 
         for p_i in arange(len(mus)):
             mu = mus[p_i]

@@ -32,7 +32,7 @@ $(function () {
                                    "aaSorting": [ [1,'desc']]});
     
     $("#similarity_table").dataTable({"sDom": "lfiprt",
-                                "iDisplayLength": 10,
+                                "iDisplayLength": 5,
                                 "aoColumnDefs": [
                                     {"bSortable": false, "aTargets": [0]},
                                     {"bSearchable": false, "sType": "numeric", "aTargets": [1]},

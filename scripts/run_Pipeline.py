@@ -321,7 +321,7 @@ def create_wrappers():
             if queue.startswith('sjpn'):
                 text = re.sub('ADDITIONAL_PARAMETERS', '-l sjpn=1', text) #call qsub with single job per node option
             elif queue.startswith('multi'):
-                text = re.sub('ADDITIONAL_PARAMETERS', '-pe MT %i' %params['THREAD_NUMBER'], text) #qsub for 8 cores.
+                text = re.sub('ADDITIONAL_PARAMETERS', '-pe MT %i -l mem_total=100G' %params['THREAD_NUMBER'], text) #qsub for multicores with a lot of memory (needed for the mapping stuff).
             else:
                 text = re.sub('ADDITIONAL_PARAMETERS', '', text)
 

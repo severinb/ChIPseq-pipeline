@@ -98,314 +98,165 @@ def getSitesDict(names, l):
     return d
 
 
-def create_FMIid_dict():
-
-    # datafiles.csv:
-    # /import/.../wgEncodeSydhTfbsHelas3Usf2IggmusRawDataRep1.fastq.gz      USF2    wgEncodeSydhTfbsHelas3Usf2IggmusRawDataRep1     No sample description given     /import/.../ARNT_ARNT2_BHLHB2_MAX_MYC_USF1.p2        fastq
-    # /import/.../wgEncodeSydhTfbsHelas3Usf2IggmusRawDataRep2.fastq.gz      USF2    wgEncodeSydhTfbsHelas3Usf2IggmusRawDataRep2     No sample description given     /import/.../ARNT_ARNT2_BHLHB2_MAX_MYC_USF1.p2        fastq
-    # /import/.../wgEncodeSydhTfbsHelas3InputIggmusSRR502473rep1.fastq.gz   BG      wgEncodeSydhTfbsHelas3InputIggmusSRR502473rep1  No sample description given     None    fastq
-    # /import/.../raw.data.fastq/wgEncodeSydhTfbsHelas3InputIggmusSRR502474rep2.fastq.gz   BG      wgEncodeSydhTfbsHelas3InputIggmusSRR502474rep2  No sample description given     None    fastq
-
-    # exisitingSamples.csv
-    # /import/bc2/home/nimwegen/GROUP/DeepSeqPipeline.Piotr/samples/wgEncodeSydhTfbsHelas3Usf2IggmusRawDataRep1/USF2_1-fraglen/out_dir/outfile.gz     USF2    /import/bc2/home/nimwegen/GROUP/WMs/Mammals/CurrentWMs/ARNT_ARNT2_BHLHB2_MAX_MYC_USF1.p2
-    # /import/bc2/home/nimwegen/GROUP/DeepSeqPipeline.Piotr/samples/wgEncodeSydhTfbsHelas3Usf2IggmusRawDataRep2/USF2_2-fraglen/out_dir/outfile.gz     USF2    /import/bc2/home/nimwegen/GROUP/WMs/Mammals/CurrentWMs/ARNT_ARNT2_BHLHB2_MAX_MYC_USF1.p2
-    # /import/bc2/home/nimwegen/GROUP/DeepSeqPipeline.Piotr/samples/wgEncodeSydhTfbsHelas3InputIggmusSRR502473rep1/BG_1-fraglen/out_dir/outfile.gz    BG      None
-    # /import/bc2/home/nimwegen/GROUP/DeepSeqPipeline.Piotr/samples/wgEncodeSydhTfbsHelas3InputIggmusSRR502474rep2/BG_2-fraglen/out_dir/outfile.gz    BG      None
-
-    FMIid_dict = {}
-
-    for i, line in enumerate(open('PipelineFiles/datafiles.csv')):
-        if i == 0:
-            continue
-        t = line.strip().split()
-        
-        fac = t[1]
-        try:
-            FMIid_dict[fac].append((t[0], t[2], t[5]))
-        except KeyError:
-            FMIid_dict[fac] = [(t[0], t[2], t[5])]
-
-    for i, line in enumerate(open('PipelineFiles/existingSamples.csv')):
-        if i == 0:
-            continue
-        t = line.strip().split()
-
-        fac = t[1]
-        try:
-            FMIid_dict[fac].append((t[0], t[0].split('/')[-4], 'shiftedbed'))
-        except KeyError:
-            FMIid_dict[fac] = [(t[0], t[0].split('/')[-4], 'shiftedbed')]
-
-    return FMIid_dict
-
-
-def find_Reps_in_FMI(TFs_samples_dict, download_out, FMIpath, outdir):
     """
+    From former find_Reps_in_FMI function
     This function is actually just used for testing purposes... Finding stuff in FMI repository when using shifted bed files...
+
+    Write a function instead where you can give the output of another Crunch instance to find the output of an already processed BG sample. 
     """
 
-    FMIid_dict = create_FMIid_dict()
 
-    TFs_samples_html_dict = {}
-
-    for TF_i in TFs_samples_dict:
-        TFdown_out = os.path.join(download_out, TF_i)
-        os.mkdir(TFdown_out)
-        print TF_i
-
-        for i, samp in enumerate(FMIid_dict[TF_i]): # samp = [fmi_id, file_type]
-            print i, samp
-
-            tout1 = os.path.join(TFdown_out, 'Rep_%i' %(i+1))
-            os.system('mkdir \'%s\'' %tout1)
-
-            tout1_fromHTML = os.path.join('../../..', tout1)
-            rep_html_dict = {}
-
-            rep_html_dict['name'] = '%s Replicate %i' %(TF_i, i+1)
-            rep_html_dict['file_type'] = 'fastq' #samp[2]
-
-            # 6: Do it dependent on input file type
-            if samp[2] == 'fastq' or samp[2] == 'fasta':
-                wig = glob.glob(os.path.join(FMIpath, 'samples', samp[1], '*-wig/out_dir/*'))[0] #use glob to evaluate wildcards
-                bed = glob.glob(os.path.join(FMIpath, 'samples', samp[1], '*-bedweight/out_dir/*'))[0]
-                os.system('cp %s %s/reads.wig.gz' %(wig, tout1))
-                os.system('cp %s %s/reads.bed.gz' %(bed, tout1))
-                rep_html_dict['wig'] = os.path.join(tout1_fromHTML, 'reads.wig.gz')
-                rep_html_dict['bed'] = os.path.join(tout1_fromHTML, 'reads.bed.gz')
-
-
-            if not samp[2] == 'shiftedbed' or True:
-                try:
-                    report = os.path.join(FMIpath, 'samples', samp[1], '*-pdfreport/pdfreport.pdf')
-                    os.system('cp %s \'%s\'' %(report, tout1))
-                    rep_html_dict['report_pdf'] = os.path.join(tout1_fromHTML, 'pdfreport.pdf')
-                except Exception:
-                    pass
-                try:
-                    fragsize_plot = glob.glob(os.path.join(FMIpath, 'samples', samp[1], '*fraglen/FragmentLength_plot.pdf'))[0]
-                    os.system('convert \'%s\' \'%s/FragmentLength_plot.png\'' %(fragsize_plot, tout1))
-                    rep_html_dict['fragsize_plot'] = os.path.join(tout1_fromHTML, 'FragmentLength_plot.png')
-                except Exception:
-                    pass
-
-            # 7:
-            if samp[2] == 'fastq':
-                qf_log = os.path.join(outdir, TF_i + '_%i-qualityfilter/job.stdout' %(i+1))
-                for l in open(qf_log):
-                    if l.startswith('Original number of reads:'):
-                        t = l.strip().lstrip('Original number of reads:').split()
-                        rep_html_dict['num_reads_input'] = int(t[0])
-                    elif l.startswith('Reads that passed the quality filter:'):
-                        t = l.strip().lstrip('Reads that passed the quality filter:').split()
-                        rep_html_dict['num_reads_1QC'] = int(t[0])
-
-                trans_log = os.path.join(outdir, TF_i +'_%i-trans/transform_log' %(i+1))
-                for l in open(trans_log):
-                    if l.startswith('#                              too short :'):
-                        t = l.strip().split()
-                        rep_html_dict['num_reads_2QC_tooshort'] = int(t[4])
-                    elif l.startswith('#                            low entropy :'):
-                        t = l.strip().split()
-                        rep_html_dict['num_reads_2QC_lowentropy'] = int(t[4])
-                    elif l.startswith('#                                 passed :'):
-                        t = l.strip().split()
-                        rep_html_dict['num_reads_2QC'] = int(t[3])
-
-                mappable_log = os.path.join(outdir, TF_i + '_%i-mappable/numberMappableReads_log' %(i+1))
-                rep_html_dict['num_reads_mapped'] = int(open(mappable_log).read().strip().split()[1])
-
-
-            elif samp[2] == 'fasta':
-                trans_log = os.path.join(outdir, TF_i +'_%i-trans/transform_log' %(i+1))
-                for l in open(trans_log):
-                    if l.startswith('#                        input sequences :'):
-                        t = l.strip().split()
-                        rep_html_dict['num_reads_input'] = int(t[4])
-                    elif l.startswith('#                              too short :'):
-                        t = l.strip().split()
-                        rep_html_dict['num_reads_2QC_tooshort'] = int(t[4])
-                    elif l.startswith('#                            low entropy :'):
-                        t = l.strip().split()
-                        rep_html_dict['num_reads_2QC_lowentropy'] = int(t[4])
-                    elif l.startswith('#                                 passed :'):
-                        t = l.strip().split()
-                        rep_html_dict['num_reads_2QC'] = int(t[3])
-
-                mappable_log = os.path.join(outdir, TF_i + '_%i-mappable/numberMappableReads_log' %(i+1))
-                rep_html_dict['num_reads_mapped'] = int(open(mappable_log).read().strip().split()[1])
-
-
-            elif samp[2] == 'bed' or samp[2] == 'shiftedbed':
-                # try:
-                #     gop = gzip.open(samp[0])
-                #     gop.readline()
-                #     gop.close()
-                #     gzipped = True
-                # except IOError:
-                #     gop.close()
-                #     gzipped = False
-
-                # read_num = 0
-                # if gzipped:
-                #     for line in gzip.open(samp[0]):
-                #         t = line.strip().split()
-                #         read_num += float(t[4])
-                # else:
-                #     for line in open(samp[0]):
-                #         t = line.strip().split()
-                #         read_num += float(t[4])
-
-                read_num=10000000000
-                rep_html_dict['num_reads_input'] = int(read_num)
-
-            try:
-                TFs_samples_html_dict[TF_i].append(rep_html_dict)
-            except KeyError:
-                TFs_samples_html_dict[TF_i] = [rep_html_dict]
-
-
-    return TFs_samples_html_dict
-
-
-def find_Reps_in_outdir(TFs_samples_dict, download_out, outdir):
+def find_Reps_in_outdir(TFs_samples_dict, TFname, download_out, outdir, TF_samples_html_dict):
 
     locale.setlocale(locale.LC_ALL, 'en_US') # for making long integers readable with the help of commas...
 
-    TFs_samples_html_dict = {}
+    print TFname
+    download_out = os.path.join(download_out, TFname)
+    os.mkdir(download_out)
 
-    for TF_i in TFs_samples_dict:
-        print TF_i
-        TFdown_out = os.path.join(download_out, TF_i)
-        os.mkdir(TFdown_out)
+    for i, samp in enumerate(TFs_samples_dict[TFname]): #samp = [sample_path, file_type]
+        print i, samp
 
-        for i, samp in enumerate(TFs_samples_dict[TF_i]): #samp = [sample_path, file_type]
-            print i, samp
-            tout1 = os.path.join(TFdown_out, 'Rep_%i' %(i+1))
-            os.mkdir(tout1)
+        TFrep_tag = '%s_%i' %(TFname, i+1)
 
-            tout1_fromHTML = os.path.join('../', tout1)
-            rep_html_dict = {}
+        # change outdir incase of shifted bedweight file and adapt TFrep_tag:
+        if samp[1] == 'shiftedbed':
+            samp_base = samp[0].rstrip('-fraglen/out_dir/outfile.gz')
+            # To create the whole report from the output taken from the other directory we first need to check whether it is there.
+            # Check whether the wig file is there.
+            if os.path.isfile(glob.glob(os.path.join(samp_base + '-wig/out_dir/*'))[0]):
+                outdir, TFrep_tag = os.path.split(samp_base)
+                print outdir, TFrep_tag
+                samp = (samp[0], 'fastq')
 
-            rep_html_dict['name'] = '%s Replicate %i' %(TF_i, i+1)
-            rep_html_dict['file_type'] = samp[1]
+        tout1 = os.path.join(download_out, 'Rep_%i' %(i+1))
+        os.mkdir(tout1)
 
-            # 6: Do it dependent on input file type
-            if samp[1] == 'fastq' or samp[1] == 'fasta':
-                root_name = os.path.split(samp[0])[1].split('.')[0]
-                wig = glob.glob(os.path.join(outdir, TF_i + '_%i-wig/out_dir/*%s*' %(i+1, root_name)))[0] #use glob to evaluate wildcards
-                bed = glob.glob(os.path.join(outdir, TF_i + '_%i-bedweight/out_dir/*%s*' %(i+1, root_name)))[0]
-                os.system('cp %s %s/reads.wig.gz' %(wig, tout1))
-                os.system('cp %s %s/reads.bed.gz' %(bed, tout1))
-                rep_html_dict['wig'] = os.path.join(tout1_fromHTML, 'reads.wig.gz')
-                rep_html_dict['bed'] = os.path.join(tout1_fromHTML, 'reads.bed.gz')
+        tout1_fromHTML = os.path.join('../', tout1)
+        rep_html_dict = {}
 
+        rep_html_dict['name'] = '%s Replicate %i' %(TFname, i+1)
+        rep_html_dict['file_type'] = samp[1]
 
-            if not samp[1] == 'shiftedbed':
-                report = os.path.join(outdir, TF_i + '_%i-pdfreport/pdfreport.pdf' %(i+1))
-                fragsize_plot = glob.glob(os.path.join(outdir, TF_i + '_%i-fraglen/FragmentLength_plot.pdf' %(i+1)))[0]
+        # 6: Do it dependent on input file type
+        if samp[1] == 'fastq' or samp[1] == 'fasta':
+            root_name = os.path.split(samp[0])[1].split('.')[0]
+            wig = glob.glob(os.path.join(outdir, TFrep_tag + '-wig/out_dir/*'))[0] #use glob to evaluate wildcards
+            bed = glob.glob(os.path.join(outdir, TFrep_tag + '-bedweight/out_dir/*'))[0]
+            os.system('cp %s %s/reads.wig.gz' %(wig, tout1))
+            os.system('cp %s %s/reads.bed.gz' %(bed, tout1))
+            rep_html_dict['wig'] = os.path.join(tout1_fromHTML, 'reads.wig.gz')
+            rep_html_dict['bed'] = os.path.join(tout1_fromHTML, 'reads.bed.gz')
 
-                os.system('cp %s %s' %(report, tout1))
-                os.system('convert %s %s/FragmentLength_plot.png' %(fragsize_plot, tout1))
+        if not samp[1] == 'shiftedbed':
+            report = os.path.join(outdir, TFrep_tag + '-pdfreport/pdfreport.pdf')
+            fragsize_plot = glob.glob(os.path.join(outdir, TFrep_tag + '-fraglen/FragmentLength_plot.pdf'))[0]
 
-                rep_html_dict['report_pdf'] = os.path.join(tout1_fromHTML, 'pdfreport.pdf')
-                rep_html_dict['fragsize_plot'] = os.path.join(tout1_fromHTML, 'FragmentLength_plot.png')
+            os.system('cp %s %s' %(report, tout1))
+            os.system('convert %s %s/FragmentLength_plot.png' %(fragsize_plot, tout1))
 
-
-            # 7:
-            if samp[1] == 'fastq':
-                qf_log = os.path.join(outdir, TF_i + '_%i-qualityfilter/job.stdout' %(i+1))
-                for l in open(qf_log):
-                    if l.startswith('Original number of reads:'):
-                        t = l.strip().lstrip('Original number of reads:').split()
-                        rep_html_dict['num_reads_input'] = locale.format("%d", int(t[0]), grouping=True)
-                    elif l.startswith('Reads that passed the quality filter:'):
-                        t = l.strip().lstrip('Reads that passed the quality filter:').split()
-                        rep_html_dict['num_reads_1QC'] = locale.format("%d", int(t[0]), grouping=True)
-
-                trans_log = os.path.join(outdir, TF_i +'_%i-trans/transform_log' %(i+1))
-                for l in open(trans_log):
-                    if l.startswith('#                              too short :'):
-                        t = l.strip().split()
-                        rep_html_dict['num_reads_2QC_tooshort'] = locale.format("%d", int(t[4]), grouping=True)
-                    elif l.startswith('#                            low entropy :'):
-                        t = l.strip().split()
-                        rep_html_dict['num_reads_2QC_lowentropy'] = locale.format("%d", int(t[4]), grouping=True)
-                    elif l.startswith('#                                 passed :'):
-                        t = l.strip().split()
-                        rep_html_dict['num_reads_2QC'] = locale.format("%d", int(t[3]), grouping=True)
-
-                mappable_log = os.path.join(outdir, TF_i + '_%i-mappable/numberMappableReads_log' %(i+1))
-                rep_html_dict['num_reads_mapped'] = locale.format("%d", int(open(mappable_log).read().strip().split()[1]),  grouping=True)
+            rep_html_dict['report_pdf'] = os.path.join(tout1_fromHTML, 'pdfreport.pdf')
+            rep_html_dict['fragsize_plot'] = os.path.join(tout1_fromHTML, 'FragmentLength_plot.png')
 
 
-            elif samp[1] == 'fasta':
-                trans_log = os.path.join(outdir, TF_i +'_%i-trans/transform_log' %(i+1))
-                for l in open(trans_log):
-                    if l.startswith('#                        input sequences :'):
-                        t = l.strip().split()
-                        rep_html_dict['num_reads_input'] = locale.format("%d", int(t[4]), grouping=True)
-                    elif l.startswith('#                              too short :'):
-                        t = l.strip().split()
-                        rep_html_dict['num_reads_2QC_tooshort'] = locale.format("%d", int(t[4]), grouping=True)
-                    elif l.startswith('#                            low entropy :'):
-                        t = l.strip().split()
-                        rep_html_dict['num_reads_2QC_lowentropy'] = locale.format("%d", int(t[4]), grouping=True)
-                    elif l.startswith('#                                 passed :'):
-                        t = l.strip().split()
-                        rep_html_dict['num_reads_2QC'] = locale.format("%d", int(t[3]), grouping=True)
+        # 7:
+        if samp[1] == 'fastq':
+            qf_log = os.path.join(outdir, TFrep_tag + '-qualityfilter/job.stdout')
+            for l in open(qf_log):
+                if l.startswith('Original number of reads:'):
+                    t = l.strip().lstrip('Original number of reads:').split()
+                    rep_html_dict['num_reads_input'] = locale.format("%d", int(t[0]), grouping=True)
+                elif l.startswith('Reads that passed the quality filter:'):
+                    t = l.strip().lstrip('Reads that passed the quality filter:').split()
+                    rep_html_dict['num_reads_1QC'] = locale.format("%d", int(t[0]), grouping=True)
 
-                mappable_log = os.path.join(outdir, TF_i + '_%i-mappable/numberMappableReads_log' %(i+1))
-                rep_html_dict['num_reads_mapped'] = locale.format("%d", int(open(mappable_log).read().strip().split()[1]), grouping=True)
+            trans_log = os.path.join(outdir, TFrep_tag +'-trans/transform_log')
+            for l in open(trans_log):
+                if l.startswith('#                              too short :'):
+                    t = l.strip().split()
+                    rep_html_dict['num_reads_2QC_tooshort'] = locale.format("%d", int(t[4]), grouping=True)
+                elif l.startswith('#                            low entropy :'):
+                    t = l.strip().split()
+                    rep_html_dict['num_reads_2QC_lowentropy'] = locale.format("%d", int(t[4]), grouping=True)
+                elif l.startswith('#                                 passed :'):
+                    t = l.strip().split()
+                    rep_html_dict['num_reads_2QC'] = locale.format("%d", int(t[3]), grouping=True)
+
+            mappable_log = os.path.join(outdir, TFrep_tag + '-mappable/numberMappableReads_log')
+            rep_html_dict['num_reads_mapped'] = locale.format("%d", int(open(mappable_log).read().strip().split()[1]),  grouping=True)
 
 
-            elif samp[1] == 'bed' or samp[1] == 'shiftedbed':
-                try:
-                    gop = gzip.open(samp[0])
-                    gop.readline()
-                    gop.close()
-                    gzipped = True
-                except IOError:
-                    gop.close()
-                    gzipped = False
+        elif samp[1] == 'fasta':
+            trans_log = os.path.join(outdir, TFrep_tag + '-trans/transform_log')
+            for l in open(trans_log):
+                if l.startswith('#                        input sequences :'):
+                    t = l.strip().split()
+                    rep_html_dict['num_reads_input'] = locale.format("%d", int(t[4]), grouping=True)
+                elif l.startswith('#                              too short :'):
+                    t = l.strip().split()
+                    rep_html_dict['num_reads_2QC_tooshort'] = locale.format("%d", int(t[4]), grouping=True)
+                elif l.startswith('#                            low entropy :'):
+                    t = l.strip().split()
+                    rep_html_dict['num_reads_2QC_lowentropy'] = locale.format("%d", int(t[4]), grouping=True)
+                elif l.startswith('#                                 passed :'):
+                    t = l.strip().split()
+                    rep_html_dict['num_reads_2QC'] = locale.format("%d", int(t[3]), grouping=True)
 
-                read_num = 0
-                if gzipped:
-                    for line in gzip.open(samp[0]):
-                        t = line.strip().split()
-                        read_num += float(t[4])
-                else:
-                    for line in open(samp[0]):
-                        t = line.strip().split()
-                        read_num += float(t[4])
+            mappable_log = os.path.join(outdir, TFrep_tag + '-mappable/numberMappableReads_log')
+            rep_html_dict['num_reads_mapped'] = locale.format("%d", int(open(mappable_log).read().strip().split()[1]), grouping=True)
 
-                rep_html_dict['num_reads_input'] = locale.format("%d", int(read_num), grouping=True)
 
+        elif samp[1] == 'bed' or samp[1] == 'shiftedbed':
             try:
-                TFs_samples_html_dict[TF_i].append(rep_html_dict)
-            except KeyError:
-                TFs_samples_html_dict[TF_i] = [rep_html_dict]
+                gop = gzip.open(samp[0])
+                gop.readline()
+                gop.close()
+                gzipped = True
+            except IOError:
+                gop.close()
+                gzipped = False
+
+            read_num = 0
+            if gzipped:
+                for line in gzip.open(samp[0]):
+                    t = line.strip().split()
+                    read_num += float(t[4])
+            else:
+                for line in open(samp[0]):
+                    t = line.strip().split()
+                    read_num += float(t[4])
+
+            rep_html_dict['num_reads_input'] = locale.format("%d", int(read_num), grouping=True)
+
+        try:
+            TF_samples_html_dict[TFname].append(rep_html_dict)
+        except KeyError:
+            TF_samples_html_dict[TFname] = [rep_html_dict]
 
 
-    return TFs_samples_html_dict
-
+    return TF_samples_html_dict
 
 
 def main():
+    """
+    This script produces the report for a given Crunch instance.
+    If at least 1 replicate of the background was not processed beginning from FASTQ,
+    i.e. it was processed by another Crunch instance from FASTQ,
+    one can give arguments that define where this script will find the output of which BG replicate.
+    In the following example I have 3 BG replicates.
+    BG1 and BG3 were processed from FASTQ while BG2 results can be found in the output of Crunch instance
+    Usage:
+    ./make_output.py params.yaml BG1=
 
-    # remove large OUTPUT_FMI directory
-    # print 'remove large OUTPUT_FMI directory'
-    # os.system('rm -r OUTPUT_FMI')
-
-    # Directory REPORT will contain two directories: downloads and html
-    # downloads will contain large files (wig, bed) for downloading
-    # html contains everything else plus html pages...
+    If input files in params.yaml are given in FASTQ results will be searched in OUTPUT of this Crunch instance.
+    If input files are given in shifted BEDWEIGHT format this script tries to find files in the OUTPUT of
+    the Crunch instance that initially processed the shifted BEDWEIGHT file.
+    E.g. output files for this shifted BEDWEIGHT file
+    /import/bc2/home/nimwegen/GROUP/ENCODE.ChIPseq/AnalysisByCrunch/Myers_HudsonAlpha/BG_1/OUTPUT/BG_1-fraglen/out_dir/outfile.gz
+    will be searched in /import/bc2/home/nimwegen/GROUP/ENCODE.ChIPseq/AnalysisByCrunch/Myers_HudsonAlpha/BG_1/OUTPUT/BG_1 .
+    """
 
     pipeline_dir = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
-
-    collout = 'report' #collected output
-    if not os.path.exists(collout):
-        os.mkdir(collout)
 
     # load directory with all output html templates into jinja2:
     temp_env = jinja2.Environment(loader=jinja2.FileSystemLoader('%s' %(os.path.join(pipeline_dir, 'templates'))),
@@ -449,6 +300,7 @@ def main():
 
     print TFs_samples_dict
 
+
     # 1. Find Z_hist, revcum, peak_plots and numbers of significant regions and number of fitted peaks
     # 2. Find for each WM: Logo, LL-score, AUC, AUC plot, FOV, FOV plot,  enrichment at binding sites, binding sites plot, %True, report pdf
     # 3. Find for denovo and known: loglik contribution plot, motif correlation plot
@@ -458,27 +310,24 @@ def main():
     # 7. Find for each sample: qualityfilter log (number of input reads, thrown out reads 1st QC round), trans log (thrown out reads second QC round), number mappable reads (summed bedweight weights, actual number of mapped reads)
 
 
-    # REPORT directory is organised in html and downloads directory. In html there is IP and in downloads there is IP and BG for wig and bed files. 
-    # make a directory where all output html files get stored and also pictures and final peaks
-    html_out = collout #os.path.join(collout, 'html')
-    if not os.path.exists(html_out):
-        os.mkdir(html_out)
-
-    download_out = 'downloads' #os.path.join(collout, 'downloads')
-    os.mkdir(download_out)
-
-    TFs_samples_html_dict = find_Reps_in_outdir(TFs_samples_dict, download_out, outdir)
-    #TFs_samples_html_dict = find_Reps_in_FMI(TFs_samples_dict, download_out, FMIpath, outdir) #I think this function shouldn't be of any use any longer.
-
 
     for TFname in TFs_samples_dict:
         if TFname == 'BG':
             continue
 
-        # for html
-        TFhtml = collout #os.path.join(html_out, TFname)
-        if not os.path.exists(TFhtml):
-            os.mkdir(TFhtml)
+        # create report directories.
+        # 'report_' contains all html files and images etcetera
+        # 'downloads_' contains wig and bedweight files to download
+        TFhtml = 'report_' + TFname
+        download_out = 'downloads_' + TFname
+        os.mkdir(TFhtml)
+        os.mkdir(download_out)
+
+        # Update TF_samples_html_dict with stuff of BG replicates (every time) and stuff of the TF at hand.
+        # BG stuff is added to every instance to make standalone reports that can be copied anywhere. 
+        TF_samples_html_dict = {}
+        TF_samples_html_dict = find_Reps_in_outdir(TFs_samples_dict, 'BG', download_out, outdir, TF_samples_html_dict)
+        TF_samples_html_dict = find_Reps_in_outdir(TFs_samples_dict, TFname, download_out, outdir, TF_samples_html_dict)
 
         # one dict for all main html files. motifs_*_html_dict will contain a list of motif_page_html_dicts
         html_dict = {}
@@ -514,13 +363,6 @@ def main():
             open_archive.extract('./%s' %pname)
             os.system('mv \'%s\' \'%s/%s\'' %(pname, pdir, outplot))
             html_dict['peak_plot_%i' %(i+1)] = os.path.join('peak_plots', outplot)
-
-
-        # for i, pl in enumerate(peak_plots_list):
-        #     outplot = '%i_%s' %(i+1, os.path.split(pl)[1])
-        #     os.system('cp \'%s\' \'%s/%s\'' %(pl, pdir, outplot))
-        #     html_dict['peak_plot_%i' %(i+1)] = os.path.join('peak_plots', outplot)
-
 
         # PeakMerger_log
         # Z value cut-off: 4.26
@@ -907,10 +749,10 @@ def main():
 
 
         # 6: add replicate stuff (wig, bed, pdf) to download
-        html_dict['samples'] = TFs_samples_html_dict[TFname]
+        html_dict['samples'] = TF_samples_html_dict[TFname]
 
         # add background sample dicts
-        for d in TFs_samples_html_dict['BG']:
+        for d in TF_samples_html_dict['BG']:
             html_dict['samples'].append(d)
 
         # add project name

@@ -44,9 +44,10 @@ if __name__ == '__main__':
     jobname = l.strip().split('=')[1]
 
 
-    #-w n is something that I added because there were these comlib errors (comlib error: got read error)
-    JOB_PARAM = '-q %s -P %s -e %s -o %s -j n -w n -N %s -cwd -V -b y ADDITIONAL_PARAMETERS' %(queue_type, project_leader, stderrpath, stdoutpath, jobname)
-    timestats = '-f \\nReal: %E\\nUser: %U\\nSystem: %S\\nCPU: %P\\nMax memory: %M\\nAvg memory: %t\\nAvg total memory: %K\\n'
+    # -w n is something that I added because there were these comlib errors (comlib error: got read error)
+    # in JOB_params I added -shell yes so that the execution of the component together with the profiling scripts works.
+    JOB_PARAM = '-q %s -P %s -e %s -o %s -j n -w n -N %s -cwd -V -b y -shell yes ADDITIONAL_PARAMETERS ' %(queue_type, project_leader, stderrpath, stdoutpath, jobname)
+    timestats = '-f "# Real time                       : %E\\n# User time                       : %U\\n# System time                     : %S\\n# Percent of CPU this job got     : %P"'
     
     s = drmaa.Session()
     s.initialize()
@@ -54,9 +55,9 @@ if __name__ == '__main__':
     jt = s.createJobTemplate()
     jt.nativeSpecification = JOB_PARAM
     jt.remoteCommand = '/usr/bin/time'
-    jt.args = ['-v', pythonpath, component_wrapper, commandfile]
-    # jt.remoteCommand = pythonpath
-    # jt.args = [component_wrapper, commandfile]
+    # monmem has a high number (1000TB) so that it never gets killed. Every 10 min it prints memory usage 
+    jt.args = [timestats, pythonpath, component_wrapper, commandfile, '& \/import/bc2/soft/bin/monmem $! 1000000000 600 | grep -v "Memory threshold\|Start " 1>&2']
+
 
     T1 = datetime.datetime.now()
     print T1

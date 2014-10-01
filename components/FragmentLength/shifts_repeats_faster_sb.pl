@@ -165,7 +165,7 @@ foreach $chrom (keys(%allID))
               $j = 1;
               while (1) {
 
-                  if ($i + $j > $numreads) {
+                  if ($i + $j >= $numreads) {
                       last;
                   }
 
