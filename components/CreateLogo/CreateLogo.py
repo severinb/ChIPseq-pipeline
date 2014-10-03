@@ -4,6 +4,7 @@ import subprocess
 import os, re
 from string import *
 from pylab import *
+from sequence_logo import generate_sequence_logo
 
 def reverse_and_rename(wmFile, logo_rev):
     """ Read swiss regulon style WM file """
@@ -32,7 +33,8 @@ def reverse_and_rename(wmFile, logo_rev):
     Mrev = np.vstack((M[::-1,3],M[::-1,2],M[::-1,1],M[::-1,0])).T
 
     tmpwm = os.path.join(os.path.split(logo_rev)[0], 'tmp_wm_rev')
-    wmname = 'Logo_rev'
+    # wmname = 'Logo_rev'
+    wmname = name + '.rev'
 
     o = open(tmpwm, 'w')
     o.write('//\nNA %s\nP0\tA\tC\tG\tT\n' %(wmname))
@@ -67,25 +69,6 @@ def renameWM(wm, logo):
     return tmpwm
 
 
-def createLogo(mylogo_path, WM):
-
-    # so that Logo gets printed to the right place with a nicer name...
-    pwd = os.getcwd()
-    os.chdir(os.path.split(WM)[0])
-
-    proc = subprocess.Popen('%s -n -a -c -p -Y -F PDF -f %s' %(mylogo_path, WM),
-                             stdout=subprocess.PIPE,
-                             stderr= subprocess.PIPE,
-                             shell=True
-                            )
-
-    stdout_value, stderr_value = proc.communicate()
-    print stdout_value
-    print stderr_value
-
-    os.chdir(pwd)
-
-
 def execute(cf):
 
     ##Ports and parameters
@@ -100,11 +83,11 @@ def execute(cf):
     mylogo_path = cf.get_parameter("mylogo_path", "string")
 
 
-    tmpwm = renameWM(wm, logo)
+    # tmpwm = renameWM(wm, logo)
     tmpwm_rev = reverse_and_rename(open(wm), os.path.join(os.path.split(logo)[0], 'Logo_rev.pdf'))
 
-    createLogo(mylogo_path, tmpwm)
-    createLogo(mylogo_path, tmpwm_rev)
+    generate_sequence_logo(wm, logo)
+    generate_sequence_logo(tmpwm_rev, os.path.join(os.path.split(logo)[0], 'Logo_rev.pdf'))
 
     ##extract sequence likelihood and AUC for this WM from log files of ComputeLikelihood and WMQuality components
     wmnameInit = wm
@@ -148,4 +131,3 @@ def execute(cf):
 
 
 component_skeleton.main.main(execute)
-                                                                 

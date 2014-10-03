@@ -206,7 +206,7 @@
   {% for motif in motif_list %}
   <tr>
     <td><a href="{{motif.html}}">{{motif.name_unquote}}</a></td>
-    <td> <a href="{{motif.logo}}"><img src="{{motif.logo}}" style="width: 200px;" alt="motif logo"></a></td>
+    <td> <a href="{{motif.logo}}"><img src="{{motif.logo}}" class="motif_logo" alt="motif logo"></a></td>
     <td>{{motif.ensemble_score}} ({{motif.ensemble_LLratio}})</td>
     <td>{{motif.score}} ({{motif.LLratio}})</td>
     <td>{{motif.auc}}</td>
@@ -249,7 +249,7 @@
   {% for motif in motif_tops_list %}
   <tr>
     <td><a href="{{motif.html}}">{{motif.name_unquote}}</a></td>
-    <td> <a href="{{motif.logo}}"><img src="{{motif.logo}}" style="width: 200px;" alt="motif logo"></a></td>
+    <td> <a href="{{motif.logo}}"><img src="{{motif.logo}}" class="motif_logo" alt="motif logo"></a></td>
     <td>{{motif.score}} ({{motif.LLratio}})</td>
     <td>{{motif.auc}}</td>
     <td>{{motif.fov}}</td>

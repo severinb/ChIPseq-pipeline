@@ -4,7 +4,7 @@ import os, re
 from string import *
 from pylab import *
 import subprocess
-
+from sequence_logo import generate_sequence_logo
 
 def runComparison(WM, WMlib, outfile, ntop):
     """
@@ -26,24 +26,6 @@ def runComparison(WM, WMlib, outfile, ntop):
         return -1
     else:
         return 0
-
-
-def createLogo(mylogo_path, WM, outdir):
-
-    pwd = os.getcwd()
-    os.chdir(outdir)
-
-    proc = subprocess.Popen('%s -n -a -c -p -Y -F PDF -f \'%s\'' %(mylogo_path, WM),
-                             stdout=subprocess.PIPE,
-                             stderr= subprocess.PIPE,
-                             shell=True
-                            )
-
-    stdout_value, stderr_value = proc.communicate()
-    print stdout_value
-    print stderr_value
-
-    os.chdir(pwd)
 
 
 def execute(cf):
@@ -71,7 +53,8 @@ def execute(cf):
         t = l.strip().split()
 
         wm_path = os.path.join(WMlib, t[0])
-        createLogo(mylogo_path, wm_path, logos_dir)
+        logo_path = os.path.join(logos_dir, t[0])
+        generate_sequence_logo(wmpath, logo_path)
 
         dist_percent = float(t[1])*100
         o.write('%s\t%.3f\n' %(t[0], float(t[1])))

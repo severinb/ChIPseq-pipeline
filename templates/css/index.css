@@ -7,9 +7,18 @@
     height: 450px;
 }
 
+.motif_logo {
+    width: 250px;
+}
+
+.motif_logo_big {
+    height: 300px;
+}
+
 .peak_plot {
     width: 300px;
 }
+
 .q_control {
     height: 310px;
     clear: both;

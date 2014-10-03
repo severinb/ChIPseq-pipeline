@@ -7,18 +7,18 @@ def generate_sequence_logo(fname, resfile):
     So: First create EPS vector graphics, then convert it into PNG for website and PDF for PDF-report.
     """
 
-    Rscript_path = "/import/bc2/home/nimwegen/GROUP/local/bin/Rscript"
+    Rscript_path = "Rscript"
     mylogo_script = "mylogo.R"
 
     cmd = ' '.join([
             Rscript_path,
             mylogo_script,
-            fname,
+            '"' + fname + '"',
             'ps',
             resfile.replace('.pdf', '')])
 
     print "Sequence Logo: "
-    print cmd 
+    print cmd
     os.system(cmd)
 
     cmd = ' '.join([

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>ChIP-CRUNCH Motif Page</title>
+<title>CRUNCH Motif Page</title>
 <meta name="description" content="ISMARA - Integrated Motif Activity Response Analysis is a free online
                                       tool that recognizes most important transcription factors that
                                       are changing their activity in a set of samples.">
@@ -40,8 +40,8 @@
 <h1>{{name_unquote}}</h1>
 
 <br>
-<a href="{{logo}}"><img src="{{logo}}" alt="motif logo"></a>
-<a href="{{logo_rev}}"><img src="{{logo_rev}}" alt="reverse compliment motif logo"></a>
+<a href="{{logo}}"><img src="{{logo}}" class="motif_logo_big" alt="motif logo"></a>
+<a href="{{logo_rev}}"><img src="{{logo_rev}}" class="motif_logo_big" alt="reverse compliment motif logo"></a>
 <br>
 <ul>
 <li>Enrichment: {{score}}</li>
@@ -68,7 +68,7 @@
   <tr>
     <td>{{sim.name}}</td>
     <td>{{sim.dist}}</td>
-    <td><a href="{{sim.logo}}"><img src="{{sim.logo}}" alt="motif logo"></a></td>
+    <td><a href="{{sim.logo}}"><img src="{{sim.logo}}" class="motif_logo" alt="motif logo"></a></td>
   </tr>
   {% endfor %}
   </tbody>
