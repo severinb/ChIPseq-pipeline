@@ -384,23 +384,6 @@ def start_with_bedweight():
             existingcsv.write(bedweightFile + '\tBG\n')
 
 
-def createSourceFile():
-    """
-    This function creates a file that has to be sourced by the user before executing the pipeline
-    """
-
-    o = open('sourceFile', 'w')
-
-    sourcetext = '\n'.join(['export PATH=%s:%s:%s:%s/bin:$PATH' %(os.path.split(params['PYTHON_PATH'])[0], os.path.split(params['R_PATH'])[0], os.path.split(params['PERL_PATH'])[0], params['ANDURIL_HOME']),
-                            'export ANDURIL_HOME=%s' %params['ANDURIL_HOME'],
-                            'export DRMAA_LIBRARY_PATH=%s' %(params['DRMAA_LIBRARY_PATH']),
-                            'export R_LIBS_USER=%s' %params['R_LIBS_USER']
-                            ])
-
-    o.write(sourcetext)
-    o.close()
-
-
 if __name__ == '__main__':
     """
     Produces hosts.conf, network.and, datafiles.csv, wrapper files and qsub template and gives pipeline run command.
@@ -449,7 +432,7 @@ if __name__ == '__main__':
     outdirlist.append(params['OUT_DIR'])
 
     ##Create Directory that contains all created files ans folders
-    pipelineDir = os.path.abspath('PipelineFiles')
+    pipelineDir = 'PipelineFiles'
     if not os.path.exists(pipelineDir):
         os.system('mkdir %s' %pipelineDir)
 
@@ -487,22 +470,33 @@ if __name__ == '__main__':
 
     hostsconf_path = create_hosts_conf()
 
-    createSourceFile()
-
     ##Print anduril command for running pipeline and also write it to a file
     command = ' '.join(['anduril run',
                         network_path,
                         '-c %s' %params['ANDURIL_COMPONENTS_PATH'],
                         '-d %s' %params['OUT_DIR'],
-                        '--hosts %s' %hostsconf_path,
+                        '--hosts %s' %os.path.join(pipelineDir, 'hosts.conf'),
                         '--perl-exec %s' %params['PERL_PATH'],
                         '--python-exec %s' %params['PYTHON_PATH'],
                         '--threads 8'])
-    
+
+    help_text = '\n'.join(['\n\nFurther information:',
+                           '\t- Mappings for individual samples are here:',
+                           '\t\t%s'%repository_path,
+                           '\t- Log files for individual component instances are here: ./log/',
+                           '\t- Log for complete run is here: ./log/_global',
+                           '\t- It is advisable to run the second command above with nohup or screen',
+                           '\t- To create report pages for looking at in the web browser run after Crunch has finished:',
+                           '\t\t%s/make_output.py %s' %(scripts_dir, configfile),
+                           '\t- Control the number of concurrent components using:',
+                           '\t\t--threads NUMBER\n'])
+
+    source_command = 'source %s' %os.path.join(os.path.split(template_dir)[0], 'config/crunch.env')
+
     oc = open('andurilCOMMAND','w')
-    oc.write('1. Run:\nsource sourceFile\n2. Run:\n')
+    oc.write('1. Run:\n%s\n\n2. Run:\n' %source_command)
     oc.write(command)
-    oc.write('\n\nResults for individual samples are in:\n%s\nFor log pdf file see \'OUTPUT/output\' directory.\n'%repository_path)
+    oc.write(help_text)
     oc.close()
 
     os.system('cat andurilCOMMAND')
